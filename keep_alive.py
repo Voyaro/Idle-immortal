@@ -16,7 +16,7 @@ def ping_self():
     """Auto-ping sendiri setiap 5 menit"""
     while True:
         try:
-            requests.get("https://your-repl-name.your-username.repl.co", timeout=10)
+            requests.get("https://7e6a70ba-c46c-47a0-b447-27cdbb263d44-00-2fnx5ytl4xdbj.pike.replit.dev", timeout=10)
             print("✅ Successfully pinged self")
         except:
             print("❌ Failed to ping self")

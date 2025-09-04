@@ -545,7 +545,7 @@ async def myrealm(ctx):
     if next_stage:
         embed.add_field(
             name="Next Breakthrough",
-            value=f"**{next_stage}**\nButuh: {exp_needed} EXP",
+            value=f"**{next_stage}**\nButuh: {exp_needed if 'exp_needed' in locals() else 'N/A'} EXP",
             inline=False
         )
     
