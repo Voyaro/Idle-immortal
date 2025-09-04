@@ -1070,11 +1070,31 @@ async def stop_cultivate(ctx):
 async def cultivate_status(ctx):
     """Cek status cultivation idle"""
     if ctx.author.id not in ACTIVE_CULTIVATIONS:
-        return await ctx.send("❌ Anda tidak sedang cultivating!")
-
+        return await ctx.send("❌ Anda tidak sedang cultivation! Gunakan `!start_cultivate` untuk mulai.")
+    
+    cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
+    duration = time.time() - cultivation_data["start_time"]
+    hours = duration / 3600
+    
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
-    await update_cultivation_message(ctx.author.id, p, realm_data)
+    
+    exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
+    qi_gain = int(hours * 405)
+    spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
+    
+    embed = discord.Embed(
+        title="🧘 Cultivation Status",
+        description=f"{ctx.author.mention}'s idle cultivation progress",
+        color=0x00ff00
+    )
+    embed.add_field(name="Duration", value=f"{hours:.1f} hours", inline=True)
+    embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
+    embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
+    embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
+    embed.add_field(name="Rate", value=f"{410 * realm_data['exp_multiplier']} EXP/hour", inline=True)
+    
+    await ctx.send(embed=embed)
 
 # ===============================
 # Command: breakthrough
