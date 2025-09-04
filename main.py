@@ -12,6 +12,12 @@ from keep_alive import keep_alive
 # ===============================
 # TOKEN (ambil dari Secrets Replit)
 # ===============================
+# ===============================
+# Active Systems
+# ===============================
+ACTIVE_CULTIVATIONS = {}
+ACTIVE_BATTLES = {}
+
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError("Token bot tidak ditemukan! Pastikan sudah di-set di Environment Variables")
@@ -417,6 +423,183 @@ def get_all_players():
     """Dapatkan semua data players"""
     data = load_data()
     return data["players"]
+
+# ===============================
+# Battle System Functions
+# ===============================
+async def start_battle(attacker_id, defender_id, ctx):
+    """Mulai real-time battle"""
+    battle_id = f"{attacker_id}_{defender_id}"
+    
+    if battle_id in ACTIVE_BATTLES:
+        return await ctx.send("⏳ Battle sedang berlangsung!")
+    
+    attacker = get_player(attacker_id)
+    defender = get_player(defender_id)
+    
+    # Setup battle data
+    ACTIVE_BATTLES[battle_id] = {
+        "attacker": attacker_id,
+        "defender": defender_id,
+        "attacker_hp": 100,
+        "defender_hp": 100,
+        "attacker_power": attacker["total_power"],
+        "defender_power": defender["total_power"],
+        "round": 0,
+        "message": None,
+        "active": True,
+        "channel_id": ctx.channel.id
+    }
+    
+    # Kirim battle message
+    embed = discord.Embed(
+        title="⚔️ Battle Started!",
+        description=f"<@{attacker_id}> vs <@{defender_id}>",
+        color=0xff0000
+    )
+    embed.add_field(name="Attacker Power", value=attacker["total_power"], inline=True)
+    embed.add_field(name="Defender Power", value=defender["total_power"], inline=True)
+    embed.add_field(name="HP", value="❤️ 100% | ❤️ 100%", inline=False)
+    embed.set_footer(text="Battle dimulai dalam 3...")
+    
+    message = await ctx.send(embed=embed)
+    ACTIVE_BATTLES[battle_id]["message"] = message
+    
+    # Start battle task
+    asyncio.create_task(battle_task(battle_id, ctx))
+
+async def battle_task(battle_id, ctx):
+    """Background task untuk battle"""
+    try:
+        battle_data = ACTIVE_BATTLES[battle_id]
+        
+        # Countdown
+        for i in range(3, 0, -1):
+            if not battle_data["active"]:
+                return
+            embed = battle_data["message"].embeds[0]
+            embed.set_footer(text=f"Battle dimulai dalam {i}...")
+            await battle_data["message"].edit(embed=embed)
+            await asyncio.sleep(1)
+        
+        # Battle rounds
+        while (battle_data["attacker_hp"] > 0 and battle_data["defender_hp"] > 0 and 
+               battle_data["active"] and battle_data["round"] < 10):
+            
+            battle_data["round"] += 1
+            await battle_round(battle_id, ctx)
+            await asyncio.sleep(2)
+        
+        # Battle finished
+        await finish_battle(battle_id, ctx)
+        
+    except Exception as e:
+        print(f"Error in battle task: {e}")
+    finally:
+        if battle_id in ACTIVE_BATTLES:
+            del ACTIVE_BATTLES[battle_id]
+
+async def battle_round(battle_id, ctx):
+    """Satu round battle"""
+    battle_data = ACTIVE_BATTLES[battle_id]
+    
+    # Calculate damage
+    att_dmg = max(5, random.randint(10, 20) * battle_data["attacker_power"] // 100)
+    def_dmg = max(5, random.randint(10, 20) * battle_data["defender_power"] // 100)
+    
+    # Apply damage
+    battle_data["defender_hp"] = max(0, battle_data["defender_hp"] - att_dmg)
+    battle_data["attacker_hp"] = max(0, battle_data["attacker_hp"] - def_dmg)
+    
+    # Update message
+    embed = discord.Embed(
+        title=f"⚔️ Round {battle_data['round']}",
+        description=f"<@{battle_data['attacker']}> vs <@{battle_data['defender']}>",
+        color=0xff0000
+    )
+    
+    embed.add_field(
+        name="Action", 
+        value=f"<@{battle_data['attacker']}> deals **{att_dmg} damage**!\n<@{battle_data['defender']}> deals **{def_dmg} damage**!",
+        inline=False
+    )
+    
+    # HP bars
+    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "♡" * (10 - battle_data["attacker_hp"] // 10)
+    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "♡" * (10 - battle_data["defender_hp"] // 10)
+    
+    embed.add_field(
+        name="HP Status",
+        value=f"**Attacker:** {att_hp_bar} {battle_data['attacker_hp']}%\n**Defender:** {def_hp_bar} {battle_data['defender_hp']}%",
+        inline=False
+    )
+    
+    try:
+        await battle_data["message"].edit(embed=embed)
+    except:
+        pass
+
+async def finish_battle(battle_id, ctx):
+    """Selesaikan battle dan berikan rewards"""
+    battle_data = ACTIVE_BATTLES[battle_id]
+    attacker = get_player(battle_data["attacker"])
+    defender = get_player(battle_data["defender"])
+    
+    # Determine winner
+    if battle_data["attacker_hp"] <= 0 or battle_data["defender_hp"] > battle_data["attacker_hp"]:
+        winner_id = battle_data["defender"]
+        loser_id = battle_data["attacker"]
+        result = f"<@{winner_id}> wins!"
+    else:
+        winner_id = battle_data["attacker"]
+        loser_id = battle_data["defender"]
+        result = f"<@{winner_id}> wins!"
+    
+    # Update player stats
+    winner = get_player(winner_id)
+    loser = get_player(loser_id)
+    
+    winner["pvp_wins"] += 1
+    loser["pvp_losses"] += 1
+    
+    exp_reward = 50
+    spirit_stone_reward = 10
+    
+    winner["exp"] = min(winner["exp"] + exp_reward, get_exp_cap(winner))
+    winner["spirit_stones"] += spirit_stone_reward
+    loser["exp"] = max(0, loser["exp"] - 20)
+    
+    update_player(winner_id, winner)
+    update_player(loser_id, loser)
+    
+    # Update server stats
+    data = load_data()
+    data["server_stats"]["total_pvp_battles"] += 1
+    save_data(data)
+    
+    # Final message
+    embed = discord.Embed(
+        title="🎉 Battle Finished!",
+        description=result,
+        color=0x00ff00
+    )
+    
+    embed.add_field(
+        name="Rewards",
+        value=f"<@{winner_id}>: +{exp_reward} EXP, +{spirit_stone_reward} Spirit Stones\n<@{loser_id}>: -20 EXP",
+        inline=False
+    )
+    
+    embed.add_field(
+        name="Record",
+        value=f"<@{winner_id}>: {winner['pvp_wins']}W/{winner['pvp_losses']}L\n<@{loser_id}>: {loser['pvp_wins']}W/{loser['pvp_losses']}L",
+        inline=True
+    )
+    
+    try:
+        await battle_data["message"].edit(embed=embed)
+    except:
+        pass
 
 # ===============================
 # Bot setup
@@ -1130,10 +1313,11 @@ async def enter(ctx, *, dungeon_name: str):
     await ctx.send(embed=embed)
 
 # ===============================
-# Command: pvp
+# Command: pvp (REAL-TIME BATTLE)
 # ===============================
 @bot.command()
 async def pvp(ctx, enemy: discord.Member):
+    """Battle real-time melawan player lain"""
     if enemy.id == ctx.author.id:
         return await ctx.send("❌ You can't PvP yourself!")
 
@@ -1144,33 +1328,12 @@ async def pvp(ctx, enemy: discord.Member):
     last_pvp = float(attacker["last_pvp"])
     if last_pvp + 300 > now:
         return await ctx.send("⏳ You must wait 5 minutes before PvP again!")
-
+    
     attacker["last_pvp"] = str(now)
-
-    atk_power = attacker["total_power"] + random.randint(0, 20)
-    def_power = defender["total_power"] + random.randint(0, 20)
-
-    if atk_power > def_power:
-        attacker["exp"] += 50
-        defender["exp"] = max(0, defender["exp"] - 20)
-        attacker["pvp_wins"] += 1
-        defender["pvp_losses"] += 1
-        result = f"⚔️ {ctx.author.mention} defeated {enemy.mention}!"
-    else:
-        attacker["exp"] = max(0, attacker["exp"] - 20)
-        defender["exp"] += 50
-        attacker["pvp_losses"] += 1
-        defender["pvp_wins"] += 1
-        result = f"⚔️ {enemy.mention} defeated {ctx.author.mention}!"
-
     update_player(ctx.author.id, attacker)
-    update_player(enemy.id, defender)
-
-    data = load_data()
-    data["server_stats"]["total_pvp_battles"] += 1
-    save_data(data)
-
-    await ctx.send(result)
+    
+    # Start real-time battle
+    await start_battle(ctx.author.id, enemy.id, ctx)
 
 @pvp.error
 async def pvp_error(ctx, error):
@@ -1224,6 +1387,146 @@ async def backup(ctx):
         await ctx.send("✅ Backup created successfully!")
     else:
         await ctx.send("❌ Failed to create backup!")
+
+# ===============================
+# Idle Cultivation System
+# ===============================
+@bot.command()
+async def start_cultivate(ctx):
+    """Mulai cultivation idle secara otomatis"""
+    p = get_player(ctx.author.id)
+    realm_data = REALMS[p["realm"]]
+    exp_cap = realm_data["exp_cap"]
+    
+    if ctx.author.id in ACTIVE_CULTIVATIONS:
+        return await ctx.send("🧘 Anda sudah sedang cultivation! Gunakan `!stop_cultivate` untuk berhenti.")
+    
+    if p["exp"] >= exp_cap:
+        return await ctx.send(f"❌ EXP sudah mencapai batas maksimum untuk realm ini! ({exp_cap} EXP)")
+    
+    # Start idle cultivation
+    ACTIVE_CULTIVATIONS[ctx.author.id] = {
+        "start_time": time.time(),
+        "channel_id": ctx.channel.id,
+        "active": True
+    }
+    
+    embed = discord.Embed(
+        title="🧘 Idle Cultivation Started!",
+        description=f"{ctx.author.mention} mulai cultivation otomatis",
+        color=0x00ff00
+    )
+    embed.add_field(name="Realm", value=p["realm"], inline=True)
+    embed.add_field(name="Stage", value=p["stage"], inline=True)
+    embed.add_field(name="Current EXP", value=f"{p['exp']}/{exp_cap}", inline=True)
+    embed.set_footer(text="Gunakan !stop_cultivate untuk berhenti atau !cultivate_status untuk melihat progress")
+    
+    await ctx.send(embed=embed)
+    
+    # Start cultivation task
+    asyncio.create_task(cultivation_task(ctx.author.id))
+
+@bot.command()
+async def stop_cultivate(ctx):
+    """Berhenti cultivation idle"""
+    if ctx.author.id not in ACTIVE_CULTIVATIONS:
+        return await ctx.send("❌ Anda tidak sedang cultivation!")
+    
+    cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
+    cultivation_data["active"] = False
+    
+    # Calculate total gains
+    duration = time.time() - cultivation_data["start_time"]
+    hours = duration / 3600
+    
+    p = get_player(ctx.author.id)
+    realm_data = REALMS[p["realm"]]
+    
+    exp_gain = int(hours * 10 * realm_data["exp_multiplier"])
+    qi_gain = int(hours * 5)
+    spirit_stones_gain = int(hours * realm_data["spirit_stone_gain"])
+    
+    p["exp"] = min(p["exp"] + exp_gain, get_exp_cap(p))
+    p["qi"] += qi_gain
+    p["spirit_stones"] += spirit_stones_gain
+    
+    update_player(ctx.author.id, p)
+    del ACTIVE_CULTIVATIONS[ctx.author.id]
+    
+    embed = discord.Embed(
+        title="🛑 Idle Cultivation Stopped",
+        description=f"{ctx.author.mention} berhenti cultivation",
+        color=0xff9900
+    )
+    embed.add_field(name="Duration", value=f"{hours:.1f} hours", inline=True)
+    embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
+    embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
+    embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
+    embed.add_field(name="Total EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def cultivate_status(ctx):
+    """Cek status cultivation idle"""
+    if ctx.author.id not in ACTIVE_CULTIVATIONS:
+        return await ctx.send("❌ Anda tidak sedang cultivation! Gunakan `!start_cultivate` untuk mulai.")
+    
+    cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
+    duration = time.time() - cultivation_data["start_time"]
+    hours = duration / 3600
+    
+    p = get_player(ctx.author.id)
+    realm_data = REALMS[p["realm"]]
+    
+    exp_gain = int(hours * 10 * realm_data["exp_multiplier"])
+    qi_gain = int(hours * 5)
+    spirit_stones_gain = int(hours * realm_data["spirit_stone_gain"])
+    
+    embed = discord.Embed(
+        title="🧘 Cultivation Status",
+        description=f"{ctx.author.mention}'s idle cultivation progress",
+        color=0x00ff00
+    )
+    embed.add_field(name="Duration", value=f"{hours:.1f} hours", inline=True)
+    embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
+    embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
+    embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
+    embed.add_field(name="Rate", value=f"{10 * realm_data['exp_multiplier']} EXP/hour", inline=True)
+    
+    await ctx.send(embed=embed)
+
+async def cultivation_task(user_id):
+    """Background task untuk idle cultivation"""
+    try:
+        while user_id in ACTIVE_CULTIVATIONS and ACTIVE_CULTIVATIONS[user_id]["active"]:
+            await asyncio.sleep(300)  # Check every 5 minutes
+            
+            if user_id not in ACTIVE_CULTIVATIONS:
+                break
+                
+            p = get_player(user_id)
+            realm_data = REALMS[p["realm"]]
+            exp_cap = get_exp_cap(p)
+            
+            # Auto-stop if exp cap reached
+            if p["exp"] >= exp_cap:
+                cultivation_data = ACTIVE_CULTIVATIONS[user_id]
+                cultivation_data["active"] = False
+                
+                try:
+                    channel = bot.get_channel(cultivation_data["channel_id"])
+                    if channel:
+                        await channel.send(f"🛑 <@{user_id}> EXP cap reached! Cultivation stopped automatically.")
+                except:
+                    pass
+                break
+                
+    except Exception as e:
+        print(f"Error in cultivation task: {e}")
+    finally:
+        if user_id in ACTIVE_CULTIVATIONS:
+            del ACTIVE_CULTIVATIONS[user_id]
 
 # ===============================
 # Command: stats (server statistics)
