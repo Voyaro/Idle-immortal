@@ -48,22 +48,22 @@ def load_data():
     try:
         if not os.path.exists(DATA_FILE):
             return create_default_data()
-        
+
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
-            
+
         # Validasi struktur data
         if "players" not in data:
             return create_default_data()
-        
+
         # FIX: Tambahkan field baru jika missing
         if "total_dungeons" not in data["server_stats"]:
             data["server_stats"]["total_dungeons"] = 0
         if "total_techniques_learned" not in data["server_stats"]:
             data["server_stats"]["total_techniques_learned"] = 0
-            
+
         return data
-        
+
     except json.JSONDecodeError:
         print("❌ Error decoding JSON, restoring from backup...")
         return restore_from_backup()
@@ -77,16 +77,16 @@ def save_data(data):
         # Backup data lama sebelum menimpa
         if os.path.exists(DATA_FILE):
             backup_data()
-        
+
         # Update timestamp
         data["server_stats"]["last_update"] = datetime.datetime.now().isoformat()
-        
+
         with open(DATA_FILE, "w") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
-            
+
         print("💾 Data saved successfully!")
         return True
-        
+
     except Exception as e:
         print(f"❌ Error saving data: {e}")
         return False
@@ -98,16 +98,16 @@ def backup_data():
             timestamp = int(time.time())
             backup_path = os.path.join(BACKUP_DIR, f"backup_{timestamp}.json")
             shutil.copy2(DATA_FILE, backup_path)
-            
+
             # Hapus backup lama (simpan hanya 5 terbaru)
             backups = sorted([f for f in os.listdir(BACKUP_DIR) if f.startswith("backup_")])
             if len(backups) > 5:
                 for old_backup in backups[:-5]:
                     os.remove(os.path.join(BACKUP_DIR, old_backup))
-                    
+
             print(f"📦 Backup created: backup_{timestamp}.json")
             return True
-            
+
     except Exception as e:
         print(f"❌ Error creating backup: {e}")
         return False
@@ -118,19 +118,19 @@ def restore_from_backup():
         if not os.path.exists(BACKUP_DIR):
             print("⚠️ No backup directory found")
             return create_default_data()
-            
+
         backups = [f for f in os.listdir(BACKUP_DIR) if f.startswith("backup_") and f.endswith(".json")]
         if not backups:
             print("⚠️ No backup files found")
             return create_default_data()
-            
+
         backups.sort(reverse=True)
         latest_backup = os.path.join(BACKUP_DIR, backups[0])
-        
+
         print(f"🔧 Restoring from backup: {latest_backup}")
         shutil.copy2(latest_backup, DATA_FILE)
         return load_data()
-        
+
     except Exception as e:
         print(f"❌ Error restoring backup: {e}")
         return create_default_data()
@@ -293,23 +293,23 @@ def generate_random_technique(player_realm, player_stage):
     sect = random.choice(list(CULTIVATION_SECTS.keys()))
     technique_type = random.choice(list(TECHNIQUE_TYPES.keys()))
     element = random.choice(list(ELEMENT_TYPES.keys()))
-    
+
     # Determine power based on realm
     realm_idx = REALM_ORDER.index(player_realm)
     stage_idx = REALMS[player_realm]["stages"].index(player_stage)
     base_power = (realm_idx * 0.1) + (stage_idx * 0.02)
-    
+
     # Power bonus range
     min_bonus, max_bonus = TECHNIQUE_TYPES[technique_type]["power_bonus"]
     power_bonus = round(random.uniform(min_bonus + base_power, max_bonus + base_power), 2)
-    
+
     # Technique names pool
     prefix = ["Heavenly", "Divine", "Ancient", "Celestial", "Primordial", "Mystic", "Supreme"]
     middle = ["Dragon", "Phoenix", "Star", "Moon", "Sun", "Cloud", "Mountain", "Ocean"]
     suffix = ["Slash", "Palm", "Fist", "Step", "Breath", "Gaze", "Shield", "Domain"]
-    
+
     technique_name = f"{random.choice(prefix)} {random.choice(middle)} {random.choice(suffix)}"
-    
+
     # Description generator
     descriptions = {
         "attack": [f"Unleashes devastating {element} energy", "Cuts through space itself", "Summons celestial wrath"],
@@ -318,12 +318,12 @@ def generate_random_technique(player_realm, player_stage):
         "healing": [f"Regenerates body with {element} energy", "Purifies toxins", "Revives damaged meridians"],
         "movement": [f"Teleports through {element} space", "Moves at lightning speed", "Phases through objects"]
     }
-    
+
     description = random.choice(descriptions[technique_type])
-    
+
     # Cost based on power
     cost = int(power_bonus * 1000 * (realm_idx + 1))
-    
+
     return {
         "id": f"{technique_type}_{element}_{random.randint(1000,9999)}",
         "name": technique_name,
@@ -345,7 +345,7 @@ def get_player(uid):
     """Dapatkan data player, buat baru jika belum ada"""
     data = load_data()
     uid_str = str(uid)
-    
+
     if uid_str not in data["players"]:
         # Player baru dengan data lengkap
         data["players"][uid_str] = {
@@ -387,30 +387,30 @@ def get_player(uid):
             "created_at": datetime.datetime.now().isoformat(),
             "last_updated": datetime.datetime.now().isoformat()
         }
-        
+
         for field, default_value in new_fields.items():
             if field not in player_data:
                 player_data[field] = default_value
-        
+
         # Jika ada power lama, convert ke base_power
         if "power" in player_data and "base_power" not in player_data:
             player_data["base_power"] = player_data["power"]
             player_data["total_power"] = player_data["power"]
-        
+
         save_data(data)
-        
+
     return data["players"][uid_str]
 
 def update_player(uid, pdata):
     """Update data player"""
     data = load_data()
     uid_str = str(uid)
-    
+
     if uid_str in data["players"]:
         pdata["last_updated"] = datetime.datetime.now().isoformat()
         data["players"][uid_str] = pdata
         return save_data(data)
-    
+
     return False
 
 def get_all_players():
@@ -433,17 +433,17 @@ async def on_ready():
     print(f'✅ Bot {bot.user} telah online!')
     print(f'🔑 Token valid: {bool(BOT_TOKEN)}')
     print(f'📊 Total players: {load_data()["total_players"]}')
-    
+
     if BOT_TOKEN:
         print(f'🔒 Token length: {len(BOT_TOKEN)}')
-    
+
     backup_data()
 
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
-    
+
     print(f"📨 Received: {message.content} from {message.author}")
     await bot.process_commands(message)
 
@@ -477,16 +477,16 @@ async def realms(ctx):
         description="Path to immortality and beyond",
         color=0x7289da
     )
-    
+
     for realm_name, realm_data in REALMS.items():
         stages_info = ""
         for i, stage in enumerate(realm_data["stages"]):
             exp_needed = int((i + 1) * 100 * realm_data["exp_multiplier"])
             power_level = int(10 * (i + 1) * realm_data["power_multiplier"])
-            
+
             stages_info += f"**{i+1}. {stage}**\n"
             stages_info += f"→ EXP: {exp_needed} | Power: ~{power_level}\n"
-        
+
         embed.add_field(
             name=f"{realm_name} 🌟",
             value=f"**EXP Cap:** {realm_data['exp_cap']:,}\n"
@@ -495,7 +495,7 @@ async def realms(ctx):
                   f"**Stages:** {len(realm_data['stages'])}",
             inline=False
         )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -507,7 +507,7 @@ async def myrealm(ctx):
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
     current_stage_idx = realm_data["stages"].index(p["stage"])
-    
+
     next_stage = None
     if current_stage_idx + 1 < len(realm_data["stages"]):
         next_stage = realm_data["stages"][current_stage_idx + 1]
@@ -518,46 +518,46 @@ async def myrealm(ctx):
             next_realm = REALM_ORDER[realm_idx + 1]
             next_stage = f"Ascend to {next_realm}"
             exp_needed = 1000
-    
+
     embed = discord.Embed(
         title=f"🌠 {ctx.author.name}'s Realm Progress",
         color=realm_data["color"]
     )
-    
+
     embed.add_field(
         name="Current Realm",
         value=f"**{p['realm']}**\nEXP Cap: {realm_data['exp_cap']:,}",
         inline=True
     )
-    
+
     embed.add_field(
         name="Current Stage", 
         value=f"**{p['stage']}**\nStage {current_stage_idx + 1}/{len(realm_data['stages'])}",
         inline=True
     )
-    
+
     embed.add_field(
         name="EXP Progress",
         value=f"{p['exp']}/{realm_data['exp_cap']}",
         inline=True
     )
-    
+
     if next_stage:
         embed.add_field(
             name="Next Breakthrough",
-            value=f"**{next_stage}**\nButuh: {exp_needed if 'exp_needed' in locals() else 'N/A'} EXP",
+            value=f"**{next_stage}**\nButuh: {exp_needed} EXP",
             inline=False
         )
-    
+
     progress_percentage = min(100, (p["exp"] / realm_data["exp_cap"]) * 100)
     progress_bar = "█" * int(progress_percentage / 10) + "░" * (10 - int(progress_percentage / 10))
-    
+
     embed.add_field(
         name="Overall Progress",
         value=f"```[{progress_bar}] {progress_percentage:.1f}%```",
         inline=False
     )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -567,42 +567,42 @@ async def myrealm(ctx):
 async def progress(ctx):
     """Lihat progress cultivation secara keseluruhan"""
     p = get_player(ctx.author.id)
-    
+
     realm_data = REALMS[p["realm"]]
     current_stage_idx = realm_data["stages"].index(p["stage"])
     stage_progress = (current_stage_idx + 1) / len(realm_data["stages"]) * 100
-    
+
     total_stages = sum(len(REALMS[realm]["stages"]) for realm in REALMS)
     current_global_stage = 0
-    
+
     for realm in REALM_ORDER:
         if realm == p["realm"]:
             current_global_stage += current_stage_idx + 1
             break
         else:
             current_global_stage += len(REALMS[realm]["stages"])
-    
+
     global_progress = (current_global_stage / total_stages) * 100
-    
+
     embed = discord.Embed(
         title="📊 Overall Cultivation Progress",
         description=f"{ctx.author.name}'s journey to immortality",
         color=0x00ff00
     )
-    
+
     embed.add_field(
         name="Current Position",
         value=f"**{p['realm']}** - {p['stage']}\nStage {current_global_stage}/{total_stages}",
         inline=False
     )
-    
+
     global_bar = "█" * int(global_progress / 10) + "░" * (10 - int(global_progress / 10))
     embed.add_field(
         name="Global Progress",
         value=f"```[{global_bar}] {global_progress:.1f}%```",
         inline=False
     )
-    
+
     if p["realm"] != "God Realm" or p["stage"] != "God King [Peak]":
         next_milestone = ""
         if current_stage_idx + 1 < len(realm_data["stages"]):
@@ -610,13 +610,13 @@ async def progress(ctx):
         else:
             next_realm_idx = REALM_ORDER.index(p["realm"]) + 1
             next_milestone = REALM_ORDER[next_realm_idx]
-        
+
         embed.add_field(
             name="Next Milestone",
             value=f"**{next_milestone}**",
             inline=True
         )
-    
+
     embed.set_footer(text="Total stages: Mortal(30) + Immortal(18) + God(9) = 57 stages")
     await ctx.send(embed=embed)
 
@@ -629,28 +629,28 @@ async def cultivate(ctx):
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
     exp_cap = realm_data["exp_cap"]
-    
+
     base_gain = random.randint(5, 15)
     gain = int(base_gain * realm_data["exp_multiplier"])
     qi_gain = random.randint(1, 5)
     power_gain = random.randint(1, 3)
     spirit_stones_gain = random.randint(1, realm_data["spirit_stone_gain"])
-    
+
     if p["exp"] + gain > exp_cap:
         gain = max(0, exp_cap - p["exp"])
         if gain == 0:
             return await ctx.send(f"❌ EXP sudah mencapai batas maksimum untuk realm ini! ({exp_cap} EXP)")
-    
+
     p["exp"] += gain
     p["qi"] += qi_gain
     p["base_power"] += power_gain
     p["spirit_stones"] += spirit_stones_gain
-    
+
     technique_bonus = 1 + sum(t['power_bonus'] for t in p["techniques"])
     p["total_power"] = int(p["base_power"] * technique_bonus)
-    
+
     update_player(ctx.author.id, p)
-    
+
     embed = discord.Embed(
         title="🧘 Cultivation Success",
         description=f"{ctx.author.mention} meditated and gained:",
@@ -662,7 +662,7 @@ async def cultivate(ctx):
     embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
     embed.add_field(name="Total EXP", value=f"{p['exp']}/{exp_cap}", inline=True)
     embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -677,7 +677,7 @@ async def breakthrough(ctx):
 
     base_exp = (idx + 1) * 100
     exp_needed = int(base_exp * realm_data["exp_multiplier"])
-    
+
     if p["exp"] < exp_needed:
         return await ctx.send(f"❌ Not enough EXP. You need {exp_needed} to breakthrough!")
 
@@ -701,11 +701,11 @@ async def breakthrough(ctx):
             return await ctx.send("🎉 You already reached the peak realm!")
 
     update_player(ctx.author.id, p)
-    
+
     data = load_data()
     data["server_stats"]["total_breakthroughs"] += 1
     save_data(data)
-    
+
     await ctx.send(message)
 
 # ===============================
@@ -716,25 +716,25 @@ async def breakthrough(ctx):
 async def find_technique(ctx):
     """Mencari teknik cultivation baru secara random"""
     p = get_player(ctx.author.id)
-    
+
     now = time.time()
     last_find = float(p.get("last_technique_find", "0"))
-    
+
     if last_find + 3600 > now:
         remaining = int(last_find + 3600 - now)
         return await ctx.send(f"⏳ Anda harus menunggu {remaining//60} menit sebelum mencari teknik lagi!")
-    
+
     technique = generate_random_technique(p["realm"], p["stage"])
-    
+
     p["last_technique_find"] = str(now)
     update_player(ctx.author.id, p)
-    
+
     embed = discord.Embed(
         title="📜 Technique Discovery!",
         description=f"{ctx.author.mention} menemukan teknik cultivation kuno!",
         color=0x00ff00
     )
-    
+
     embed.add_field(
         name=f"{technique['emoji']} {technique['element_emoji']} {technique['name']}",
         value=f"**Sect:** {CULTIVATION_SECTS[technique['sect']]['emoji']} {CULTIVATION_SECTS[technique['sect']]['name']}\n"
@@ -744,7 +744,7 @@ async def find_technique(ctx):
               f"**Description:** {technique['description']}",
         inline=False
     )
-    
+
     embed.set_footer(text="Gunakan !learn_technique [id] untuk mempelajari teknik ini")
     await ctx.send(embed=embed)
 
@@ -755,41 +755,41 @@ async def find_technique(ctx):
 async def learn_technique(ctx, technique_id: str):
     """Mempelajari teknik cultivation yang ditemukan"""
     p = get_player(ctx.author.id)
-    
+
     # Simulate technique discovery
     technique = generate_random_technique(p["realm"], p["stage"])
     technique["id"] = technique_id
-    
+
     if p["spirit_stones"] < technique["cost"]:
         return await ctx.send(f"❌ Tidak cukup Spirit Stones! Butuh {technique['cost']}, kamu punya {p['spirit_stones']}")
-    
+
     if any(t['id'] == technique_id for t in p["techniques"]):
         return await ctx.send("❌ Anda sudah menguasai teknik ini!")
-    
+
     p["spirit_stones"] -= technique["cost"]
     p["techniques"].append(technique)
     p["techniques_learned"] += 1
     p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
-    
+
     update_player(ctx.author.id, p)
-    
+
     data = load_data()
     data["server_stats"]["total_techniques_learned"] += 1
     save_data(data)
-    
+
     embed = discord.Embed(
         title="🎓 Technique Learned!",
         description=f"{ctx.author.mention} berhasil mempelajari teknik baru!",
         color=0x00ff00
     )
-    
+
     embed.add_field(
         name=f"{technique['emoji']} {technique['name']}",
         value=f"**Power Bonus:** +{technique['power_bonus']*100}%\n"
               f"**Total Power:** {p['total_power']} (+{int(technique['power_bonus']*p['base_power'])})",
         inline=False
     )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -799,18 +799,18 @@ async def learn_technique(ctx, technique_id: str):
 async def my_techniques(ctx):
     """Lihat semua teknik yang sudah dipelajari"""
     p = get_player(ctx.author.id)
-    
+
     if not p["techniques"]:
         return await ctx.send("❌ Anda belum mempelajari teknik apapun! Gunakan `!find_technique` untuk mencari teknik.")
-    
+
     total_bonus = sum(t['power_bonus'] for t in p["techniques"])
-    
+
     embed = discord.Embed(
         title=f"📚 {ctx.author.name}'s Cultivation Techniques",
         description=f"Total Power Bonus: +{total_bonus*100}%",
         color=0x7289da
     )
-    
+
     for technique in p["techniques"]:
         embed.add_field(
             name=f"{technique['emoji']} {technique['element_emoji']} {technique['name']}",
@@ -820,7 +820,7 @@ async def my_techniques(ctx):
                   f"**Element:** {technique['element'].title()}",
             inline=True
         )
-    
+
     embed.add_field(
         name="Power Summary",
         value=f"**Base Power:** {p['base_power']}\n"
@@ -828,7 +828,7 @@ async def my_techniques(ctx):
               f"**Total Power:** {p['total_power']}",
         inline=False
     )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -840,70 +840,70 @@ async def status(ctx):
     realm_data = REALMS[p["realm"]]
     level = get_player_level(p)
     exp_cap = get_exp_cap(p)
-    
+
     equip_list = []
     for item_id, power in p["equipment"].items():
         item_data = EQUIPMENT_SHOP.get(item_id, {"name": item_id.replace("_", " ").title(), "emoji": "⚙️"})
         equip_list.append(f"{item_data['emoji']} {item_data['name']}(+{power})")
-    
+
     equip_text = "\n".join(equip_list) if equip_list else "None"
-    
+
     exp_percentage = min(100, (p["exp"] / exp_cap) * 100)
     progress_bar = "█" * int(exp_percentage / 10) + "░" * (10 - int(exp_percentage / 10))
-    
+
     embed = discord.Embed(
         title=f"📊 {ctx.author.name}'s Cultivation Status",
         color=realm_data["color"]
     )
-    
+
     embed.add_field(
         name="🌌 Realm & Stage",
         value=f"{p['realm']}\n**{p['stage']}** (Lv. {level})",
         inline=True
     )
-    
+
     embed.add_field(
         name="⭐ Power Stats",
         value=f"**Total:** {p['total_power']}\n**Base:** {p['base_power']}\n**Bonus:** +{sum(t['power_bonus'] for t in p['techniques'])*100}%",
         inline=True
     )
-    
+
     embed.add_field(
         name="💎 Resources",
         value=f"EXP: {p['exp']}/{exp_cap}\nQi: {p['qi']}\nSpirit Stones: {p['spirit_stones']}",
         inline=True
     )
-    
+
     embed.add_field(
         name="📈 EXP Progress",
         value=f"```[{progress_bar}] {exp_percentage:.1f}%```",
         inline=False
     )
-    
+
     embed.add_field(
         name="⚔️ PvP Record",
         value=f"🏆 {p['pvp_wins']}W / 💀 {p['pvp_losses']}L",
         inline=True
     )
-    
+
     embed.add_field(
         name="🏰 Dungeons",
         value=f"Completed: {p['dungeons_completed']}",
         inline=True
     )
-    
+
     embed.add_field(
         name="📚 Techniques",
         value=f"Learned: {p['techniques_learned']}",
         inline=True
     )
-    
+
     embed.add_field(
         name="🎒 Equipment",
         value=equip_text,
         inline=False
     )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -917,14 +917,14 @@ async def shop(ctx):
         description="Gunakan `!buy <item_name>` untuk membeli\nContoh: `!buy iron_sword`",
         color=0xffd700
     )
-    
+
     for item_id, item_data in EQUIPMENT_SHOP.items():
         embed.add_field(
             name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']} Qi",
             value=f"Power: +{item_data['power']} | Type: {item_data['type']}\nID: `{item_id}`",
             inline=False
         )
-    
+
     embed.set_footer(text="Gunakan !inventory untuk melihat equipment Anda")
     await ctx.send(embed=embed)
 
@@ -935,29 +935,29 @@ async def shop(ctx):
 async def buy(ctx, *, item_name: str):
     """Beli equipment dari shop"""
     item_name = item_name.lower().replace(" ", "_")
-    
+
     if item_name not in EQUIPMENT_SHOP:
         return await ctx.send("❌ Item tidak ditemukan! Gunakan `!shop` untuk melihat list item.")
-    
+
     item_data = EQUIPMENT_SHOP[item_name]
     p = get_player(ctx.author.id)
-    
+
     if p["qi"] < item_data["cost"]:
         return await ctx.send(f"❌ Qi tidak cukup! Butuh {item_data['cost']} Qi, Anda punya {p['qi']} Qi.")
-    
+
     current_equipment = p["equipment"]
     for eq_id, eq_power in current_equipment.items():
         if EQUIPMENT_SHOP.get(eq_id, {}).get("type") == item_data["type"]:
             p["base_power"] -= eq_power
             break
-    
+
     p["qi"] -= item_data["cost"]
     p["equipment"][item_name] = item_data["power"]
     p["base_power"] += item_data["power"]
     p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
-    
+
     update_player(ctx.author.id, p)
-    
+
     embed = discord.Embed(
         title="🛍️ Purchase Successful!",
         description=f"{ctx.author.mention} membeli {item_data['emoji']} {item_data['name']}",
@@ -966,7 +966,7 @@ async def buy(ctx, *, item_name: str):
     embed.add_field(name="Power", value=f"+{item_data['power']}", inline=True)
     embed.add_field(name="Cost", value=f"{item_data['cost']} Qi", inline=True)
     embed.add_field(name="Remaining Qi", value=f"{p['qi']} Qi", inline=True)
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -976,18 +976,18 @@ async def buy(ctx, *, item_name: str):
 async def inventory(ctx):
     """Lihat inventory equipment"""
     p = get_player(ctx.author.id)
-    
+
     if not p["equipment"]:
         return await ctx.send("🎒 Inventory kosong! Gunakan `!shop` untuk melihat item yang bisa dibeli.")
-    
+
     total_equip_power = sum(p["equipment"].values())
-    
+
     embed = discord.Embed(
         title=f"🎒 {ctx.author.name}'s Inventory",
         description=f"Total Equipment Power: +{total_equip_power}",
         color=0x7289da
     )
-    
+
     for item_id, power in p["equipment"].items():
         item_data = EQUIPMENT_SHOP.get(item_id, {"name": item_id.replace("_", " ").title(), "type": "unknown", "emoji": "⚙️"})
         embed.add_field(
@@ -995,10 +995,10 @@ async def inventory(ctx):
             value=f"Power: +{power} | Type: {item_data['type']}",
             inline=False
         )
-    
+
     embed.add_field(name="Total Qi", value=f"{p['qi']} Qi", inline=True)
     embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1008,22 +1008,22 @@ async def inventory(ctx):
 async def sell(ctx, *, item_name: str):
     """Jual equipment"""
     item_name = item_name.lower().replace(" ", "_")
-    
+
     p = get_player(ctx.author.id)
-    
+
     if item_name not in p["equipment"]:
         return await ctx.send("❌ Item tidak ditemukan di inventory!")
-    
+
     item_data = EQUIPMENT_SHOP.get(item_name, {"name": item_name.replace("_", " ").title(), "cost": 50})
     sell_price = max(10, item_data["cost"] // 2)
-    
+
     p["base_power"] -= p["equipment"][item_name]
     del p["equipment"][item_name]
     p["qi"] += sell_price
     p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
-    
+
     update_player(ctx.author.id, p)
-    
+
     await ctx.send(f"💰 {ctx.author.mention} menjual {item_data['name']} dan mendapatkan {sell_price} Qi!")
 
 # ===============================
@@ -1037,14 +1037,14 @@ async def dungeons(ctx):
         description="Gunakan `!enter <dungeon_name>` untuk memasuki dungeon\nContoh: `!enter forest`",
         color=0x8B4513
     )
-    
+
     for dungeon_id, dungeon_data in DUNGEONS.items():
         embed.add_field(
             name=f"{dungeon_data['emoji']} {dungeon_data['name']}",
             value=f"Level: {dungeon_data['min_level']}-{dungeon_data['max_level']}\nReward: {dungeon_data['min_reward']}-{dungeon_data['max_reward']} EXP\nSpirit Stones: {dungeon_data['spirit_stone_reward'][0]}-{dungeon_data['spirit_stone_reward'][1]}\nID: `{dungeon_id}`",
             inline=False
         )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1055,29 +1055,29 @@ async def dungeons(ctx):
 async def enter(ctx, *, dungeon_name: str):
     """Masuk ke dungeon"""
     dungeon_name = dungeon_name.lower()
-    
+
     if dungeon_name not in DUNGEONS:
         return await ctx.send("❌ Dungeon tidak ditemukan! Gunakan `!dungeons` untuk melihat list dungeon.")
-    
+
     dungeon_data = DUNGEONS[dungeon_name]
     p = get_player(ctx.author.id)
     player_level = get_player_level(p)
     exp_cap = get_exp_cap(p)
-    
+
     if player_level < dungeon_data["min_level"]:
         return await ctx.send(f"❌ Level Anda ({player_level}) terlalu rendah untuk dungeon ini! (Min: {dungeon_data['min_level']})")
-    
+
     if player_level > dungeon_data["max_level"]:
         return await ctx.send(f"❌ Level Anda ({player_level}) terlalu tinggi untuk dungeon ini! (Max: {dungeon_data['max_level']})")
-    
+
     now = time.time()
     last_dungeon = float(p.get("last_dungeon", "0"))
     if last_dungeon + 300 > now:
         remaining = int(last_dungeon + 300 - now)
         return await ctx.send(f"⏳ Anda harus menunggu {remaining} detik sebelum masuk dungeon lagi!")
-    
+
     p["last_dungeon"] = str(now)
-    
+
     level_diff = min(dungeon_data["max_level"] - player_level, 10)
     exp_reward = random.randint(
         dungeon_data["min_reward"], 
@@ -1085,15 +1085,15 @@ async def enter(ctx, *, dungeon_name: str):
     )
     qi_reward = random.randint(5, 15)
     spirit_stones_reward = random.randint(dungeon_data["spirit_stone_reward"][0], dungeon_data["spirit_stone_reward"][1])
-    
+
     if p["exp"] + exp_reward > exp_cap:
         exp_reward = max(0, exp_cap - p["exp"])
         if exp_reward == 0:
             return await ctx.send(f"❌ EXP sudah mencapai batas maksimum untuk realm ini! ({exp_cap} EXP)")
-    
+
     success_chance = min(90, 50 + (p["total_power"] // 5))
     success = random.randint(1, 100) <= success_chance
-    
+
     if success:
         p["exp"] += exp_reward
         p["qi"] += qi_reward
@@ -1101,11 +1101,11 @@ async def enter(ctx, *, dungeon_name: str):
         p["base_power"] += random.randint(1, 3)
         p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
         p["dungeons_completed"] += 1
-        
+
         data = load_data()
         data["server_stats"]["total_dungeons"] += 1
         save_data(data)
-        
+
         embed = discord.Embed(
             title=f"🎉 {dungeon_data['emoji']} Dungeon Cleared!",
             description=f"{ctx.author.mention} berhasil menyelesaikan {dungeon_data['name']}!",
@@ -1116,7 +1116,7 @@ async def enter(ctx, *, dungeon_name: str):
         embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_reward}", inline=True)
         embed.add_field(name="Success Chance", value=f"{success_chance}%", inline=True)
         embed.add_field(name="Total EXP", value=f"{p['exp']}/{exp_cap}", inline=False)
-        
+
     else:
         embed = discord.Embed(
             title=f"💀 {dungeon_data['emoji']} Dungeon Failed!",
@@ -1125,7 +1125,7 @@ async def enter(ctx, *, dungeon_name: str):
         )
         embed.add_field(name="Success Chance", value=f"{success_chance}%", inline=True)
         embed.add_field(name="Tip", value="Tingkatkan power Anda untuk meningkatkan success chance!", inline=False)
-    
+
     update_player(ctx.author.id, p)
     await ctx.send(embed=embed)
 
@@ -1144,7 +1144,7 @@ async def pvp(ctx, enemy: discord.Member):
     last_pvp = float(attacker["last_pvp"])
     if last_pvp + 300 > now:
         return await ctx.send("⏳ You must wait 5 minutes before PvP again!")
-    
+
     attacker["last_pvp"] = str(now)
 
     atk_power = attacker["total_power"] + random.randint(0, 20)
@@ -1165,11 +1165,11 @@ async def pvp(ctx, enemy: discord.Member):
 
     update_player(ctx.author.id, attacker)
     update_player(enemy.id, defender)
-    
+
     data = load_data()
     data["server_stats"]["total_pvp_battles"] += 1
     save_data(data)
-    
+
     await ctx.send(result)
 
 @pvp.error
@@ -1186,7 +1186,7 @@ async def pvp_error(ctx, error):
 async def pvp_rank(ctx):
     data = load_data()
     players = data["players"]
-    
+
     ranking = sorted(
         players.items(),
         key=lambda x: x[1]["pvp_wins"],
@@ -1197,14 +1197,14 @@ async def pvp_rank(ctx):
         title="🏆 PvP Leaderboard",
         color=0xffd700
     )
-    
+
     for i, (uid, pdata) in enumerate(ranking, 1):
         try:
             user = await bot.fetch_user(int(uid))
             name = user.name
         except:
             name = "Unknown User"
-            
+
         embed.add_field(
             name=f"{i}. {name}",
             value=f"W: {pdata['pvp_wins']} | L: {pdata['pvp_losses']} | Power: {pdata['total_power']}",
@@ -1233,7 +1233,7 @@ async def stats(ctx):
     """Show server statistics"""
     data = load_data()
     stats = data["server_stats"]
-    
+
     embed = discord.Embed(
         title="📈 Server Statistics",
         color=0x7289da
@@ -1244,7 +1244,7 @@ async def stats(ctx):
     embed.add_field(name="Total Dungeons", value=stats["total_dungeons"], inline=True)
     embed.add_field(name="Total Techniques Learned", value=stats["total_techniques_learned"], inline=True)
     embed.add_field(name="Last Update", value=stats["last_update"][:19], inline=False)
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
