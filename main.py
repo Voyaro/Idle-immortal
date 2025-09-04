@@ -822,20 +822,20 @@ async def realms(ctx):
     )
 
     for realm_name, realm_data in REALMS.items():
-        stages_info = ""
-        for i, stage in enumerate(realm_data["stages"]):
-            exp_needed = int((i + 1) * 100 * realm_data["exp_multiplier"])
-            power_level = int(10 * (i + 1) * realm_data["power_multiplier"])
-
-            stages_info += f"**{i+1}. {stage}**\n"
-            stages_info += f"→ EXP: {exp_needed} | Power: ~{power_level}\n"
+        # Create a compact stage list
+        stages_list = " → ".join(realm_data["stages"])
+        
+        # Due to Discord character limits, we'll show first few stages and indicate total
+        if len(stages_list) > 800:  # Keep within Discord embed field limits
+            first_5_stages = " → ".join(realm_data["stages"][:5])
+            stages_display = f"{first_5_stages} → ... ({len(realm_data['stages'])} total stages)"
+        else:
+            stages_display = stages_list
 
         embed.add_field(
-            name=f"{realm_name} 🌟",
-            value=f"**EXP Cap:** {realm_data['exp_cap']:,}\n"
-                  f"**Power Multiplier:** {realm_data['power_multiplier']}×\n"
-                  f"**Spirit Stones:** {realm_data['spirit_stone_gain']}/cultivate\n"
-                  f"**Stages:** {len(realm_data['stages'])}",
+            name=f"{realm_name} 🌟 ({len(realm_data['stages'])} Stages)",
+            value=f"**EXP Cap:** {realm_data['exp_cap']:,} | **Power:** {realm_data['power_multiplier']}× | **Stones:** {realm_data['spirit_stone_gain']}/cultivate\n\n"
+                  f"**Progression Path:**\n{stages_display}",
             inline=False
         )
 
