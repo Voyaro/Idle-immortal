@@ -1529,6 +1529,249 @@ async def cultivation_task(user_id):
             del ACTIVE_CULTIVATIONS[user_id]
 
 # ===============================
+# Command: help (IMPROVED)
+# ===============================
+@bot.command(name='help')
+async def help_command(ctx, category: str = None):
+    """Comprehensive help system with categories"""
+    
+    # Remove default help command
+    bot.remove_command('help')
+    
+    if category is None:
+        # Main help menu
+        embed = discord.Embed(
+            title="🏮 Idle Immortal Bot - Command Guide",
+            description="A comprehensive cultivation RPG bot with idle mechanics, real-time battles, and progression systems!",
+            color=0x7289da
+        )
+        
+        embed.add_field(
+            name="📚 Command Categories",
+            value="Use `!help <category>` for detailed commands:\n\n"
+                  "🧘 **cultivation** - Core cultivation commands\n"
+                  "⚔️ **combat** - PvP battles and dungeons\n"
+                  "🛒 **economy** - Shop, equipment, and trading\n"
+                  "📊 **info** - Stats, progress, and information\n"
+                  "🎮 **system** - Bot utilities and admin\n"
+                  "🌟 **advanced** - Techniques and idle features",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🚀 Quick Start",
+            value="`!status` - Check your cultivation status\n"
+                  "`!cultivate` - Begin cultivation session\n"
+                  "`!start_cultivate` - Start idle cultivation",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="💡 Pro Tips",
+            value="• Use idle cultivation for passive EXP gain\n"
+                  "• Complete dungeons for bonus rewards\n"
+                  "• Learn techniques to boost your power\n"
+                  "• Challenge other players in PvP battles",
+            inline=False
+        )
+        
+        embed.set_footer(text="Example: !help cultivation | Created by Replit Community")
+        
+    elif category.lower() == "cultivation":
+        embed = discord.Embed(
+            title="🧘 Cultivation Commands",
+            description="Core commands for advancing your cultivation journey",
+            color=0x00ff00
+        )
+        
+        embed.add_field(
+            name="`!cultivate`",
+            value="Meditate to gain EXP, Qi, and power\n*Cooldown: 1 minute*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!breakthrough`",
+            value="Advance to the next cultivation stage\n*Requires sufficient EXP*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!start_cultivate`",
+            value="Begin idle cultivation for passive gains\n*Continues while offline*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!stop_cultivate`",
+            value="Stop idle cultivation and collect rewards",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!cultivate_status`",
+            value="Check your idle cultivation progress",
+            inline=False
+        )
+    
+    elif category.lower() == "combat":
+        embed = discord.Embed(
+            title="⚔️ Combat Commands",
+            description="Battle other players and explore dangerous dungeons",
+            color=0xff0000
+        )
+        
+        embed.add_field(
+            name="`!pvp @user`",
+            value="Challenge another player to real-time battle\n*Cooldown: 5 minutes*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!dungeons`",
+            value="View available dungeons and their rewards",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!enter <dungeon_name>`",
+            value="Enter a dungeon for EXP and loot\n*Example: !enter forest*\n*Cooldown: 5 minutes*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!pvp_rank`",
+            value="View the PvP leaderboard",
+            inline=False
+        )
+        
+    elif category.lower() == "economy":
+        embed = discord.Embed(
+            title="🛒 Economy Commands",
+            description="Manage your resources, equipment, and spirit stones",
+            color=0xffd700
+        )
+        
+        embed.add_field(
+            name="`!shop`",
+            value="Browse available equipment and items",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!buy <item_name>`",
+            value="Purchase equipment with Qi\n*Example: !buy iron_sword*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!inventory`",
+            value="View your current equipment",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!sell <item_name>`",
+            value="Sell equipment for Qi",
+            inline=False
+        )
+    
+    elif category.lower() == "info":
+        embed = discord.Embed(
+            title="📊 Information Commands",
+            description="Check your progress, stats, and game information",
+            color=0x7289da
+        )
+        
+        embed.add_field(
+            name="`!status`",
+            value="Comprehensive overview of your cultivation",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!realms`",
+            value="View all cultivation realms and stages",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!myrealm`",
+            value="Detailed info about your current realm",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!progress`",
+            value="Global cultivation progress overview",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!stats`",
+            value="Server-wide statistics and achievements",
+            inline=False
+        )
+    
+    elif category.lower() == "advanced":
+        embed = discord.Embed(
+            title="🌟 Advanced Commands",
+            description="Techniques, sects, and advanced cultivation features",
+            color=0x9932cc
+        )
+        
+        embed.add_field(
+            name="`!find_technique`",
+            value="Discover new cultivation techniques\n*Cooldown: 1 hour*",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!learn_technique <id>`",
+            value="Learn a discovered technique with Spirit Stones",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!my_techniques`",
+            value="View all learned techniques and bonuses",
+            inline=False
+        )
+    
+    elif category.lower() == "system":
+        embed = discord.Embed(
+            title="🎮 System Commands",
+            description="Bot utilities and administrative commands",
+            color=0x36393f
+        )
+        
+        embed.add_field(
+            name="`!ping`",
+            value="Test bot responsiveness",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="`!backup`",
+            value="Create manual data backup\n*Admin only*",
+            inline=False
+        )
+    
+    else:
+        embed = discord.Embed(
+            title="❌ Invalid Category",
+            description=f"Category '{category}' not found.",
+            color=0xff0000
+        )
+        embed.add_field(
+            name="Available Categories",
+            value="cultivation, combat, economy, info, advanced, system",
+            inline=False
+        )
+    
+    await ctx.send(embed=embed)
+
+# ===============================
 # Command: stats (server statistics)
 # ===============================
 @bot.command()
