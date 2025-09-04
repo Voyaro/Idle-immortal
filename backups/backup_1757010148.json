@@ -3,15 +3,15 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Body Refining [Entry]",
-            "exp": 0,
-            "qi": 0,
-            "spirit_stones": 50,
+            "exp": 8,
+            "qi": 5,
+            "spirit_stones": 51,
             "equipment": {},
             "techniques": [],
             "current_technique": null,
             "sect": null,
-            "base_power": 10,
-            "total_power": 10,
+            "base_power": 12,
+            "total_power": 12,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -20,7 +20,7 @@
             "dungeons_completed": 0,
             "techniques_learned": 0,
             "created_at": "2025-09-04T17:48:27.977172",
-            "last_updated": "2025-09-04T17:48:27.977179"
+            "last_updated": "2025-09-04T17:48:27.979344"
         }
     },
     "last_backup": 0,
@@ -30,6 +30,6 @@
         "total_breakthroughs": 0,
         "total_dungeons": 0,
         "total_techniques_learned": 0,
-        "last_update": "2025-09-04T17:48:27.978981"
+        "last_update": "2025-09-04T17:48:31.198111"
     }
 }
