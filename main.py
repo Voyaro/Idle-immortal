@@ -167,8 +167,14 @@ REALMS = {
     "Immortal Realm": {
         "stages": [
             "Half-Immortal [Entry]", "Half-Immortal [Middle]", "Half-Immortal [Peak]",
+            "True Immortal [Entry]", "True Immortal [Middle]", "True Immortal [Peak]",
             "Profound Immortal [Entry]", "Profound Immortal [Middle]", "Profound Immortal [Peak]",
             "Golden Immortal [Entry]", "Golden Immortal [Middle]", "Golden Immortal [Peak]",
+            "Mystic Immortal [Entry]", "Mystic Immortal [Middle]", "Mystic Immortal [Peak]",
+            "Supreme Immortal [Entry]", "Supreme Immortal [Middle]", "Supreme Immortal [Peak]",
+            "Immortal Lord [Entry]", "Immortal Lord [Middle]", "Immortal Lord [Peak]",
+            "Immortal Saint [Entry]", "Immortal Saint [Middle]", "Immortal Saint [Peak]",
+            "Immortal Ancestor [Entry]", "Immortal Ancestor [Middle]", "Immortal Ancestor [Peak]",
             "Immortal Venerable [Entry]", "Immortal Venerable [Middle]", "Immortal Venerable [Peak]",
             "Immortal King [Entry]", "Immortal King [Middle]", "Immortal King [Peak]",
             "Immortal Emperor [Entry]", "Immortal Emperor [Middle]", "Immortal Emperor [Peak]"
@@ -181,9 +187,21 @@ REALMS = {
     },
     "God Realm": {
         "stages": [
+            "Lesser God [Entry]", "Lesser God [Middle]", "Lesser God [Peak]",
             "True God [Entry]", "True God [Middle]", "True God [Peak]",
-            "God Sovereign [Entry]", "God Sovereign [Middle]", "God Sovereign [Peak]", 
-            "God King [Entry]", "God King [Middle]", "God King [Peak]"
+            "Elder God [Entry]", "Elder God [Middle]", "Elder God [Peak]",
+            "High God [Entry]", "High God [Middle]", "High God [Peak]",
+            "Ancient God [Entry]", "Ancient God [Middle]", "Ancient God [Peak]",
+            "Primordial God [Entry]", "Primordial God [Middle]", "Primordial God [Peak]",
+            "Supreme God [Entry]", "Supreme God [Middle]", "Supreme God [Peak]",
+            "Divine Lord [Entry]", "Divine Lord [Middle]", "Divine Lord [Peak]",
+            "Divine Saint [Entry]", "Divine Saint [Middle]", "Divine Saint [Peak]",
+            "Divine Ancestor [Entry]", "Divine Ancestor [Middle]", "Divine Ancestor [Peak]",
+            "God Sovereign [Entry]", "God Sovereign [Middle]", "God Sovereign [Peak]",
+            "God Emperor [Entry]", "God Emperor [Middle]", "God Emperor [Peak]", 
+            "God King [Entry]", "God King [Middle]", "God King [Peak]",
+            "Celestial Overlord [Entry]", "Celestial Overlord [Middle]", "Celestial Overlord [Peak]",
+            "Universe Creator [Entry]", "Universe Creator [Middle]", "Universe Creator [Peak]"
         ],
         "exp_cap": 500000,
         "exp_multiplier": 10.0,
@@ -942,7 +960,7 @@ async def progress(ctx):
             inline=True
         )
 
-    embed.set_footer(text="Total stages: Mortal(30) + Immortal(18) + God(9) = 57 stages")
+    embed.set_footer(text="Total stages: Mortal(30) + Immortal(36) + God(45) = 111 stages")
     await ctx.send(embed=embed)
 
 # ===============================
