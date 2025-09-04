@@ -12,12 +12,6 @@ from keep_alive import keep_alive
 # ===============================
 # TOKEN (ambil dari Secrets Replit)
 # ===============================
-# ===============================
-# Active Systems
-# ===============================
-ACTIVE_CULTIVATIONS = {}
-ACTIVE_BATTLES = {}
-
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError("Token bot tidak ditemukan! Pastikan sudah di-set di Environment Variables")
@@ -31,6 +25,12 @@ BACKUP_DIR = "backups"
 # Buat directory backup jika belum ada
 if not os.path.exists(BACKUP_DIR):
     os.makedirs(BACKUP_DIR)
+
+# ===============================
+# Global Variables untuk Active Systems
+# ===============================
+ACTIVE_CULTIVATIONS = {}
+ACTIVE_BATTLES = {}
 
 def create_default_data():
     """Buat data default jika file tidak ada"""
@@ -430,13 +430,13 @@ def get_all_players():
 async def start_battle(attacker_id, defender_id, ctx):
     """Mulai real-time battle"""
     battle_id = f"{attacker_id}_{defender_id}"
-    
+
     if battle_id in ACTIVE_BATTLES:
         return await ctx.send("⏳ Battle sedang berlangsung!")
-    
+
     attacker = get_player(attacker_id)
     defender = get_player(defender_id)
-    
+
     # Setup battle data
     ACTIVE_BATTLES[battle_id] = {
         "attacker": attacker_id,
@@ -450,7 +450,7 @@ async def start_battle(attacker_id, defender_id, ctx):
         "active": True,
         "channel_id": ctx.channel.id
     }
-    
+
     # Kirim battle message
     embed = discord.Embed(
         title="⚔️ Battle Started!",
@@ -461,10 +461,10 @@ async def start_battle(attacker_id, defender_id, ctx):
     embed.add_field(name="Defender Power", value=defender["total_power"], inline=True)
     embed.add_field(name="HP", value="❤️ 100% | ❤️ 100%", inline=False)
     embed.set_footer(text="Battle dimulai dalam 3...")
-    
+
     message = await ctx.send(embed=embed)
     ACTIVE_BATTLES[battle_id]["message"] = message
-    
+
     # Start battle task
     asyncio.create_task(battle_task(battle_id, ctx))
 
@@ -472,7 +472,7 @@ async def battle_task(battle_id, ctx):
     """Background task untuk battle"""
     try:
         battle_data = ACTIVE_BATTLES[battle_id]
-        
+
         # Countdown
         for i in range(3, 0, -1):
             if not battle_data["active"]:
@@ -481,18 +481,18 @@ async def battle_task(battle_id, ctx):
             embed.set_footer(text=f"Battle dimulai dalam {i}...")
             await battle_data["message"].edit(embed=embed)
             await asyncio.sleep(1)
-        
+
         # Battle rounds
         while (battle_data["attacker_hp"] > 0 and battle_data["defender_hp"] > 0 and 
                battle_data["active"] and battle_data["round"] < 10):
-            
+
             battle_data["round"] += 1
             await battle_round(battle_id, ctx)
             await asyncio.sleep(2)
-        
+
         # Battle finished
         await finish_battle(battle_id, ctx)
-        
+
     except Exception as e:
         print(f"Error in battle task: {e}")
     finally:
@@ -502,38 +502,38 @@ async def battle_task(battle_id, ctx):
 async def battle_round(battle_id, ctx):
     """Satu round battle"""
     battle_data = ACTIVE_BATTLES[battle_id]
-    
+
     # Calculate damage
     att_dmg = max(5, random.randint(10, 20) * battle_data["attacker_power"] // 100)
     def_dmg = max(5, random.randint(10, 20) * battle_data["defender_power"] // 100)
-    
+
     # Apply damage
     battle_data["defender_hp"] = max(0, battle_data["defender_hp"] - att_dmg)
     battle_data["attacker_hp"] = max(0, battle_data["attacker_hp"] - def_dmg)
-    
+
     # Update message
     embed = discord.Embed(
         title=f"⚔️ Round {battle_data['round']}",
         description=f"<@{battle_data['attacker']}> vs <@{battle_data['defender']}>",
         color=0xff0000
     )
-    
+
     embed.add_field(
         name="Action", 
         value=f"<@{battle_data['attacker']}> deals **{att_dmg} damage**!\n<@{battle_data['defender']}> deals **{def_dmg} damage**!",
         inline=False
     )
-    
+
     # HP bars
     att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "♡" * (10 - battle_data["attacker_hp"] // 10)
     def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "♡" * (10 - battle_data["defender_hp"] // 10)
-    
+
     embed.add_field(
         name="HP Status",
         value=f"**Attacker:** {att_hp_bar} {battle_data['attacker_hp']}%\n**Defender:** {def_hp_bar} {battle_data['defender_hp']}%",
         inline=False
     )
-    
+
     try:
         await battle_data["message"].edit(embed=embed)
     except:
@@ -544,7 +544,7 @@ async def finish_battle(battle_id, ctx):
     battle_data = ACTIVE_BATTLES[battle_id]
     attacker = get_player(battle_data["attacker"])
     defender = get_player(battle_data["defender"])
-    
+
     # Determine winner
     if battle_data["attacker_hp"] <= 0 or battle_data["defender_hp"] > battle_data["attacker_hp"]:
         winner_id = battle_data["defender"]
@@ -554,52 +554,194 @@ async def finish_battle(battle_id, ctx):
         winner_id = battle_data["attacker"]
         loser_id = battle_data["defender"]
         result = f"<@{winner_id}> wins!"
-    
+
     # Update player stats
     winner = get_player(winner_id)
     loser = get_player(loser_id)
-    
+
     winner["pvp_wins"] += 1
     loser["pvp_losses"] += 1
-    
+
     exp_reward = 50
     spirit_stone_reward = 10
-    
+
     winner["exp"] = min(winner["exp"] + exp_reward, get_exp_cap(winner))
     winner["spirit_stones"] += spirit_stone_reward
     loser["exp"] = max(0, loser["exp"] - 20)
-    
+
     update_player(winner_id, winner)
     update_player(loser_id, loser)
-    
+
     # Update server stats
     data = load_data()
     data["server_stats"]["total_pvp_battles"] += 1
     save_data(data)
-    
+
     # Final message
     embed = discord.Embed(
         title="🎉 Battle Finished!",
         description=result,
         color=0x00ff00
     )
-    
+
     embed.add_field(
         name="Rewards",
         value=f"<@{winner_id}>: +{exp_reward} EXP, +{spirit_stone_reward} Spirit Stones\n<@{loser_id}>: -20 EXP",
         inline=False
     )
-    
+
     embed.add_field(
         name="Record",
         value=f"<@{winner_id}>: {winner['pvp_wins']}W/{winner['pvp_losses']}L\n<@{loser_id}>: {loser['pvp_wins']}W/{loser['pvp_losses']}L",
         inline=True
     )
-    
+
     try:
         await battle_data["message"].edit(embed=embed)
     except:
         pass
+
+# ===============================
+# Idle Cultivation System Functions
+# ===============================
+async def update_cultivation_message(user_id, player_data, realm_data):
+    """Update cultivation status message"""
+    if user_id not in ACTIVE_CULTIVATIONS:
+        return
+
+    cultivation_data = ACTIVE_CULTIVATIONS[user_id]
+    exp_cap = realm_data["exp_cap"]
+
+    # Calculate progress
+    progress_percentage = min(100, (player_data["exp"] / exp_cap) * 100)
+    progress_bar = "█" * int(progress_percentage / 10) + "░" * (10 - int(progress_percentage / 10))
+
+    # Calculate time elapsed
+    time_elapsed = int(time.time() - cultivation_data["start_time"])
+    hours, remainder = divmod(time_elapsed, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    embed = discord.Embed(
+        title="🧘 Idle Cultivation Progress",
+        description=f"<@{user_id}> sedang meditation...",
+        color=0x00ff00
+    )
+
+    embed.add_field(name="Status", value="🟢 **ACTIVE** - Cultivating otomatis", inline=True)
+    embed.add_field(name="Time Elapsed", value=f"{hours}h {minutes}m {seconds}s", inline=True)
+    embed.add_field(name="Total Gained", value=f"{cultivation_data['total_gained']} EXP", inline=True)
+
+    embed.add_field(name="Current EXP", value=f"{player_data['exp']}/{exp_cap}", inline=True)
+    embed.add_field(name="Current Qi", value=f"{player_data['qi']}", inline=True)
+    embed.add_field(name="Spirit Stones", value=f"{player_data['spirit_stones']}", inline=True)
+
+    embed.add_field(
+        name="Progress", 
+        value=f"```[{progress_bar}] {progress_percentage:.1f}%```", 
+        inline=False
+    )
+
+    embed.set_footer(text="Bot akan otomatis berhenti saat EXP cap tercapai")
+
+    try:
+        await cultivation_data["message"].edit(embed=embed)
+    except:
+        pass
+
+async def stop_cultivation(user_id, reason="manual"):
+    """Hentikan cultivation dan update message"""
+    if user_id not in ACTIVE_CULTIVATIONS:
+        return
+
+    cultivation_data = ACTIVE_CULTIVATIONS[user_id]
+    cultivation_data["active"] = False
+
+    p = get_player(user_id)
+    realm_data = REALMS[p["realm"]]
+
+    # Final message
+    time_elapsed = int(time.time() - cultivation_data["start_time"])
+    hours, remainder = divmod(time_elapsed, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    embed = discord.Embed(
+        title="🧘 Idle Cultivation Finished",
+        color=0xffd700 if reason == "completed" else 0xff0000
+    )
+
+    if reason == "completed":
+        embed.description = f"<@{user_id}> telah mencapai EXP cap!"
+    else:
+        embed.description = f"<@{user_id}> menghentikan cultivation."
+
+    embed.add_field(name="Duration", value=f"{hours}h {minutes}m {seconds}s", inline=True)
+    embed.add_field(name="Total EXP Gained", value=f"{cultivation_data['total_gained']}", inline=True)
+    embed.add_field(name="Final EXP", value=f"{p['exp']}/{realm_data['exp_cap']}", inline=True)
+
+    embed.add_field(name="Qi Gained", value=f"+{p['qi']}", inline=True)
+    embed.add_field(name="Spirit Stones Gained", value=f"+{p['spirit_stones']}", inline=True)
+    embed.add_field(name="Power Increased", value=f"+{p['base_power'] - 10}", inline=True)
+
+    try:
+        await cultivation_data["message"].edit(embed=embed)
+    except:
+        pass
+
+    # Remove from active cultivations
+    if user_id in ACTIVE_CULTIVATIONS:
+        del ACTIVE_CULTIVATIONS[user_id]
+
+async def idle_cultivation_task(user_id, player_data, realm_data):
+    """Background task untuk idle cultivation"""
+    try:
+        while user_id in ACTIVE_CULTIVATIONS and ACTIVE_CULTIVATIONS[user_id]["active"]:
+            p = get_player(user_id)
+            exp_cap = realm_data["exp_cap"]
+
+            # Cek jika sudah cap
+            if p["exp"] >= exp_cap:
+                break
+
+            # Calculate gains
+            base_gain = random.randint(5, 15)
+            gain = int(base_gain * realm_data["exp_multiplier"])
+            qi_gain = random.randint(1, 5)
+            power_gain = random.randint(1, 3)
+            spirit_stones_gain = random.randint(1, realm_data["spirit_stone_gain"])
+
+            # Adjust gain jika melebihi cap
+            if p["exp"] + gain > exp_cap:
+                gain = exp_cap - p["exp"]
+
+            # Update player
+            p["exp"] += gain
+            p["qi"] += qi_gain
+            p["base_power"] += power_gain
+            p["spirit_stones"] += spirit_stones_gain
+
+            # Update power dengan teknik bonuses
+            technique_bonus = 1 + sum(t['power_bonus'] for t in p["techniques"])
+            p["total_power"] = int(p["base_power"] * technique_bonus)
+
+            update_player(user_id, p)
+
+            # Update cultivation data
+            ACTIVE_CULTIVATIONS[user_id]["total_gained"] += gain
+
+            # Update message setiap 30 detik
+            if time.time() - ACTIVE_CULTIVATIONS[user_id].get("last_update", 0) >= 30:
+                await update_cultivation_message(user_id, p, realm_data)
+                ACTIVE_CULTIVATIONS[user_id]["last_update"] = time.time()
+
+            # Wait 1 menit antara cultivation
+            await asyncio.sleep(60)
+
+    except Exception as e:
+        print(f"Error in cultivation task: {e}")
+    finally:
+        # Cleanup
+        if user_id in ACTIVE_CULTIVATIONS:
+            await stop_cultivation(user_id, "completed")
 
 # ===============================
 # Bot setup
@@ -809,6 +951,7 @@ async def progress(ctx):
 @bot.command()
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def cultivate(ctx):
+    """Cultivate manual sekali"""
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
     exp_cap = realm_data["exp_cap"]
@@ -847,6 +990,73 @@ async def cultivate(ctx):
     embed.add_field(name="Total Power", value=p["total_power"], inline=True)
 
     await ctx.send(embed=embed)
+
+# ===============================
+# Command: start_cultivate (IDLE SYSTEM)
+# ===============================
+@bot.command()
+async def start_cultivate(ctx):
+    """Mulai cultivation idle secara otomatis"""
+    p = get_player(ctx.author.id)
+    realm_data = REALMS[p["realm"]]
+    exp_cap = realm_data["exp_cap"]
+
+    # Cek jika sudah mencapai cap
+    if p["exp"] >= exp_cap:
+        return await ctx.send(f"❌ EXP sudah mencapai batas maksimum! ({exp_cap} EXP)")
+
+    # Cek jika sudah cultivating
+    if ctx.author.id in ACTIVE_CULTIVATIONS:
+        return await ctx.send("⏳ Anda sudah sedang cultivating! Gunakan `!stop_cultivate` untuk berhenti.")
+
+    embed = discord.Embed(
+        title="🧘 Starting Idle Cultivation",
+        description=f"{ctx.author.mention} mulai meditation...",
+        color=0x00ff00
+    )
+    embed.add_field(name="Status", value="🟢 **ACTIVE** - Cultivating otomatis", inline=True)
+    embed.add_field(name="EXP Cap", value=f"{exp_cap}", inline=True)
+    embed.add_field(name="Current EXP", value=f"{p['exp']}", inline=True)
+    embed.set_footer(text="Bot akan otomatis berhenti saat EXP cap tercapai")
+
+    message = await ctx.send(embed=embed)
+
+    # Start idle cultivation
+    ACTIVE_CULTIVATIONS[ctx.author.id] = {
+        "message": message,
+        "start_time": time.time(),
+        "total_gained": 0,
+        "active": True,
+        "last_update": 0
+    }
+
+    # Start background task
+    asyncio.create_task(idle_cultivation_task(ctx.author.id, p, realm_data))
+
+# ===============================
+# Command: stop_cultivate
+# ===============================
+@bot.command()
+async def stop_cultivate(ctx):
+    """Hentikan cultivation idle"""
+    if ctx.author.id not in ACTIVE_CULTIVATIONS:
+        return await ctx.send("❌ Anda tidak sedang cultivating!")
+
+    await stop_cultivation(ctx.author.id, "manual")
+    await ctx.send("✅ Idle cultivation dihentikan!")
+
+# ===============================
+# Command: cultivate_status
+# ===============================
+@bot.command()
+async def cultivate_status(ctx):
+    """Cek status cultivation idle"""
+    if ctx.author.id not in ACTIVE_CULTIVATIONS:
+        return await ctx.send("❌ Anda tidak sedang cultivating!")
+
+    p = get_player(ctx.author.id)
+    realm_data = REALMS[p["realm"]]
+    await update_cultivation_message(ctx.author.id, p, realm_data)
 
 # ===============================
 # Command: breakthrough
@@ -1328,10 +1538,10 @@ async def pvp(ctx, enemy: discord.Member):
     last_pvp = float(attacker["last_pvp"])
     if last_pvp + 300 > now:
         return await ctx.send("⏳ You must wait 5 minutes before PvP again!")
-    
+
     attacker["last_pvp"] = str(now)
     update_player(ctx.author.id, attacker)
-    
+
     # Start real-time battle
     await start_battle(ctx.author.id, enemy.id, ctx)
 
@@ -1389,389 +1599,6 @@ async def backup(ctx):
         await ctx.send("❌ Failed to create backup!")
 
 # ===============================
-# Idle Cultivation System
-# ===============================
-@bot.command()
-async def start_cultivate(ctx):
-    """Mulai cultivation idle secara otomatis"""
-    p = get_player(ctx.author.id)
-    realm_data = REALMS[p["realm"]]
-    exp_cap = realm_data["exp_cap"]
-    
-    if ctx.author.id in ACTIVE_CULTIVATIONS:
-        return await ctx.send("🧘 Anda sudah sedang cultivation! Gunakan `!stop_cultivate` untuk berhenti.")
-    
-    if p["exp"] >= exp_cap:
-        return await ctx.send(f"❌ EXP sudah mencapai batas maksimum untuk realm ini! ({exp_cap} EXP)")
-    
-    # Start idle cultivation
-    ACTIVE_CULTIVATIONS[ctx.author.id] = {
-        "start_time": time.time(),
-        "channel_id": ctx.channel.id,
-        "active": True
-    }
-    
-    embed = discord.Embed(
-        title="🧘 Idle Cultivation Started!",
-        description=f"{ctx.author.mention} mulai cultivation otomatis",
-        color=0x00ff00
-    )
-    embed.add_field(name="Realm", value=p["realm"], inline=True)
-    embed.add_field(name="Stage", value=p["stage"], inline=True)
-    embed.add_field(name="Current EXP", value=f"{p['exp']}/{exp_cap}", inline=True)
-    embed.set_footer(text="Gunakan !stop_cultivate untuk berhenti atau !cultivate_status untuk melihat progress")
-    
-    await ctx.send(embed=embed)
-    
-    # Start cultivation task
-    asyncio.create_task(cultivation_task(ctx.author.id))
-
-@bot.command()
-async def stop_cultivate(ctx):
-    """Berhenti cultivation idle"""
-    if ctx.author.id not in ACTIVE_CULTIVATIONS:
-        return await ctx.send("❌ Anda tidak sedang cultivation!")
-    
-    cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
-    cultivation_data["active"] = False
-    
-    # Calculate total gains
-    duration = time.time() - cultivation_data["start_time"]
-    hours = duration / 3600
-    
-    p = get_player(ctx.author.id)
-    realm_data = REALMS[p["realm"]]
-    
-    exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
-    qi_gain = int(hours * 405)
-    spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
-    
-    p["exp"] = min(p["exp"] + exp_gain, get_exp_cap(p))
-    p["qi"] += qi_gain
-    p["spirit_stones"] += spirit_stones_gain
-    
-    update_player(ctx.author.id, p)
-    del ACTIVE_CULTIVATIONS[ctx.author.id]
-    
-    embed = discord.Embed(
-        title="🛑 Idle Cultivation Stopped",
-        description=f"{ctx.author.mention} berhenti cultivation",
-        color=0xff9900
-    )
-    embed.add_field(name="Duration", value=f"{hours:.1f} hours", inline=True)
-    embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
-    embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
-    embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
-    embed.add_field(name="Total EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
-    
-    await ctx.send(embed=embed)
-
-@bot.command()
-async def cultivate_status(ctx):
-    """Cek status cultivation idle"""
-    if ctx.author.id not in ACTIVE_CULTIVATIONS:
-        return await ctx.send("❌ Anda tidak sedang cultivation! Gunakan `!start_cultivate` untuk mulai.")
-    
-    cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
-    duration = time.time() - cultivation_data["start_time"]
-    hours = duration / 3600
-    
-    p = get_player(ctx.author.id)
-    realm_data = REALMS[p["realm"]]
-    
-    exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
-    qi_gain = int(hours * 405)
-    spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
-    
-    embed = discord.Embed(
-        title="🧘 Cultivation Status",
-        description=f"{ctx.author.mention}'s idle cultivation progress",
-        color=0x00ff00
-    )
-    embed.add_field(name="Duration", value=f"{hours:.1f} hours", inline=True)
-    embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
-    embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
-    embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
-    embed.add_field(name="Rate", value=f"{410 * realm_data['exp_multiplier']} EXP/hour", inline=True)
-    
-    await ctx.send(embed=embed)
-
-async def cultivation_task(user_id):
-    """Background task untuk idle cultivation"""
-    try:
-        while user_id in ACTIVE_CULTIVATIONS and ACTIVE_CULTIVATIONS[user_id]["active"]:
-            await asyncio.sleep(300)  # Check every 5 minutes
-            
-            if user_id not in ACTIVE_CULTIVATIONS:
-                break
-                
-            p = get_player(user_id)
-            realm_data = REALMS[p["realm"]]
-            exp_cap = get_exp_cap(p)
-            
-            # Auto-stop if exp cap reached
-            if p["exp"] >= exp_cap:
-                cultivation_data = ACTIVE_CULTIVATIONS[user_id]
-                cultivation_data["active"] = False
-                
-                try:
-                    channel = bot.get_channel(cultivation_data["channel_id"])
-                    if channel:
-                        await channel.send(f"🛑 <@{user_id}> EXP cap reached! Cultivation stopped automatically.")
-                except:
-                    pass
-                break
-                
-    except Exception as e:
-        print(f"Error in cultivation task: {e}")
-    finally:
-        if user_id in ACTIVE_CULTIVATIONS:
-            del ACTIVE_CULTIVATIONS[user_id]
-
-# ===============================
-# Command: help (IMPROVED)
-# ===============================
-# Remove default help command first
-bot.remove_command('help')
-
-@bot.command(name='help')
-async def help_command(ctx, category: str = None):
-    """Comprehensive help system with categories"""
-    
-    if category is None:
-        # Main help menu
-        embed = discord.Embed(
-            title="🏮 Idle Immortal Bot - Command Guide",
-            description="A comprehensive cultivation RPG bot with idle mechanics, real-time battles, and progression systems!",
-            color=0x7289da
-        )
-        
-        embed.add_field(
-            name="📚 Command Categories",
-            value="Use `!help <category>` for detailed commands:\n\n"
-                  "🧘 **cultivation** - Core cultivation commands\n"
-                  "⚔️ **combat** - PvP battles and dungeons\n"
-                  "🛒 **economy** - Shop, equipment, and trading\n"
-                  "📊 **info** - Stats, progress, and information\n"
-                  "🎮 **system** - Bot utilities and admin\n"
-                  "🌟 **advanced** - Techniques and idle features",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="🚀 Quick Start",
-            value="`!status` - Check your cultivation status\n"
-                  "`!cultivate` - Begin cultivation session\n"
-                  "`!start_cultivate` - Start idle cultivation",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="💡 Pro Tips",
-            value="• Use idle cultivation for passive EXP gain\n"
-                  "• Complete dungeons for bonus rewards\n"
-                  "• Learn techniques to boost your power\n"
-                  "• Challenge other players in PvP battles",
-            inline=False
-        )
-        
-        embed.set_footer(text="Example: !help cultivation | Created by Replit Community")
-        
-    elif category.lower() == "cultivation":
-        embed = discord.Embed(
-            title="🧘 Cultivation Commands",
-            description="Core commands for advancing your cultivation journey",
-            color=0x00ff00
-        )
-        
-        embed.add_field(
-            name="`!cultivate`",
-            value="Meditate to gain EXP, Qi, and power\n*Cooldown: 1 minute*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!breakthrough`",
-            value="Advance to the next cultivation stage\n*Requires sufficient EXP*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!start_cultivate`",
-            value="Begin idle cultivation for passive gains\n*Continues while offline*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!stop_cultivate`",
-            value="Stop idle cultivation and collect rewards",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!cultivate_status`",
-            value="Check your idle cultivation progress",
-            inline=False
-        )
-    
-    elif category.lower() == "combat":
-        embed = discord.Embed(
-            title="⚔️ Combat Commands",
-            description="Battle other players and explore dangerous dungeons",
-            color=0xff0000
-        )
-        
-        embed.add_field(
-            name="`!pvp @user`",
-            value="Challenge another player to real-time battle\n*Cooldown: 5 minutes*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!dungeons`",
-            value="View available dungeons and their rewards",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!enter <dungeon_name>`",
-            value="Enter a dungeon for EXP and loot\n*Example: !enter forest*\n*Cooldown: 5 minutes*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!pvp_rank`",
-            value="View the PvP leaderboard",
-            inline=False
-        )
-        
-    elif category.lower() == "economy":
-        embed = discord.Embed(
-            title="🛒 Economy Commands",
-            description="Manage your resources, equipment, and spirit stones",
-            color=0xffd700
-        )
-        
-        embed.add_field(
-            name="`!shop`",
-            value="Browse available equipment and items",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!buy <item_name>`",
-            value="Purchase equipment with Qi\n*Example: !buy iron_sword*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!inventory`",
-            value="View your current equipment",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!sell <item_name>`",
-            value="Sell equipment for Qi",
-            inline=False
-        )
-    
-    elif category.lower() == "info":
-        embed = discord.Embed(
-            title="📊 Information Commands",
-            description="Check your progress, stats, and game information",
-            color=0x7289da
-        )
-        
-        embed.add_field(
-            name="`!status`",
-            value="Comprehensive overview of your cultivation",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!realms`",
-            value="View all cultivation realms and stages",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!myrealm`",
-            value="Detailed info about your current realm",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!progress`",
-            value="Global cultivation progress overview",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!stats`",
-            value="Server-wide statistics and achievements",
-            inline=False
-        )
-    
-    elif category.lower() == "advanced":
-        embed = discord.Embed(
-            title="🌟 Advanced Commands",
-            description="Techniques, sects, and advanced cultivation features",
-            color=0x9932cc
-        )
-        
-        embed.add_field(
-            name="`!find_technique`",
-            value="Discover new cultivation techniques\n*Cooldown: 1 hour*",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!learn_technique <id>`",
-            value="Learn a discovered technique with Spirit Stones",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!my_techniques`",
-            value="View all learned techniques and bonuses",
-            inline=False
-        )
-    
-    elif category.lower() == "system":
-        embed = discord.Embed(
-            title="🎮 System Commands",
-            description="Bot utilities and administrative commands",
-            color=0x36393f
-        )
-        
-        embed.add_field(
-            name="`!ping`",
-            value="Test bot responsiveness",
-            inline=False
-        )
-        
-        embed.add_field(
-            name="`!backup`",
-            value="Create manual data backup\n*Admin only*",
-            inline=False
-        )
-    
-    else:
-        embed = discord.Embed(
-            title="❌ Invalid Category",
-            description=f"Category '{category}' not found.",
-            color=0xff0000
-        )
-        embed.add_field(
-            name="Available Categories",
-            value="cultivation, combat, economy, info, advanced, system",
-            inline=False
-        )
-    
-    await ctx.send(embed=embed)
-
-# ===============================
 # Command: stats (server statistics)
 # ===============================
 @bot.command()
@@ -1791,6 +1618,191 @@ async def stats(ctx):
     embed.add_field(name="Total Techniques Learned", value=stats["total_techniques_learned"], inline=True)
     embed.add_field(name="Last Update", value=stats["last_update"][:19], inline=False)
 
+    await ctx.send(embed=embed)
+
+# ===============================
+# Command: help (COMPREHENSIVE)
+# ===============================
+# Remove default help command first
+bot.remove_command('help')
+
+@bot.command(name='help')
+async def help_command(ctx, category: str = None):
+    """Comprehensive help system with categories"""
+    
+    if category is None:
+        # Main help menu
+        embed = discord.Embed(
+            title="🏮 Idle Immortal Bot - Command Guide",
+            description="A comprehensive cultivation RPG bot with idle mechanics, real-time battles, and progression systems!",
+            color=0x7289da
+        )
+        
+        embed.add_field(
+            name="📚 Command Categories",
+            value="Use `!help <category>` for detailed commands:\n\n"
+                  "🧘 **cultivation** - Core cultivation & progression\n"
+                  "⚔️ **combat** - PvP battles and dungeons\n"
+                  "🛒 **economy** - Shop, equipment, and trading\n"
+                  "📊 **info** - Stats, progress, and information\n"
+                  "🔧 **system** - Bot utilities and admin\n",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🚀 Quick Start",
+            value="`!status` - Check your cultivation status\n"
+                  "`!cultivate` - Manual cultivation session\n"
+                  "`!start_cultivate` - Start idle cultivation\n"
+                  "`!realms` - View cultivation realms",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="💡 Pro Tips",
+            value="• Use idle cultivation for passive EXP gain (410+ EXP/hour!)\n"
+                  "• Complete dungeons for bonus rewards\n"
+                  "• Learn techniques to boost your power\n"
+                  "• Challenge other players in PvP battles\n"
+                  "• Check `!help cultivation` for all cultivation commands",
+            inline=False
+        )
+        
+        embed.set_footer(text="🌟 Start your journey to immortality today! Use !help <category> for specific commands.")
+        
+    elif category.lower() == "cultivation":
+        embed = discord.Embed(
+            title="🧘 Cultivation Commands",
+            description="Master the path of cultivation and ascend through the realms!",
+            color=0x00ff00
+        )
+        
+        embed.add_field(
+            name="📈 Progress & Info",
+            value="`!status` - Your comprehensive stats\n"
+                  "`!realms` - View all cultivation realms\n"
+                  "`!myrealm` - Your current realm details\n"
+                  "`!progress` - Overall cultivation progress\n"
+                  "`!breakthrough` - Advance to next stage/realm",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🧘 Cultivation Methods",
+            value="`!cultivate` - Manual cultivation (1min cooldown)\n"
+                  "`!start_cultivate` - **Start idle cultivation**\n"
+                  "`!stop_cultivate` - Stop idle cultivation\n"
+                  "`!cultivate_status` - Check idle progress",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="📜 Techniques",
+            value="`!find_technique` - Discover techniques (1hr cooldown)\n"
+                  "`!learn_technique <id>` - Learn discovered techniques\n"
+                  "`!my_techniques` - View learned techniques",
+            inline=False
+        )
+        
+        embed.set_footer(text="💫 Idle cultivation gains: 410+ EXP/hour, 405+ Qi/hour, 400+ Spirit Stones/hour!")
+        
+    elif category.lower() == "combat":
+        embed = discord.Embed(
+            title="⚔️ Combat Commands",
+            description="Engage in battles and prove your cultivation prowess!",
+            color=0xff0000
+        )
+        
+        embed.add_field(
+            name="🥊 Player vs Player",
+            value="`!pvp @user` - Challenge player to battle (5min cooldown)\n"
+                  "`!pvp_rank` - View PvP leaderboard",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🏰 Dungeons",
+            value="`!dungeons` - List available dungeons\n"
+                  "`!enter <dungeon_name>` - Enter dungeon (5min cooldown)",
+            inline=False
+        )
+        
+        embed.set_footer(text="⚡ Higher power increases success chance in combat!")
+        
+    elif category.lower() == "economy":
+        embed = discord.Embed(
+            title="🛒 Economy Commands",
+            description="Manage your resources and equipment!",
+            color=0xffd700
+        )
+        
+        embed.add_field(
+            name="🏪 Shopping",
+            value="`!shop` - Browse available equipment\n"
+                  "`!buy <item_name>` - Purchase equipment with Qi\n"
+                  "Example: `!buy iron_sword`",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🎒 Inventory",
+            value="`!inventory` - View your equipment\n"
+                  "`!sell <item_name>` - Sell equipment for Qi",
+            inline=False
+        )
+        
+        embed.set_footer(text="💰 Earn Qi through cultivation and spend it wisely!")
+        
+    elif category.lower() == "info":
+        embed = discord.Embed(
+            title="📊 Information Commands",
+            description="Get detailed information about your progress and the server!",
+            color=0x7289da
+        )
+        
+        embed.add_field(
+            name="📈 Statistics",
+            value="`!status` - Your complete cultivation status\n"
+                  "`!stats` - Server-wide statistics\n"
+                  "`!ping` - Check bot response time",
+            inline=False
+        )
+        
+        embed.set_footer(text="📋 Stay informed about your cultivation journey!")
+        
+    elif category.lower() == "system":
+        embed = discord.Embed(
+            title="🔧 System Commands",
+            description="Bot utilities and administrative functions!",
+            color=0x9932cc
+        )
+        
+        embed.add_field(
+            name="🔧 Utilities",
+            value="`!ping` - Check bot latency\n"
+                  "`!backup` - Create manual backup (Admin only)",
+            inline=False
+        )
+        
+        embed.set_footer(text="⚙️ System commands help maintain the bot!")
+        
+    else:
+        embed = discord.Embed(
+            title="❌ Unknown Category",
+            description=f"Category '{category}' not found!",
+            color=0xff0000
+        )
+        
+        embed.add_field(
+            name="Available Categories:",
+            value="• `cultivation` - Core cultivation commands\n"
+                  "• `combat` - PvP and dungeons\n"
+                  "• `economy` - Shop and inventory\n"
+                  "• `info` - Statistics and information\n"
+                  "• `system` - Bot utilities",
+            inline=False
+        )
+    
     await ctx.send(embed=embed)
 
 # ===============================
