@@ -1442,9 +1442,9 @@ async def stop_cultivate(ctx):
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
     
-    exp_gain = int(hours * 10 * realm_data["exp_multiplier"])
-    qi_gain = int(hours * 5)
-    spirit_stones_gain = int(hours * realm_data["spirit_stone_gain"])
+    exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
+    qi_gain = int(hours * 405)
+    spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
     
     p["exp"] = min(p["exp"] + exp_gain, get_exp_cap(p))
     p["qi"] += qi_gain
@@ -1479,9 +1479,9 @@ async def cultivate_status(ctx):
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
     
-    exp_gain = int(hours * 10 * realm_data["exp_multiplier"])
-    qi_gain = int(hours * 5)
-    spirit_stones_gain = int(hours * realm_data["spirit_stone_gain"])
+    exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
+    qi_gain = int(hours * 405)
+    spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
     
     embed = discord.Embed(
         title="🧘 Cultivation Status",
@@ -1492,7 +1492,7 @@ async def cultivate_status(ctx):
     embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
     embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
     embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
-    embed.add_field(name="Rate", value=f"{10 * realm_data['exp_multiplier']} EXP/hour", inline=True)
+    embed.add_field(name="Rate", value=f"{410 * realm_data['exp_multiplier']} EXP/hour", inline=True)
     
     await ctx.send(embed=embed)
 
