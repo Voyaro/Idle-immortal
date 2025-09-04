@@ -1531,12 +1531,12 @@ async def cultivation_task(user_id):
 # ===============================
 # Command: help (IMPROVED)
 # ===============================
+# Remove default help command first
+bot.remove_command('help')
+
 @bot.command(name='help')
 async def help_command(ctx, category: str = None):
     """Comprehensive help system with categories"""
-    
-    # Remove default help command
-    bot.remove_command('help')
     
     if category is None:
         # Main help menu
