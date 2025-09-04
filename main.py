@@ -244,17 +244,93 @@ ELEMENT_TYPES = {
 # Equipment System
 # ===============================
 EQUIPMENT_SHOP = {
-    "wooden_sword": {"name": "Wooden Sword", "power": 5, "cost": 50, "type": "weapon", "emoji": "⚔️"},
-    "iron_sword": {"name": "Iron Sword", "power": 10, "cost": 100, "type": "weapon", "emoji": "⚔️"},
-    "steel_sword": {"name": "Steel Sword", "power": 15, "cost": 200, "type": "weapon", "emoji": "⚔️"},
-    "dragon_sword": {"name": "Dragon Sword", "power": 30, "cost": 500, "type": "weapon", "emoji": "🐉"},
-    "leather_armor": {"name": "Leather Armor", "power": 3, "cost": 80, "type": "armor", "emoji": "🛡️"},
-    "iron_armor": {"name": "Iron Armor", "power": 7, "cost": 150, "type": "armor", "emoji": "🛡️"},
-    "steel_armor": {"name": "Steel Armor", "power": 12, "cost": 300, "type": "armor", "emoji": "🛡️"},
-    "dragon_armor": {"name": "Dragon Armor", "power": 25, "cost": 600, "type": "armor", "emoji": "🐉"},
-    "qi_ring": {"name": "Qi Ring", "power": 8, "cost": 250, "type": "accessory", "emoji": "💍"},
-    "spirit_amulet": {"name": "Spirit Amulet", "power": 15, "cost": 500, "type": "accessory", "emoji": "🔮"},
-    "divine_pendant": {"name": "Divine Pendant", "power": 25, "cost": 1000, "type": "accessory", "emoji": "✨"}
+    # ===============================
+    # MORTAL REALM EQUIPMENT
+    # ===============================
+    # Tier 1 - Basic (Wood/Cloth)
+    "wooden_sword": {"name": "Wooden Sword", "power": 8, "cost": 50, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Basic", "set": "wooden"},
+    "cloth_armor": {"name": "Cloth Armor", "power": 5, "cost": 40, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Basic", "set": "cloth"},
+    "copper_ring": {"name": "Copper Ring", "power": 3, "cost": 30, "type": "accessory", "emoji": "💍", "realm": "Mortal Realm", "tier": "Basic", "set": "copper"},
+    
+    # Tier 2 - Common (Iron/Leather)  
+    "iron_sword": {"name": "Iron Sword", "power": 15, "cost": 120, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Common", "set": "iron"},
+    "leather_armor": {"name": "Leather Armor", "power": 12, "cost": 100, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Common", "set": "leather"},
+    "iron_ring": {"name": "Iron Ring", "power": 8, "cost": 80, "type": "accessory", "emoji": "💍", "realm": "Mortal Realm", "tier": "Common", "set": "iron"},
+    
+    # Tier 3 - Rare (Steel)
+    "steel_sword": {"name": "Steel Sword", "power": 25, "cost": 250, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
+    "steel_armor": {"name": "Steel Armor", "power": 20, "cost": 200, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
+    "steel_amulet": {"name": "Steel Amulet", "power": 15, "cost": 180, "type": "accessory", "emoji": "🔮", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
+    
+    # Tier 4 - Epic (Spirit)
+    "spirit_sword": {"name": "Spirit Sword", "power": 40, "cost": 500, "type": "weapon", "emoji": "🗡️", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
+    "spirit_armor": {"name": "Spirit Armor", "power": 35, "cost": 450, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
+    "spirit_pendant": {"name": "Spirit Pendant", "power": 30, "cost": 400, "type": "accessory", "emoji": "✨", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
+
+    # ===============================
+    # IMMORTAL REALM EQUIPMENT  
+    # ===============================
+    # Tier 1 - Celestial
+    "celestial_blade": {"name": "Celestial Blade", "power": 75, "cost": 2000, "type": "weapon", "emoji": "🌟", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    "celestial_robes": {"name": "Celestial Robes", "power": 60, "cost": 1800, "type": "armor", "emoji": "👘", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    "celestial_crown": {"name": "Celestial Crown", "power": 50, "cost": 1500, "type": "accessory", "emoji": "👑", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    
+    # Tier 2 - Void  
+    "void_slasher": {"name": "Void Slasher", "power": 120, "cost": 4000, "type": "weapon", "emoji": "🌌", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    "void_mantle": {"name": "Void Mantle", "power": 100, "cost": 3500, "type": "armor", "emoji": "🌃", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    "void_orb": {"name": "Void Orb", "power": 80, "cost": 3000, "type": "accessory", "emoji": "🔮", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    
+    # Tier 3 - Profound
+    "profound_saber": {"name": "Profound Saber", "power": 180, "cost": 7000, "type": "weapon", "emoji": "🗡️", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    "profound_vestments": {"name": "Profound Vestments", "power": 150, "cost": 6000, "type": "armor", "emoji": "🥻", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    "profound_talisman": {"name": "Profound Talisman", "power": 120, "cost": 5000, "type": "accessory", "emoji": "📿", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    
+    # Tier 4 - Immortal
+    "immortal_dao_sword": {"name": "Immortal Dao Sword", "power": 280, "cost": 12000, "type": "weapon", "emoji": "⚡", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+    "immortal_phoenix_armor": {"name": "Immortal Phoenix Armor", "power": 240, "cost": 10000, "type": "armor", "emoji": "🔥", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+    "immortal_lotus_seal": {"name": "Immortal Lotus Seal", "power": 200, "cost": 8000, "type": "accessory", "emoji": "🪷", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+
+    # ===============================
+    # GOD REALM EQUIPMENT
+    # ===============================
+    # Tier 1 - Divine
+    "divine_judgment": {"name": "Divine Judgment", "power": 400, "cost": 20000, "type": "weapon", "emoji": "⚖️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    "divine_sanctuary": {"name": "Divine Sanctuary", "power": 350, "cost": 18000, "type": "armor", "emoji": "🏛️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    "divine_halo": {"name": "Divine Halo", "power": 300, "cost": 15000, "type": "accessory", "emoji": "😇", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    
+    # Tier 2 - Sacred
+    "sacred_annihilator": {"name": "Sacred Annihilator", "power": 600, "cost": 35000, "type": "weapon", "emoji": "💥", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    "sacred_fortress": {"name": "Sacred Fortress", "power": 500, "cost": 30000, "type": "armor", "emoji": "🏰", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    "sacred_eye": {"name": "Sacred Eye", "power": 450, "cost": 25000, "type": "accessory", "emoji": "👁️", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    
+    # Tier 3 - Primordial  
+    "primordial_chaos": {"name": "Primordial Chaos", "power": 850, "cost": 60000, "type": "weapon", "emoji": "🌀", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    "primordial_genesis": {"name": "Primordial Genesis", "power": 750, "cost": 50000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    "primordial_core": {"name": "Primordial Core", "power": 650, "cost": 45000, "type": "accessory", "emoji": "⭐", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    
+    # Tier 4 - Universe (ENDGAME)
+    "universe_creator": {"name": "Universe Creator", "power": 1200, "cost": 100000, "type": "weapon", "emoji": "🌍", "realm": "God Realm", "tier": "Universe", "set": "universe"},
+    "universe_mantle": {"name": "Universe Mantle", "power": 1000, "cost": 80000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Universe", "set": "universe"},
+    "universe_heart": {"name": "Universe Heart", "power": 900, "cost": 70000, "type": "accessory", "emoji": "💫", "realm": "God Realm", "tier": "Universe", "set": "universe"}
+}
+
+# Set bonuses for wearing multiple pieces of same set
+SET_BONUSES = {
+    "wooden": {"2_piece": 0.10, "3_piece": 0.25},
+    "cloth": {"2_piece": 0.10, "3_piece": 0.25}, 
+    "copper": {"2_piece": 0.10, "3_piece": 0.25},
+    "iron": {"2_piece": 0.15, "3_piece": 0.35},
+    "leather": {"2_piece": 0.15, "3_piece": 0.35},
+    "steel": {"2_piece": 0.20, "3_piece": 0.45},
+    "spirit": {"2_piece": 0.25, "3_piece": 0.55},
+    "celestial": {"2_piece": 0.30, "3_piece": 0.65},
+    "void": {"2_piece": 0.35, "3_piece": 0.75},
+    "profound": {"2_piece": 0.40, "3_piece": 0.85},
+    "immortal": {"2_piece": 0.50, "3_piece": 1.00},
+    "divine": {"2_piece": 0.60, "3_piece": 1.20},
+    "sacred": {"2_piece": 0.75, "3_piece": 1.50},
+    "primordial": {"2_piece": 1.00, "3_piece": 2.00},
+    "universe": {"2_piece": 1.50, "3_piece": 3.00}
 }
 
 # ===============================
@@ -436,6 +512,39 @@ def update_player(uid, pdata):
         return save_data(data)
 
     return False
+
+def calculate_set_bonus(equipment_dict):
+    """Calculate set bonuses from equipment"""
+    set_counts = {}
+    total_bonus = 0
+    
+    # Count items per set
+    for item_id in equipment_dict.keys():
+        item_data = EQUIPMENT_SHOP.get(item_id, {})
+        if "set" in item_data:
+            set_name = item_data["set"]
+            set_counts[set_name] = set_counts.get(set_name, 0) + 1
+    
+    # Calculate bonuses
+    for set_name, count in set_counts.items():
+        if set_name in SET_BONUSES:
+            if count >= 3 and "3_piece" in SET_BONUSES[set_name]:
+                total_bonus += SET_BONUSES[set_name]["3_piece"]
+            elif count >= 2 and "2_piece" in SET_BONUSES[set_name]:
+                total_bonus += SET_BONUSES[set_name]["2_piece"]
+    
+    return total_bonus
+
+def get_realm_order_index(realm_name):
+    """Get realm order for equipment access checks"""
+    realm_order = ["Mortal Realm", "Immortal Realm", "God Realm"]
+    return realm_order.index(realm_name) if realm_name in realm_order else 0
+
+def can_access_equipment(player_realm, equipment_realm):
+    """Check if player can access equipment from specific realm"""
+    player_index = get_realm_order_index(player_realm)
+    equipment_index = get_realm_order_index(equipment_realm)
+    return player_index >= equipment_index
 
 def get_all_players():
     """Dapatkan semua data players"""
@@ -1293,9 +1402,14 @@ async def status(ctx):
         inline=True
     )
 
+    # Calculate bonuses for display
+    technique_bonus = sum(t['power_bonus'] for t in p['techniques'])
+    set_bonus = calculate_set_bonus(p['equipment'])
+    total_bonus = technique_bonus + set_bonus
+    
     embed.add_field(
         name="⭐ Power Stats",
-        value=f"**Total:** {p['total_power']}\n**Base:** {p['base_power']}\n**Bonus:** +{sum(t['power_bonus'] for t in p['techniques'])*100}%",
+        value=f"**Total:** {p['total_power']}\n**Base:** {p['base_power']}\n**Technique Bonus:** +{technique_bonus*100:.0f}%\n**Set Bonus:** +{set_bonus*100:.0f}%",
         inline=True
     )
 
@@ -1341,22 +1455,80 @@ async def status(ctx):
 # Command: shop
 # ===============================
 @bot.command()
-async def shop(ctx):
-    """Lihat item yang tersedia di shop"""
-    embed = discord.Embed(
-        title="🏪 Cultivation Shop",
-        description="Gunakan `!buy <item_name>` untuk membeli\nContoh: `!buy iron_sword`",
-        color=0xffd700
-    )
-
+async def shop(ctx, realm: str = None):
+    """Lihat item yang tersedia di shop - gunakan !shop [realm] untuk filter"""
+    p = get_player(ctx.author.id)
+    player_realm = p["realm"]
+    
+    # Organize equipment by realm
+    realms_equipment = {
+        "Mortal Realm": [],
+        "Immortal Realm": [],
+        "God Realm": []
+    }
+    
     for item_id, item_data in EQUIPMENT_SHOP.items():
-        embed.add_field(
-            name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']} Qi",
-            value=f"Power: +{item_data['power']} | Type: {item_data['type']}\nID: `{item_id}`",
-            inline=False
+        realm_name = item_data["realm"]
+        if realm_name in realms_equipment:
+            realms_equipment[realm_name].append((item_id, item_data))
+    
+    # If specific realm requested, show only that realm
+    if realm and realm.lower().replace(" ", "_") in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
+        if realm.lower() in ["mortal", "mortal_realm"]:
+            target_realm = "Mortal Realm"
+        elif realm.lower() in ["immortal", "immortal_realm"]:
+            target_realm = "Immortal Realm"
+        elif realm.lower() in ["god", "god_realm"]:
+            target_realm = "God Realm"
+        
+        embed = discord.Embed(
+            title=f"🏪 {target_realm} Equipment Shop",
+            description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_name>` to purchase",
+            color=0xffd700
         )
+        
+        can_access = can_access_equipment(player_realm, target_realm)
+        access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
+        embed.add_field(name="Access Status", value=access_status, inline=False)
+        
+        for item_id, item_data in realms_equipment[target_realm]:
+            embed.add_field(
+                name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
+                value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\n**Tier:** {item_data['tier']} | **Set:** {item_data['set']}\nID: `{item_id}`",
+                inline=False
+            )
+            
+    else:
+        # Show overview of all realms
+        embed = discord.Embed(
+            title="🏪 Cultivation Equipment Shop",
+            description=f"**Your Realm:** {player_realm}\nUse `!shop [realm]` for detailed view\nExample: `!shop mortal`, `!shop immortal`, `!shop god`",
+            color=0xffd700
+        )
+        
+        for realm_name, items in realms_equipment.items():
+            if not items:
+                continue
+                
+            can_access = can_access_equipment(player_realm, realm_name)
+            access_emoji = "✅" if can_access else "🔒"
+            
+            # Show first few items as preview
+            preview_items = items[:3]
+            preview_text = ""
+            for item_id, item_data in preview_items:
+                preview_text += f"{item_data['emoji']} {item_data['name']} ({item_data['cost']:,} Qi)\n"
+            
+            if len(items) > 3:
+                preview_text += f"... and {len(items)-3} more items"
+            
+            embed.add_field(
+                name=f"{access_emoji} {realm_name} ({len(items)} items)",
+                value=preview_text or "No items",
+                inline=False
+            )
 
-    embed.set_footer(text="Gunakan !inventory untuk melihat equipment Anda")
+    embed.set_footer(text="💡 Tip: Higher realms unlock more powerful equipment!")
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1373,29 +1545,51 @@ async def buy(ctx, *, item_name: str):
     item_data = EQUIPMENT_SHOP[item_name]
     p = get_player(ctx.author.id)
 
+    # Check realm requirement
+    if not can_access_equipment(p["realm"], item_data["realm"]):
+        required_realm = item_data["realm"]
+        return await ctx.send(f"❌ Realm tidak cukup tinggi! Item ini membutuhkan **{required_realm}** atau lebih tinggi. Anda masih di **{p['realm']}**.")
+
     if p["qi"] < item_data["cost"]:
         return await ctx.send(f"❌ Qi tidak cukup! Butuh {item_data['cost']} Qi, Anda punya {p['qi']} Qi.")
 
+    # Remove old equipment of same type
+    old_equipment_power = 0
     current_equipment = p["equipment"]
     for eq_id, eq_power in current_equipment.items():
         if EQUIPMENT_SHOP.get(eq_id, {}).get("type") == item_data["type"]:
+            old_equipment_power = eq_power
             p["base_power"] -= eq_power
             break
 
+    # Add new equipment
     p["qi"] -= item_data["cost"]
     p["equipment"][item_name] = item_data["power"]
     p["base_power"] += item_data["power"]
-    p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
+    
+    # Calculate set bonus
+    set_bonus = calculate_set_bonus(p["equipment"])
+    technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
+    
+    # Update total power with set bonuses
+    p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
 
     update_player(ctx.author.id, p)
 
+    # Create enhanced purchase message
     embed = discord.Embed(
         title="🛍️ Purchase Successful!",
         description=f"{ctx.author.mention} membeli {item_data['emoji']} {item_data['name']}",
         color=0x00ff00
     )
     embed.add_field(name="Power", value=f"+{item_data['power']}", inline=True)
+    embed.add_field(name="Tier", value=f"{item_data['tier']} ({item_data['realm']})", inline=True)
     embed.add_field(name="Cost", value=f"{item_data['cost']} Qi", inline=True)
+    
+    if set_bonus > 0:
+        embed.add_field(name="Set Bonus", value=f"+{set_bonus*100:.0f}% Total Power", inline=True)
+    
+    embed.add_field(name="Total Power", value=f"{p['total_power']}", inline=True)
     embed.add_field(name="Remaining Qi", value=f"{p['qi']} Qi", inline=True)
 
     await ctx.send(embed=embed)
@@ -1412,18 +1606,25 @@ async def inventory(ctx):
         return await ctx.send("🎒 Inventory kosong! Gunakan `!shop` untuk melihat item yang bisa dibeli.")
 
     total_equip_power = sum(p["equipment"].values())
+    set_bonus = calculate_set_bonus(p["equipment"])
 
     embed = discord.Embed(
         title=f"🎒 {ctx.author.name}'s Inventory",
-        description=f"Total Equipment Power: +{total_equip_power}",
+        description=f"Total Equipment Power: +{total_equip_power}\nSet Bonus: +{set_bonus*100:.0f}% Total Power",
         color=0x7289da
     )
 
     for item_id, power in p["equipment"].items():
         item_data = EQUIPMENT_SHOP.get(item_id, {"name": item_id.replace("_", " ").title(), "type": "unknown", "emoji": "⚙️"})
+        
+        # Check enchantment level
+        enchant_level = p.get("enchanted", {}).get(item_id, 0)
+        enchant_text = f" +{enchant_level}" if enchant_level > 0 else ""
+        tier_text = f" ({item_data.get('tier', 'Unknown')})" if 'tier' in item_data else ""
+        
         embed.add_field(
-            name=f"{item_data['emoji']} {item_data['name']}",
-            value=f"Power: +{power} | Type: {item_data['type']}",
+            name=f"{item_data['emoji']} {item_data['name']}{enchant_text}",
+            value=f"**Power:** +{power} | **Type:** {item_data['type']}{tier_text}\n**Set:** {item_data.get('set', 'None')}",
             inline=False
         )
 
@@ -1451,11 +1652,104 @@ async def sell(ctx, *, item_name: str):
     p["base_power"] -= p["equipment"][item_name]
     del p["equipment"][item_name]
     p["qi"] += sell_price
-    p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
+    
+    # Recalculate total power with updated set bonuses
+    set_bonus = calculate_set_bonus(p["equipment"])
+    technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
+    p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
 
     update_player(ctx.author.id, p)
 
     await ctx.send(f"💰 {ctx.author.mention} menjual {item_data['name']} dan mendapatkan {sell_price} Qi!")
+
+# ===============================
+# Command: enchant (Equipment Enhancement)
+# ===============================
+@bot.command()
+async def enchant(ctx, *, item_name: str):
+    """Upgrade equipment dengan Spirit Stones"""
+    item_name = item_name.lower().replace(" ", "_")
+    
+    p = get_player(ctx.author.id)
+    
+    if item_name not in p["equipment"]:
+        return await ctx.send("❌ Item tidak ditemukan di inventory! Gunakan `!inventory` untuk melihat equipment Anda.")
+    
+    if "enchanted" not in p:
+        p["enchanted"] = {}
+    
+    current_enchant = p["enchanted"].get(item_name, 0)
+    max_enchant = 10  # Maximum +10 enchantment
+    
+    if current_enchant >= max_enchant:
+        return await ctx.send(f"❌ {EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name)} sudah mencapai enchantment maksimum (+{max_enchant})!")
+    
+    # Calculate cost based on current enchant level
+    base_cost = 50
+    enchant_cost = base_cost * (current_enchant + 1) * (current_enchant + 1)  # Exponential cost
+    
+    if p["spirit_stones"] < enchant_cost:
+        return await ctx.send(f"❌ Spirit Stones tidak cukup! Butuh {enchant_cost} Spirit Stones, Anda punya {p['spirit_stones']}.")
+    
+    # Calculate success rate (decreases with higher enchant levels)
+    success_rate = max(20, 100 - (current_enchant * 8))  # 100% -> 92% -> 84% ... -> 20%
+    
+    import random
+    success = random.randint(1, 100) <= success_rate
+    
+    p["spirit_stones"] -= enchant_cost
+    
+    if success:
+        # Success! Increase enchantment
+        p["enchanted"][item_name] = current_enchant + 1
+        new_enchant = current_enchant + 1
+        
+        # Increase base power of the item
+        power_increase = 5 + (new_enchant * 2)  # +5, +7, +9, +11, etc.
+        p["equipment"][item_name] += power_increase
+        p["base_power"] += power_increase
+        
+        # Recalculate total power with bonuses
+        set_bonus = calculate_set_bonus(p["equipment"])
+        technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
+        p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
+        
+        update_player(ctx.author.id, p)
+        
+        item_display_name = EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name.replace('_', ' ').title())
+        
+        embed = discord.Embed(
+            title="✨ Enchantment Successful!",
+            description=f"{ctx.author.mention} berhasil meng-enchant {item_display_name}!",
+            color=0x00ff00
+        )
+        embed.add_field(name="New Level", value=f"+{new_enchant} Enhancement", inline=True)
+        embed.add_field(name="Power Boost", value=f"+{power_increase} Power", inline=True)
+        embed.add_field(name="Cost", value=f"{enchant_cost} Spirit Stones", inline=True)
+        embed.add_field(name="Total Power", value=f"{p['total_power']}", inline=True)
+        embed.add_field(name="Success Rate", value=f"{success_rate}%", inline=True)
+        embed.add_field(name="Remaining Stones", value=f"{p['spirit_stones']}", inline=True)
+        
+        await ctx.send(embed=embed)
+        
+    else:
+        # Failed! No enchantment increase, just consume stones
+        update_player(ctx.author.id, p)
+        
+        item_display_name = EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name.replace('_', ' ').title())
+        
+        embed = discord.Embed(
+            title="💥 Enchantment Failed!",
+            description=f"{ctx.author.mention} gagal meng-enchant {item_display_name}...",
+            color=0xff0000
+        )
+        embed.add_field(name="Current Level", value=f"+{current_enchant} Enhancement", inline=True)
+        embed.add_field(name="Success Rate", value=f"{success_rate}%", inline=True)
+        embed.add_field(name="Cost", value=f"{enchant_cost} Spirit Stones", inline=True)
+        embed.add_field(name="Remaining Stones", value=f"{p['spirit_stones']}", inline=True)
+        embed.set_footer(text="💡 Tip: Higher enhancement levels have lower success rates!")
+        
+        await ctx.send(embed=embed)
 
 # ===============================
 # Command: dungeons
