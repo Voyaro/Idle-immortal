@@ -404,15 +404,15 @@ def get_exp_cap(p):
     """Dapatkan EXP cap untuk stage player saat ini"""
     realm_data = REALMS[p["realm"]]
     stage_idx = realm_data["stages"].index(p["stage"])
-    
+
     # Much higher EXP requirements - exponential growth
     base_exp = (stage_idx + 1) * 500  # 500, 1000, 1500, etc. (5x increase)
-    
+
     # Additional exponential scaling per stage
     stage_multiplier = 1 + (stage_idx * 0.2)  # 1.0, 1.2, 1.4, 1.6, etc.
-    
+
     exp_cap = int(base_exp * realm_data["exp_multiplier"] * stage_multiplier)
-    
+
     return exp_cap
 
 def generate_random_technique(player_realm, player_stage):
@@ -990,7 +990,7 @@ async def realms(ctx):
         stage_count = len(realm_data["stages"])
         first_stage_exp = int(100 * realm_data["exp_multiplier"])
         last_stage_exp = int(stage_count * 100 * realm_data["exp_multiplier"])
-        
+
         # Create a compact stage list
         stages_list = " → ".join(realm_data["stages"])
 
@@ -1289,7 +1289,7 @@ async def breakthrough(ctx):
     realm_data = REALMS[p["realm"]]
     stages = realm_data["stages"]
     idx = stages.index(p["stage"])
-    
+
     # Current stage EXP cap is the breakthrough requirement
     exp_cap = get_exp_cap(p)
 
