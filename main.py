@@ -405,9 +405,13 @@ def get_exp_cap(p):
     realm_data = REALMS[p["realm"]]
     stage_idx = realm_data["stages"].index(p["stage"])
     
-    # Each stage has its own EXP cap based on breakthrough requirements
-    base_exp = (stage_idx + 1) * 100  # 100, 200, 300, etc.
-    exp_cap = int(base_exp * realm_data["exp_multiplier"])
+    # Much higher EXP requirements - exponential growth
+    base_exp = (stage_idx + 1) * 500  # 500, 1000, 1500, etc. (5x increase)
+    
+    # Additional exponential scaling per stage
+    stage_multiplier = 1 + (stage_idx * 0.2)  # 1.0, 1.2, 1.4, 1.6, etc.
+    
+    exp_cap = int(base_exp * realm_data["exp_multiplier"] * stage_multiplier)
     
     return exp_cap
 
@@ -870,8 +874,8 @@ async def idle_cultivation_task(user_id, player_data, realm_data):
             if p["exp"] >= exp_cap:
                 break
 
-            # Calculate gains
-            base_gain = random.randint(5, 15)
+            # Calculate gains - reduced EXP rate
+            base_gain = random.randint(2, 6)  # Reduced from 5-15 to 2-6 for ~200 EXP/hour
             gain = int(base_gain * realm_data["exp_multiplier"])
             qi_gain = random.randint(1, 5)
             power_gain = random.randint(1, 3)
@@ -1259,7 +1263,7 @@ async def cultivate_status(ctx):
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
 
-    exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
+    exp_gain = int(hours * 200 * realm_data["exp_multiplier"])  # Updated to 200 EXP/hour
     qi_gain = int(hours * 405)
     spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
 
@@ -1272,7 +1276,7 @@ async def cultivate_status(ctx):
     embed.add_field(name="EXP Gained", value=f"+{exp_gain}", inline=True)
     embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
     embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
-    embed.add_field(name="Rate", value=f"{410 * realm_data['exp_multiplier']} EXP/hour", inline=True)
+    embed.add_field(name="Rate", value=f"{200 * realm_data['exp_multiplier']} EXP/hour", inline=True)
 
     await ctx.send(embed=embed)
 
@@ -2039,7 +2043,7 @@ async def help_command(ctx, category: str = None):
 
         embed.add_field(
             name="💡 Pro Tips",
-            value="• Use idle cultivation for passive EXP gain (410+ EXP/hour!)\n"
+            value="• Use idle cultivation for passive EXP gain (~200 EXP/hour)\n"
                   "• Complete dungeons for bonus rewards\n"
                   "• Learn techniques to boost your power\n"
                   "• Challenge other players in PvP battles\n"
@@ -2083,7 +2087,7 @@ async def help_command(ctx, category: str = None):
             inline=False
         )
 
-        embed.set_footer(text="💫 Idle cultivation gains: 410+ EXP/hour, 405+ Qi/hour, 400+ Spirit Stones/hour!")
+        embed.set_footer(text="💫 Idle cultivation gains: ~200 EXP/hour, 405+ Qi/hour, 400+ Spirit Stones/hour!")
 
     elif category.lower() == "combat":
         embed = discord.Embed(
