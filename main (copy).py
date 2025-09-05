@@ -251,17 +251,17 @@ EQUIPMENT_SHOP = {
     "wooden_sword": {"name": "Wooden Sword", "power": 8, "cost": 50, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Basic", "set": "wooden"},
     "cloth_armor": {"name": "Cloth Armor", "power": 5, "cost": 40, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Basic", "set": "cloth"},
     "copper_ring": {"name": "Copper Ring", "power": 3, "cost": 30, "type": "accessory", "emoji": "💍", "realm": "Mortal Realm", "tier": "Basic", "set": "copper"},
-
+    
     # Tier 2 - Common (Iron/Leather)  
     "iron_sword": {"name": "Iron Sword", "power": 15, "cost": 120, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Common", "set": "iron"},
     "leather_armor": {"name": "Leather Armor", "power": 12, "cost": 100, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Common", "set": "leather"},
     "iron_ring": {"name": "Iron Ring", "power": 8, "cost": 80, "type": "accessory", "emoji": "💍", "realm": "Mortal Realm", "tier": "Common", "set": "iron"},
-
+    
     # Tier 3 - Rare (Steel)
     "steel_sword": {"name": "Steel Sword", "power": 25, "cost": 250, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
     "steel_armor": {"name": "Steel Armor", "power": 20, "cost": 200, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
     "steel_amulet": {"name": "Steel Amulet", "power": 15, "cost": 180, "type": "accessory", "emoji": "🔮", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
-
+    
     # Tier 4 - Epic (Spirit)
     "spirit_sword": {"name": "Spirit Sword", "power": 40, "cost": 500, "type": "weapon", "emoji": "🗡️", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
     "spirit_armor": {"name": "Spirit Armor", "power": 35, "cost": 450, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
@@ -274,17 +274,17 @@ EQUIPMENT_SHOP = {
     "celestial_blade": {"name": "Celestial Blade", "power": 75, "cost": 2000, "type": "weapon", "emoji": "🌟", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
     "celestial_robes": {"name": "Celestial Robes", "power": 60, "cost": 1800, "type": "armor", "emoji": "👘", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
     "celestial_crown": {"name": "Celestial Crown", "power": 50, "cost": 1500, "type": "accessory", "emoji": "👑", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
-
+    
     # Tier 2 - Void  
     "void_slasher": {"name": "Void Slasher", "power": 120, "cost": 4000, "type": "weapon", "emoji": "🌌", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
     "void_mantle": {"name": "Void Mantle", "power": 100, "cost": 3500, "type": "armor", "emoji": "🌃", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
     "void_orb": {"name": "Void Orb", "power": 80, "cost": 3000, "type": "accessory", "emoji": "🔮", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
-
+    
     # Tier 3 - Profound
     "profound_saber": {"name": "Profound Saber", "power": 180, "cost": 7000, "type": "weapon", "emoji": "🗡️", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
     "profound_vestments": {"name": "Profound Vestments", "power": 150, "cost": 6000, "type": "armor", "emoji": "🥻", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
     "profound_talisman": {"name": "Profound Talisman", "power": 120, "cost": 5000, "type": "accessory", "emoji": "📿", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
-
+    
     # Tier 4 - Immortal
     "immortal_dao_sword": {"name": "Immortal Dao Sword", "power": 280, "cost": 12000, "type": "weapon", "emoji": "⚡", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
     "immortal_phoenix_armor": {"name": "Immortal Phoenix Armor", "power": 240, "cost": 10000, "type": "armor", "emoji": "🔥", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
@@ -297,17 +297,17 @@ EQUIPMENT_SHOP = {
     "divine_judgment": {"name": "Divine Judgment", "power": 400, "cost": 20000, "type": "weapon", "emoji": "⚖️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
     "divine_sanctuary": {"name": "Divine Sanctuary", "power": 350, "cost": 18000, "type": "armor", "emoji": "🏛️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
     "divine_halo": {"name": "Divine Halo", "power": 300, "cost": 15000, "type": "accessory", "emoji": "😇", "realm": "God Realm", "tier": "Divine", "set": "divine"},
-
+    
     # Tier 2 - Sacred
     "sacred_annihilator": {"name": "Sacred Annihilator", "power": 600, "cost": 35000, "type": "weapon", "emoji": "💥", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
     "sacred_fortress": {"name": "Sacred Fortress", "power": 500, "cost": 30000, "type": "armor", "emoji": "🏰", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
     "sacred_eye": {"name": "Sacred Eye", "power": 450, "cost": 25000, "type": "accessory", "emoji": "👁️", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
-
+    
     # Tier 3 - Primordial  
     "primordial_chaos": {"name": "Primordial Chaos", "power": 850, "cost": 60000, "type": "weapon", "emoji": "🌀", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
     "primordial_genesis": {"name": "Primordial Genesis", "power": 750, "cost": 50000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
     "primordial_core": {"name": "Primordial Core", "power": 650, "cost": 45000, "type": "accessory", "emoji": "⭐", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
-
+    
     # Tier 4 - Universe (ENDGAME)
     "universe_creator": {"name": "Universe Creator", "power": 1200, "cost": 100000, "type": "weapon", "emoji": "🌍", "realm": "God Realm", "tier": "Universe", "set": "universe"},
     "universe_mantle": {"name": "Universe Mantle", "power": 1000, "cost": 80000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Universe", "set": "universe"},
@@ -517,14 +517,14 @@ def calculate_set_bonus(equipment_dict):
     """Calculate set bonuses from equipment"""
     set_counts = {}
     total_bonus = 0
-
+    
     # Count items per set
     for item_id in equipment_dict.keys():
         item_data = EQUIPMENT_SHOP.get(item_id, {})
         if "set" in item_data:
             set_name = item_data["set"]
             set_counts[set_name] = set_counts.get(set_name, 0) + 1
-
+    
     # Calculate bonuses
     for set_name, count in set_counts.items():
         if set_name in SET_BONUSES:
@@ -532,7 +532,7 @@ def calculate_set_bonus(equipment_dict):
                 total_bonus += SET_BONUSES[set_name]["3_piece"]
             elif count >= 2 and "2_piece" in SET_BONUSES[set_name]:
                 total_bonus += SET_BONUSES[set_name]["2_piece"]
-
+    
     return total_bonus
 
 def get_realm_order_index(realm_name):
@@ -933,7 +933,7 @@ async def realms(ctx):
     for realm_name, realm_data in REALMS.items():
         # Create a compact stage list
         stages_list = " → ".join(realm_data["stages"])
-
+        
         # Due to Discord character limits, we'll show first few stages and indicate total
         if len(stages_list) > 800:  # Keep within Discord embed field limits
             first_5_stages = " → ".join(realm_data["stages"][:5])
@@ -1180,18 +1180,18 @@ async def cultivate_status(ctx):
     """Cek status cultivation idle"""
     if ctx.author.id not in ACTIVE_CULTIVATIONS:
         return await ctx.send("❌ Anda tidak sedang cultivation! Gunakan `!start_cultivate` untuk mulai.")
-
+    
     cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
     duration = time.time() - cultivation_data["start_time"]
     hours = duration / 3600
-
+    
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
-
+    
     exp_gain = int(hours * 410 * realm_data["exp_multiplier"])
     qi_gain = int(hours * 405)
     spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
-
+    
     embed = discord.Embed(
         title="🧘 Cultivation Status",
         description=f"{ctx.author.mention}'s idle cultivation progress",
@@ -1202,7 +1202,7 @@ async def cultivate_status(ctx):
     embed.add_field(name="Qi Gained", value=f"+{qi_gain}", inline=True)
     embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_gain}", inline=True)
     embed.add_field(name="Rate", value=f"{410 * realm_data['exp_multiplier']} EXP/hour", inline=True)
-
+    
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1406,7 +1406,7 @@ async def status(ctx):
     technique_bonus = sum(t['power_bonus'] for t in p['techniques'])
     set_bonus = calculate_set_bonus(p['equipment'])
     total_bonus = technique_bonus + set_bonus
-
+    
     embed.add_field(
         name="⭐ Power Stats",
         value=f"**Total:** {p['total_power']}\n**Base:** {p['base_power']}\n**Technique Bonus:** +{technique_bonus*100:.0f}%\n**Set Bonus:** +{set_bonus*100:.0f}%",
@@ -1459,19 +1459,19 @@ async def shop(ctx, realm: str = None):
     """Lihat item yang tersedia di shop - gunakan !shop [realm] untuk filter"""
     p = get_player(ctx.author.id)
     player_realm = p["realm"]
-
+    
     # Organize equipment by realm
     realms_equipment = {
         "Mortal Realm": [],
         "Immortal Realm": [],
         "God Realm": []
     }
-
+    
     for item_id, item_data in EQUIPMENT_SHOP.items():
         realm_name = item_data["realm"]
         if realm_name in realms_equipment:
             realms_equipment[realm_name].append((item_id, item_data))
-
+    
     # If specific realm requested, show only that realm
     if realm and realm.lower().replace(" ", "_") in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
         if realm.lower() in ["mortal", "mortal_realm"]:
@@ -1480,24 +1480,24 @@ async def shop(ctx, realm: str = None):
             target_realm = "Immortal Realm"
         elif realm.lower() in ["god", "god_realm"]:
             target_realm = "God Realm"
-
+        
         embed = discord.Embed(
             title=f"🏪 {target_realm} Equipment Shop",
             description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_name>` to purchase",
             color=0xffd700
         )
-
+        
         can_access = can_access_equipment(player_realm, target_realm)
         access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
         embed.add_field(name="Access Status", value=access_status, inline=False)
-
+        
         for item_id, item_data in realms_equipment[target_realm]:
             embed.add_field(
                 name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
                 value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\n**Tier:** {item_data['tier']} | **Set:** {item_data['set']}\nID: `{item_id}`",
                 inline=False
             )
-
+            
     else:
         # Show overview of all realms
         embed = discord.Embed(
@@ -1505,23 +1505,23 @@ async def shop(ctx, realm: str = None):
             description=f"**Your Realm:** {player_realm}\nUse `!shop [realm]` for detailed view\nExample: `!shop mortal`, `!shop immortal`, `!shop god`",
             color=0xffd700
         )
-
+        
         for realm_name, items in realms_equipment.items():
             if not items:
                 continue
-
+                
             can_access = can_access_equipment(player_realm, realm_name)
             access_emoji = "✅" if can_access else "🔒"
-
+            
             # Show first few items as preview
             preview_items = items[:3]
             preview_text = ""
             for item_id, item_data in preview_items:
                 preview_text += f"{item_data['emoji']} {item_data['name']} ({item_data['cost']:,} Qi)\n"
-
+            
             if len(items) > 3:
                 preview_text += f"... and {len(items)-3} more items"
-
+            
             embed.add_field(
                 name=f"{access_emoji} {realm_name} ({len(items)} items)",
                 value=preview_text or "No items",
@@ -1566,11 +1566,11 @@ async def buy(ctx, *, item_name: str):
     p["qi"] -= item_data["cost"]
     p["equipment"][item_name] = item_data["power"]
     p["base_power"] += item_data["power"]
-
+    
     # Calculate set bonus
     set_bonus = calculate_set_bonus(p["equipment"])
     technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
-
+    
     # Update total power with set bonuses
     p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
 
@@ -1585,10 +1585,10 @@ async def buy(ctx, *, item_name: str):
     embed.add_field(name="Power", value=f"+{item_data['power']}", inline=True)
     embed.add_field(name="Tier", value=f"{item_data['tier']} ({item_data['realm']})", inline=True)
     embed.add_field(name="Cost", value=f"{item_data['cost']} Qi", inline=True)
-
+    
     if set_bonus > 0:
         embed.add_field(name="Set Bonus", value=f"+{set_bonus*100:.0f}% Total Power", inline=True)
-
+    
     embed.add_field(name="Total Power", value=f"{p['total_power']}", inline=True)
     embed.add_field(name="Remaining Qi", value=f"{p['qi']} Qi", inline=True)
 
@@ -1616,12 +1616,12 @@ async def inventory(ctx):
 
     for item_id, power in p["equipment"].items():
         item_data = EQUIPMENT_SHOP.get(item_id, {"name": item_id.replace("_", " ").title(), "type": "unknown", "emoji": "⚙️"})
-
+        
         # Check enchantment level
         enchant_level = p.get("enchanted", {}).get(item_id, 0)
         enchant_text = f" +{enchant_level}" if enchant_level > 0 else ""
         tier_text = f" ({item_data.get('tier', 'Unknown')})" if 'tier' in item_data else ""
-
+        
         embed.add_field(
             name=f"{item_data['emoji']} {item_data['name']}{enchant_text}",
             value=f"**Power:** +{power} | **Type:** {item_data['type']}{tier_text}\n**Set:** {item_data.get('set', 'None')}",
@@ -1652,7 +1652,7 @@ async def sell(ctx, *, item_name: str):
     p["base_power"] -= p["equipment"][item_name]
     del p["equipment"][item_name]
     p["qi"] += sell_price
-
+    
     # Recalculate total power with updated set bonuses
     set_bonus = calculate_set_bonus(p["equipment"])
     technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
@@ -1669,55 +1669,55 @@ async def sell(ctx, *, item_name: str):
 async def enchant(ctx, *, item_name: str):
     """Upgrade equipment dengan Spirit Stones"""
     item_name = item_name.lower().replace(" ", "_")
-
+    
     p = get_player(ctx.author.id)
-
+    
     if item_name not in p["equipment"]:
         return await ctx.send("❌ Item tidak ditemukan di inventory! Gunakan `!inventory` untuk melihat equipment Anda.")
-
+    
     if "enchanted" not in p:
         p["enchanted"] = {}
-
+    
     current_enchant = p["enchanted"].get(item_name, 0)
     max_enchant = 10  # Maximum +10 enchantment
-
+    
     if current_enchant >= max_enchant:
         return await ctx.send(f"❌ {EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name)} sudah mencapai enchantment maksimum (+{max_enchant})!")
-
+    
     # Calculate cost based on current enchant level
     base_cost = 50
     enchant_cost = base_cost * (current_enchant + 1) * (current_enchant + 1)  # Exponential cost
-
+    
     if p["spirit_stones"] < enchant_cost:
         return await ctx.send(f"❌ Spirit Stones tidak cukup! Butuh {enchant_cost} Spirit Stones, Anda punya {p['spirit_stones']}.")
-
+    
     # Calculate success rate (decreases with higher enchant levels)
     success_rate = max(20, 100 - (current_enchant * 8))  # 100% -> 92% -> 84% ... -> 20%
-
+    
     import random
     success = random.randint(1, 100) <= success_rate
-
+    
     p["spirit_stones"] -= enchant_cost
-
+    
     if success:
         # Success! Increase enchantment
         p["enchanted"][item_name] = current_enchant + 1
         new_enchant = current_enchant + 1
-
+        
         # Increase base power of the item
         power_increase = 5 + (new_enchant * 2)  # +5, +7, +9, +11, etc.
         p["equipment"][item_name] += power_increase
         p["base_power"] += power_increase
-
+        
         # Recalculate total power with bonuses
         set_bonus = calculate_set_bonus(p["equipment"])
         technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
         p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
-
+        
         update_player(ctx.author.id, p)
-
+        
         item_display_name = EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name.replace('_', ' ').title())
-
+        
         embed = discord.Embed(
             title="✨ Enchantment Successful!",
             description=f"{ctx.author.mention} berhasil meng-enchant {item_display_name}!",
@@ -1729,15 +1729,15 @@ async def enchant(ctx, *, item_name: str):
         embed.add_field(name="Total Power", value=f"{p['total_power']}", inline=True)
         embed.add_field(name="Success Rate", value=f"{success_rate}%", inline=True)
         embed.add_field(name="Remaining Stones", value=f"{p['spirit_stones']}", inline=True)
-
+        
         await ctx.send(embed=embed)
-
+        
     else:
         # Failed! No enchantment increase, just consume stones
         update_player(ctx.author.id, p)
-
+        
         item_display_name = EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name.replace('_', ' ').title())
-
+        
         embed = discord.Embed(
             title="💥 Enchantment Failed!",
             description=f"{ctx.author.mention} gagal meng-enchant {item_display_name}...",
@@ -1748,7 +1748,7 @@ async def enchant(ctx, *, item_name: str):
         embed.add_field(name="Cost", value=f"{enchant_cost} Spirit Stones", inline=True)
         embed.add_field(name="Remaining Stones", value=f"{p['spirit_stones']}", inline=True)
         embed.set_footer(text="💡 Tip: Higher enhancement levels have lower success rates!")
-
+        
         await ctx.send(embed=embed)
 
 # ===============================
@@ -1919,224 +1919,6 @@ async def pvp_rank(ctx):
     await ctx.send(embed=embed)
 
 # ===============================
-# Command: leaderboard
-# ===============================
-@bot.command()
-async def leaderboard(ctx, page: int = 1):
-    """Leaderboard cultivation berdasarkan stage tertinggi"""
-    data = load_data()
-    players = data["players"]
-
-    # Filter hanya players yang memiliki data lengkap
-    valid_players = []
-    for uid, pdata in players.items():
-        if all(key in pdata for key in ["realm", "stage", "total_power"]):
-            valid_players.append((uid, pdata))
-
-    if not valid_players:
-        return await ctx.send("❌ No players found for leaderboard!")
-
-    # Calculate cultivation score (realm + stage)
-    def calculate_cultivation_score(player_data):
-        realm = player_data["realm"]
-        stage = player_data["stage"]
-
-        # Realm weight (semakin tinggi realm, score lebih tinggi)
-        realm_weights = {"Mortal Realm": 0, "Immortal Realm": 1000, "God Realm": 2000}
-        realm_score = realm_weights.get(realm, 0)
-
-        # Stage progress within realm
-        if realm in REALMS and stage in REALMS[realm]["stages"]:
-            stage_index = REALMS[realm]["stages"].index(stage)
-            total_stages = len(REALMS[realm]["stages"])
-            stage_score = (stage_index / total_stages) * 1000  # Normalize to 0-1000
-        else:
-            stage_score = 0
-
-        return realm_score + stage_score
-
-    # Sort by cultivation score
-    ranked_players = []
-    for uid, pdata in valid_players:
-        try:
-            user = await bot.fetch_user(int(uid))
-            username = user.name
-        except:
-            username = f"Unknown User ({uid})"
-
-        score = calculate_cultivation_score(pdata)
-        ranked_players.append({
-            "username": username,
-            "realm": pdata["realm"],
-            "stage": pdata["stage"],
-            "power": pdata["total_power"],
-            "score": score,
-            "user_id": uid
-        })
-
-    # Sort by score descending
-    ranked_players.sort(key=lambda x: x["score"], reverse=True)
-
-    # Pagination
-    items_per_page = 10
-    total_pages = (len(ranked_players) + items_per_page - 1) // items_per_page
-    page = max(1, min(page, total_pages))
-
-    start_idx = (page - 1) * items_per_page
-    end_idx = start_idx + items_per_page
-    page_players = ranked_players[start_idx:end_idx]
-
-    # Create embed
-    embed = discord.Embed(
-        title="🏆 Cultivation Leaderboard",
-        description="Ranking berdasarkan realm dan stage tertinggi",
-        color=0xFFD700
-    )
-
-    # Add ranking entries
-    for i, player in enumerate(page_players, start=start_idx + 1):
-        realm_emoji = "🌍" if player["realm"] == "Mortal Realm" else "🌟" if player["realm"] == "Immortal Realm" else "✨"
-
-        embed.add_field(
-            name=f"#{i} {realm_emoji} {player['username']}",
-            value=f"**{player['realm']}** - {player['stage']}\n"
-                  f"⚡ Power: {player['power']} | 📊 Score: {player['score']:.1f}",
-            inline=False
-        )
-
-    # Add footer with pagination info
-    embed.set_footer(text=f"Page {page}/{total_pages} • Total players: {len(ranked_players)}")
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: top
-# ===============================
-@bot.command()
-async def top(ctx, count: int = 5):
-    """Top cultivation players (default: top 5)"""
-    count = max(1, min(count, 20))  # Limit to 20 players
-
-    data = load_data()
-    players = data["players"]
-
-    # Get top players by realm progression
-    top_players = []
-    for uid, pdata in players.items():
-        if all(key in pdata for key in ["realm", "stage", "total_power"]):
-            # Calculate progression index
-            realm_order = list(REALMS.keys())
-            if pdata["realm"] in realm_order and pdata["stage"] in REALMS[pdata["realm"]]["stages"]:
-                realm_idx = realm_order.index(pdata["realm"])
-                stage_idx = REALMS[pdata["realm"]]["stages"].index(pdata["stage"])
-                progression = (realm_idx * 100) + stage_idx
-                top_players.append((uid, pdata, progression))
-
-    if not top_players:
-        return await ctx.send("❌ No players found!")
-
-    # Sort by progression
-    top_players.sort(key=lambda x: x[2], reverse=True)
-    top_players = top_players[:count]
-
-    embed = discord.Embed(
-        title=f"👑 Top {count} Cultivators",
-        color=0xFFD700
-    )
-
-    for i, (uid, pdata, progression) in enumerate(top_players, 1):
-        try:
-            user = await bot.fetch_user(int(uid))
-            username = user.name
-        except:
-            username = f"Unknown User ({uid})"
-
-        realm_emoji = "🌍" if pdata["realm"] == "Mortal Realm" else "🌟" if pdata["realm"] == "Immortal Realm" else "✨"
-
-        embed.add_field(
-            name=f"{i}. {realm_emoji} {username}",
-            value=f"**{pdata['realm']}** - {pdata['stage']}\n"
-                  f"⚡ Power: {pdata['total_power']}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: myrank
-# ===============================
-@bot.command()
-async def myrank(ctx):
-    """Lihat ranking cultivation Anda"""
-    data = load_data()
-    players = data["players"]
-    current_player = get_player(ctx.author.id)
-
-    # Calculate all players' scores
-    def calculate_score(pdata):
-        realm_weights = {"Mortal Realm": 0, "Immortal Realm": 1000, "God Realm": 2000}
-        realm_score = realm_weights.get(pdata["realm"], 0)
-
-        if pdata["realm"] in REALMS and pdata["stage"] in REALMS[pdata["realm"]]["stages"]:
-            stage_index = REALMS[pdata["realm"]]["stages"].index(pdata["stage"])
-            total_stages = len(REALMS[pdata["realm"]]["stages"])
-            stage_score = (stage_index / total_stages) * 1000
-        else:
-            stage_score = 0
-
-        return realm_score + stage_score
-
-    # Get all scores
-    all_scores = []
-    for uid, pdata in players.items():
-        if all(key in pdata for key in ["realm", "stage"]):
-            score = calculate_score(pdata)
-            all_scores.append((uid, score))
-
-    # Sort and find rank
-    all_scores.sort(key=lambda x: x[1], reverse=True)
-
-    player_rank = None
-    for rank, (uid, score) in enumerate(all_scores, 1):
-        if uid == str(ctx.author.id):
-            player_rank = rank
-            player_score = score
-            break
-
-    if player_rank is None:
-        return await ctx.send("❌ Rank not found!")
-
-    total_players = len(all_scores)
-    percentile = (total_players - player_rank + 1) / total_players * 100
-
-    embed = discord.Embed(
-        title=f"📊 Your Cultivation Rank",
-        description=f"{ctx.author.name}'s position in the cultivation world",
-        color=0x7289DA
-    )
-
-    realm_emoji = "🌍" if current_player["realm"] == "Mortal Realm" else "🌟" if current_player["realm"] == "Immortal Realm" else "✨"
-
-    embed.add_field(name="Rank", value=f"#{player_rank} / {total_players}", inline=True)
-    embed.add_field(name="Percentile", value=f"Top {percentile:.1f}%", inline=True)
-    embed.add_field(name="Score", value=f"{player_score:.1f}", inline=True)
-    embed.add_field(name="Realm", value=f"{realm_emoji} {current_player['realm']}", inline=True)
-    embed.add_field(name="Stage", value=current_player["stage"], inline=True)
-    embed.add_field(name="Power", value=current_player["total_power"], inline=True)
-
-    # Progress to next rank
-    if player_rank > 1:
-        next_rank_score = all_scores[player_rank - 2][1]  # Score of player above
-        score_needed = next_rank_score - player_score
-        embed.add_field(
-            name="Next Rank Progress", 
-            value=f"Need {score_needed:.1f} score to reach rank #{player_rank-1}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-# ===============================
 # Command: backup (admin only)
 # ===============================
 @bot.command()
@@ -2171,277 +1953,7 @@ async def stats(ctx):
     await ctx.send(embed=embed)
 
 # ===============================
-# DEV COMMANDS (Developer Only)
-# ===============================
-# List of developer user IDs (ganti dengan ID Discord Anda)
-DEVELOPER_IDS = ["877390433519562842"]
-
-def is_developer():
-    """Check if user is a developer"""
-    async def predicate(ctx):
-        if str(ctx.author.id) not in DEVELOPER_IDS:
-            await ctx.send("❌ This command is for developers only!")
-            return False
-        return True
-    return commands.check(predicate)
-
-@bot.command()
-@is_developer()
-async def dev_stats(ctx):
-    """Detailed server statistics for developers"""
-    data = load_data()
-    stats = data["server_stats"]
-    players = data["players"]
-
-    # Calculate various metrics
-    total_power = sum(p["total_power"] for p in players.values())
-    avg_power = total_power / len(players) if players else 0
-    max_power = max((p["total_power"] for p in players.values()), default=0)
-
-    # Count players by realm
-    realm_counts = {}
-    for p in players.values():
-        realm = p["realm"]
-        realm_counts[realm] = realm_counts.get(realm, 0) + 1
-
-    # Count equipment usage
-    equipment_counts = {}
-    for p in players.values():
-        for item_id in p["equipment"]:
-            equipment_counts[item_id] = equipment_counts.get(item_id, 0) + 1
-
-    embed = discord.Embed(
-        title="🔧 Developer Statistics",
-        color=0x9932cc
-    )
-
-    embed.add_field(name="Total Players", value=data["total_players"], inline=True)
-    embed.add_field(name="Active Players", value=len(players), inline=True)
-    embed.add_field(name="Average Power", value=f"{avg_power:.1f}", inline=True)
-    embed.add_field(name="Max Power", value=max_power, inline=True)
-    embed.add_field(name="Total PvP Battles", value=stats["total_pvp_battles"], inline=True)
-    embed.add_field(name="Total Breakthroughs", value=stats["total_breakthroughs"], inline=True)
-
-    # Realm distribution
-    realm_text = "\n".join([f"{realm}: {count}" for realm, count in realm_counts.items()])
-    embed.add_field(name="Realm Distribution", value=realm_text, inline=False)
-
-    # File size info
-    file_size = os.path.getsize(DATA_FILE) if os.path.exists(DATA_FILE) else 0
-    embed.add_field(name="Data File Size", value=f"{file_size/1024:.1f} KB", inline=True)
-
-    # Backup count
-    backup_count = len([f for f in os.listdir(BACKUP_DIR) if f.startswith("backup_")]) if os.path.exists(BACKUP_DIR) else 0
-    embed.add_field(name="Backup Count", value=backup_count, inline=True)
-
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_player(ctx, user: discord.Member = None):
-    """View detailed player data (developer only)"""
-    target_user = user or ctx.author
-    p = get_player(target_user.id)
-
-    embed = discord.Embed(
-        title=f"🔍 Player Data: {target_user.name}",
-        color=0x9932cc
-    )
-
-    embed.add_field(name="User ID", value=target_user.id, inline=True)
-    embed.add_field(name="Realm", value=p["realm"], inline=True)
-    embed.add_field(name="Stage", value=p["stage"], inline=True)
-    embed.add_field(name="EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
-    embed.add_field(name="Qi", value=p["qi"], inline=True)
-    embed.add_field(name="Spirit Stones", value=p["spirit_stones"], inline=True)
-    embed.add_field(name="Base Power", value=p["base_power"], inline=True)
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    embed.add_field(name="PvP Record", value=f"{p['pvp_wins']}W/{p['pvp_losses']}L", inline=True)
-    embed.add_field(name="Dungeons Completed", value=p["dungeons_completed"], inline=True)
-    embed.add_field(name="Techniques Learned", value=p["techniques_learned"], inline=True)
-    embed.add_field(name="Created At", value=p["created_at"][:10], inline=True)
-
-    # Equipment list
-    if p["equipment"]:
-        equip_text = "\n".join([f"{item_id}: +{power}" for item_id, power in p["equipment"].items()])
-        embed.add_field(name="Equipment", value=equip_text, inline=False)
-
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_give(ctx, user: discord.Member, resource: str, amount: int):
-    """Give resources to a player (developer only)"""
-    valid_resources = ["exp", "qi", "spirit_stones", "power"]
-
-    if resource not in valid_resources:
-        return await ctx.send(f"❌ Invalid resource! Available: {', '.join(valid_resources)}")
-
-    p = get_player(user.id)
-
-    if resource == "exp":
-        p["exp"] = min(p["exp"] + amount, get_exp_cap(p))
-    elif resource == "qi":
-        p["qi"] += amount
-    elif resource == "spirit_stones":
-        p["spirit_stones"] += amount
-    elif resource == "power":
-        p["base_power"] += amount
-        p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
-
-    update_player(user.id, p)
-
-    await ctx.send(f"✅ Gave {amount} {resource} to {user.mention}")
-
-@bot.command()
-@is_developer()
-async def dev_set_realm(ctx, user: discord.Member, realm: str, stage: str = None):
-    """Set player's realm and stage (developer only)"""
-    if realm not in REALMS:
-        return await ctx.send(f"❌ Invalid realm! Available: {', '.join(REALMS.keys())}")
-
-    p = get_player(user.id)
-
-    if stage and stage not in REALMS[realm]["stages"]:
-        return await ctx.send(f"❌ Invalid stage for {realm}!")
-
-    p["realm"] = realm
-    if stage:
-        p["stage"] = stage
-    else:
-        p["stage"] = REALMS[realm]["stages"][0]
-
-    p["exp"] = 0
-    update_player(user.id, p)
-
-    await ctx.send(f"✅ Set {user.mention} to {realm} - {p['stage']}")
-
-@bot.command()
-@is_developer()
-async def dev_reset_player(ctx, user: discord.Member):
-    """Reset player data (developer only)"""
-    data = load_data()
-    uid_str = str(user.id)
-
-    if uid_str in data["players"]:
-        del data["players"][uid_str]
-        data["total_players"] = max(0, data["total_players"] - 1)
-        save_data(data)
-        await ctx.send(f"✅ Reset player data for {user.mention}")
-    else:
-        await ctx.send(f"❌ Player {user.mention} not found!")
-
-@bot.command()
-@is_developer()
-async def dev_reload_data(ctx):
-    """Reload data from file (developer only)"""
-    global data
-    data = load_data()
-    await ctx.send("✅ Data reloaded from file!")
-
-@bot.command()
-@is_developer()
-async def dev_force_backup(ctx):
-    """Force immediate backup (developer only)"""
-    if backup_data():
-        await ctx.send("✅ Backup created successfully!")
-    else:
-        await ctx.send("❌ Failed to create backup!")
-
-@bot.command()
-@is_developer()
-async def dev_list_backups(ctx):
-    """List all backups (developer only)"""
-    if not os.path.exists(BACKUP_DIR):
-        return await ctx.send("❌ No backup directory found!")
-
-    backups = [f for f in os.listdir(BACKUP_DIR) if f.startswith("backup_") and f.endswith(".json")]
-    backups.sort(reverse=True)
-
-    if not backups:
-        return await ctx.send("❌ No backups found!")
-
-    embed = discord.Embed(
-        title="📦 Backup Files",
-        color=0x9932cc
-    )
-
-    for backup in backups[:10]:  # Show last 10 backups
-        backup_path = os.path.join(BACKUP_DIR, backup)
-        size = os.path.getsize(backup_path)
-        timestamp = backup.replace("backup_", "").replace(".json", "")
-        date_str = datetime.datetime.fromtimestamp(int(timestamp)).strftime("%Y-%m-%d %H:%M")
-
-        embed.add_field(
-            name=backup,
-            value=f"Size: {size/1024:.1f} KB\nCreated: {date_str}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_restore_backup(ctx, backup_name: str):
-    """Restore from specific backup (developer only)"""
-    backup_path = os.path.join(BACKUP_DIR, backup_name)
-
-    if not os.path.exists(backup_path):
-        return await ctx.send("❌ Backup file not found!")
-
-    try:
-        # Create backup of current data first
-        backup_data()
-
-        # Restore from specified backup
-        shutil.copy2(backup_path, DATA_FILE)
-
-        # Reload data
-        global data
-        data = load_data()
-
-        await ctx.send(f"✅ Successfully restored from {backup_name}")
-    except Exception as e:
-        await ctx.send(f"❌ Error restoring backup: {e}")
-
-@bot.command()
-@is_developer()
-async def dev_broadcast(ctx, *, message: str):
-    """Broadcast message to all players (developer only)"""
-    # This would typically send a message to all users who have interacted with the bot
-    # For now, just confirm the command
-    await ctx.send(f"📢 Broadcast message prepared:\n{message}\n\n*(This would be sent to all players in a real implementation)*")
-
-@bot.command()
-@is_developer()
-async def dev_help(ctx):
-    """Show developer commands help (developer only)"""
-    embed = discord.Embed(
-        title="🔧 Developer Commands Help",
-        color=0x9932cc
-    )
-
-    commands_list = [
-        ("!dev_stats", "Detailed server statistics"),
-        ("!dev_player [@user]", "View detailed player data"),
-        ("!dev_give @user resource amount", "Give resources to player (exp/qi/spirit_stones/power)"),
-        ("!dev_set_realm @user realm [stage]", "Set player's realm and stage"),
-        ("!dev_reset_player @user", "Reset player data"),
-        ("!dev_reload_data", "Reload data from file"),
-        ("!dev_force_backup", "Force immediate backup"),
-        ("!dev_list_backups", "List all backup files"),
-        ("!dev_restore_backup filename", "Restore from specific backup"),
-        ("!dev_broadcast message", "Broadcast message to all players"),
-        ("!dev_help", "This help message")
-    ]
-
-    for cmd, desc in commands_list:
-        embed.add_field(name=cmd, value=desc, inline=False)
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: help (COMPREHENSIVE) - UPDATED
+# Command: help (COMPREHENSIVE)
 # ===============================
 # Remove default help command first
 bot.remove_command('help')
@@ -2449,7 +1961,7 @@ bot.remove_command('help')
 @bot.command(name='help')
 async def help_command(ctx, category: str = None):
     """Comprehensive help system with categories"""
-
+    
     if category is None:
         # Main help menu
         embed = discord.Embed(
@@ -2457,7 +1969,7 @@ async def help_command(ctx, category: str = None):
             description="A comprehensive cultivation RPG bot with idle mechanics, real-time battles, and progression systems!",
             color=0x7289da
         )
-
+        
         embed.add_field(
             name="📚 Command Categories",
             value="Use `!help <category>` for detailed commands:\n\n"
@@ -2465,40 +1977,38 @@ async def help_command(ctx, category: str = None):
                   "⚔️ **combat** - PvP battles and dungeons\n"
                   "🛒 **economy** - Shop, equipment, and trading\n"
                   "📊 **info** - Stats, progress, and information\n"
-                  "🏆 **ranking** - Leaderboards and competition\n"
                   "🔧 **system** - Bot utilities and admin\n",
             inline=False
         )
-
+        
         embed.add_field(
             name="🚀 Quick Start",
             value="`!status` - Check your cultivation status\n"
                   "`!cultivate` - Manual cultivation session\n"
                   "`!start_cultivate` - Start idle cultivation\n"
-                  "`!realms` - View cultivation realms\n"
-                  "`!leaderboard` - See cultivation rankings",
+                  "`!realms` - View cultivation realms",
             inline=False
         )
-
+        
         embed.add_field(
             name="💡 Pro Tips",
             value="• Use idle cultivation for passive EXP gain (410+ EXP/hour!)\n"
                   "• Complete dungeons for bonus rewards\n"
                   "• Learn techniques to boost your power\n"
                   "• Challenge other players in PvP battles\n"
-                  "• Check your rank with `!myrank`",
+                  "• Check `!help cultivation` for all cultivation commands",
             inline=False
         )
-
+        
         embed.set_footer(text="🌟 Start your journey to immortality today! Use !help <category> for specific commands.")
-
+        
     elif category.lower() == "cultivation":
         embed = discord.Embed(
             title="🧘 Cultivation Commands",
             description="Master the path of cultivation and ascend through the realms!",
             color=0x00ff00
         )
-
+        
         embed.add_field(
             name="📈 Progress & Info",
             value="`!status` - Your comprehensive stats\n"
@@ -2508,7 +2018,7 @@ async def help_command(ctx, category: str = None):
                   "`!breakthrough` - Advance to next stage/realm",
             inline=False
         )
-
+        
         embed.add_field(
             name="🧘 Cultivation Methods",
             value="`!cultivate` - Manual cultivation (1min cooldown)\n"
@@ -2517,7 +2027,7 @@ async def help_command(ctx, category: str = None):
                   "`!cultivate_status` - Check idle progress",
             inline=False
         )
-
+        
         embed.add_field(
             name="📜 Techniques",
             value="`!find_technique` - Discover techniques (1hr cooldown)\n"
@@ -2525,39 +2035,39 @@ async def help_command(ctx, category: str = None):
                   "`!my_techniques` - View learned techniques",
             inline=False
         )
-
+        
         embed.set_footer(text="💫 Idle cultivation gains: 410+ EXP/hour, 405+ Qi/hour, 400+ Spirit Stones/hour!")
-
+        
     elif category.lower() == "combat":
         embed = discord.Embed(
             title="⚔️ Combat Commands",
             description="Engage in battles and prove your cultivation prowess!",
             color=0xff0000
         )
-
+        
         embed.add_field(
             name="🥊 Player vs Player",
             value="`!pvp @user` - Challenge player to battle (5min cooldown)\n"
                   "`!pvp_rank` - View PvP leaderboard",
             inline=False
         )
-
+        
         embed.add_field(
             name="🏰 Dungeons",
             value="`!dungeons` - List available dungeons\n"
                   "`!enter <dungeon_name>` - Enter dungeon (5min cooldown)",
             inline=False
         )
-
+        
         embed.set_footer(text="⚡ Higher power increases success chance in combat!")
-
+        
     elif category.lower() == "economy":
         embed = discord.Embed(
             title="🛒 Economy Commands",
             description="Manage your resources and equipment!",
             color=0xffd700
         )
-
+        
         embed.add_field(
             name="🏪 Shopping",
             value="`!shop` - Browse available equipment\n"
@@ -2565,24 +2075,23 @@ async def help_command(ctx, category: str = None):
                   "Example: `!buy iron_sword`",
             inline=False
         )
-
+        
         embed.add_field(
             name="🎒 Inventory",
             value="`!inventory` - View your equipment\n"
-                  "`!sell <item_name>` - Sell equipment for Qi\n"
-                  "`!enchant <item_name>` - Enhance equipment",
+                  "`!sell <item_name>` - Sell equipment for Qi",
             inline=False
         )
-
+        
         embed.set_footer(text="💰 Earn Qi through cultivation and spend it wisely!")
-
+        
     elif category.lower() == "info":
         embed = discord.Embed(
             title="📊 Information Commands",
             description="Get detailed information about your progress and the server!",
             color=0x7289da
         )
-
+        
         embed.add_field(
             name="📈 Statistics",
             value="`!status` - Your complete cultivation status\n"
@@ -2590,63 +2099,42 @@ async def help_command(ctx, category: str = None):
                   "`!ping` - Check bot response time",
             inline=False
         )
-
+        
         embed.set_footer(text="📋 Stay informed about your cultivation journey!")
-
-    elif category.lower() == "ranking":
-        embed = discord.Embed(
-            title="🏆 Ranking Commands",
-            description="Compete with other cultivators and see your progress!",
-            color=0xFFD700
-        )
-
-        embed.add_field(
-            name="📊 Leaderboards",
-            value="`!leaderboard` - Full cultivation leaderboard\n"
-                  "`!leaderboard 2` - Page 2 of leaderboard\n"
-                  "`!top` - Top 5 cultivators\n"
-                  "`!top 10` - Top 10 cultivators\n"
-                  "`!myrank` - Your current rank and stats\n"
-                  "`!pvp_rank` - PvP leaderboard",
-            inline=False
-        )
-
-        embed.set_footer(text="👑 Climb the ranks to become the ultimate cultivator!")
-
+        
     elif category.lower() == "system":
         embed = discord.Embed(
             title="🔧 System Commands",
             description="Bot utilities and administrative functions!",
             color=0x9932cc
         )
-
+        
         embed.add_field(
             name="🔧 Utilities",
             value="`!ping` - Check bot latency\n"
                   "`!backup` - Create manual backup (Admin only)",
             inline=False
         )
-
+        
         embed.set_footer(text="⚙️ System commands help maintain the bot!")
-
+        
     else:
         embed = discord.Embed(
             title="❌ Unknown Category",
             description=f"Category '{category}' not found!",
             color=0xff0000
         )
-
+        
         embed.add_field(
             name="Available Categories:",
             value="• `cultivation` - Core cultivation commands\n"
                   "• `combat` - PvP and dungeons\n"
                   "• `economy` - Shop and inventory\n"
                   "• `info` - Statistics and information\n"
-                  "• `ranking` - Leaderboards and competition\n"
                   "• `system` - Bot utilities",
             inline=False
         )
-
+    
     await ctx.send(embed=embed)
 
 # ===============================
