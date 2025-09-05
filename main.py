@@ -2808,6 +2808,206 @@ async def dev_broadcast(ctx, *, message: str):
 
 @bot.command()
 @is_developer()
+async def dev_find_player(ctx, *, search_term: str):
+    """Find players by username or partial match (developer only)"""
+    data = load_data()
+    players = data["players"]
+    
+    found_players = []
+    search_term = search_term.lower()
+    
+    for uid, pdata in players.items():
+        try:
+            user = await bot.fetch_user(int(uid))
+            if search_term in user.name.lower():
+                found_players.append((uid, user.name, pdata))
+        except:
+            if search_term in uid:
+                found_players.append((uid, f"Unknown User ({uid})", pdata))
+    
+    if not found_players:
+        return await ctx.send(f"❌ No players found matching '{search_term}'")
+    
+    embed = discord.Embed(
+        title=f"🔍 Players Found: '{search_term}'",
+        color=0x9932cc
+    )
+    
+    for uid, username, pdata in found_players[:10]:  # Limit to 10 results
+        embed.add_field(
+            name=f"{username}",
+            value=f"ID: {uid}\nRealm: {pdata['realm']}\nStage: {pdata['stage']}\nPower: {pdata['total_power']}",
+            inline=True
+        )
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+@is_developer()
+async def dev_top_players(ctx, metric: str = "power", count: int = 10):
+    """View top players by specific metric (developer only)"""
+    valid_metrics = ["power", "exp", "qi", "spirit_stones", "pvp_wins", "dungeons_completed"]
+    
+    if metric not in valid_metrics:
+        return await ctx.send(f"❌ Invalid metric! Available: {', '.join(valid_metrics)}")
+    
+    data = load_data()
+    players = data["players"]
+    
+    # Get metric value, handle different field names
+    def get_metric_value(pdata):
+        if metric == "power":
+            return pdata.get("total_power", 0)
+        return pdata.get(metric, 0)
+    
+    # Sort players by metric
+    sorted_players = []
+    for uid, pdata in players.items():
+        try:
+            user = await bot.fetch_user(int(uid))
+            username = user.name
+        except:
+            username = f"Unknown ({uid})"
+        
+        value = get_metric_value(pdata)
+        sorted_players.append((username, value, pdata["realm"], pdata["stage"]))
+    
+    sorted_players.sort(key=lambda x: x[1], reverse=True)
+    sorted_players = sorted_players[:count]
+    
+    embed = discord.Embed(
+        title=f"📊 Top {count} Players by {metric.title()}",
+        color=0x9932cc
+    )
+    
+    for i, (username, value, realm, stage) in enumerate(sorted_players, 1):
+        embed.add_field(
+            name=f"#{i} {username}",
+            value=f"{metric.title()}: {value:,}\n{realm} - {stage}",
+            inline=True
+        )
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+@is_developer()
+async def dev_purge_inactive(ctx, days: int = 30):
+    """Remove players inactive for X days (developer only)"""
+    if days < 7:
+        return await ctx.send("❌ Minimum 7 days required for safety!")
+    
+    data = load_data()
+    players = data["players"]
+    
+    cutoff_date = datetime.datetime.now() - datetime.timedelta(days=days)
+    inactive_players = []
+    
+    for uid, pdata in players.items():
+        try:
+            last_updated = datetime.datetime.fromisoformat(pdata.get("last_updated", "2025-01-01T00:00:00"))
+            if last_updated < cutoff_date:
+                try:
+                    user = await bot.fetch_user(int(uid))
+                    username = user.name
+                except:
+                    username = f"Unknown ({uid})"
+                inactive_players.append((uid, username, last_updated))
+        except:
+            continue
+    
+    if not inactive_players:
+        return await ctx.send(f"✅ No inactive players found (>{days} days)")
+    
+    embed = discord.Embed(
+        title=f"⚠️ Inactive Players (>{days} days)",
+        description=f"Found {len(inactive_players)} inactive players\nUse `!dev_confirm_purge` to remove them",
+        color=0xff9900
+    )
+    
+    for uid, username, last_updated in inactive_players[:10]:
+        days_inactive = (datetime.datetime.now() - last_updated).days
+        embed.add_field(
+            name=username,
+            value=f"Inactive: {days_inactive} days\nLast seen: {last_updated.date()}",
+            inline=True
+        )
+    
+    # Store for confirmation
+    if not hasattr(bot, 'pending_purge'):
+        bot.pending_purge = {}
+    bot.pending_purge[ctx.author.id] = [uid for uid, _, _ in inactive_players]
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+@is_developer()
+async def dev_confirm_purge(ctx):
+    """Confirm and execute player purge (developer only)"""
+    if not hasattr(bot, 'pending_purge') or ctx.author.id not in bot.pending_purge:
+        return await ctx.send("❌ No pending purge found! Use `!dev_purge_inactive` first")
+    
+    to_purge = bot.pending_purge[ctx.author.id]
+    data = load_data()
+    
+    # Create backup before purging
+    backup_data()
+    
+    # Remove players
+    removed_count = 0
+    for uid in to_purge:
+        if uid in data["players"]:
+            del data["players"][uid]
+            removed_count += 1
+    
+    data["total_players"] = max(0, data["total_players"] - removed_count)
+    save_data(data)
+    
+    # Clean up pending purge
+    del bot.pending_purge[ctx.author.id]
+    
+    await ctx.send(f"✅ Purged {removed_count} inactive players and created backup!")
+
+@bot.command()
+@is_developer()
+async def dev_system_info(ctx):
+    """Show system and bot information (developer only)"""
+    import psutil
+    import sys
+    
+    # Get system info
+    memory_info = psutil.virtual_memory()
+    cpu_percent = psutil.cpu_percent(interval=1)
+    
+    embed = discord.Embed(
+        title="🖥️ System Information",
+        color=0x9932cc
+    )
+    
+    embed.add_field(name="Python Version", value=f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}", inline=True)
+    embed.add_field(name="Discord.py Version", value=discord.__version__, inline=True)
+    embed.add_field(name="Bot Latency", value=f"{round(bot.latency * 1000)}ms", inline=True)
+    
+    embed.add_field(name="Memory Usage", value=f"{memory_info.percent}%", inline=True)
+    embed.add_field(name="CPU Usage", value=f"{cpu_percent}%", inline=True)
+    embed.add_field(name="Bot Uptime", value="Running", inline=True)
+    
+    embed.add_field(name="Active Cultivations", value=len(ACTIVE_CULTIVATIONS), inline=True)
+    embed.add_field(name="Active Battles", value=len(ACTIVE_BATTLES), inline=True)
+    embed.add_field(name="Connected Guilds", value=len(bot.guilds), inline=True)
+    
+    # File sizes
+    data_size = os.path.getsize(DATA_FILE) if os.path.exists(DATA_FILE) else 0
+    backup_size = sum(os.path.getsize(os.path.join(BACKUP_DIR, f)) 
+                     for f in os.listdir(BACKUP_DIR) 
+                     if f.startswith("backup_")) if os.path.exists(BACKUP_DIR) else 0
+    
+    embed.add_field(name="Data File Size", value=f"{data_size/1024:.1f} KB", inline=True)
+    embed.add_field(name="Total Backup Size", value=f"{backup_size/1024:.1f} KB", inline=True)
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+@is_developer()
 async def dev_help(ctx):
     """Show developer commands help (developer only)"""
     embed = discord.Embed(
@@ -2818,9 +3018,14 @@ async def dev_help(ctx):
     commands_list = [
         ("!dev_stats", "Detailed server statistics"),
         ("!dev_player [@user]", "View detailed player data"),
-        ("!dev_give @user resource amount", "Give resources to player (exp/qi/spirit_stones/power)"),
+        ("!dev_find_player <name>", "Find players by username"),
+        ("!dev_top_players [metric] [count]", "Top players by metric (power/exp/qi/etc)"),
+        ("!dev_give @user resource amount", "Give resources to player"),
         ("!dev_set_realm @user realm [stage]", "Set player's realm and stage"),
         ("!dev_reset_player @user", "Reset player data"),
+        ("!dev_purge_inactive [days]", "Find inactive players"),
+        ("!dev_confirm_purge", "Confirm player purge"),
+        ("!dev_system_info", "System and bot information"),
         ("!dev_reload_data", "Reload data from file"),
         ("!dev_force_backup", "Force immediate backup"),
         ("!dev_list_backups", "List all backup files"),
