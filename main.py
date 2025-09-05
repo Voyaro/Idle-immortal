@@ -401,8 +401,15 @@ def get_player_level(p):
     return (realm_idx * 100) + (stage_idx * 3) + 1
 
 def get_exp_cap(p):
-    """Dapatkan EXP cap untuk realm player"""
-    return REALMS[p["realm"]]["exp_cap"]
+    """Dapatkan EXP cap untuk stage player saat ini"""
+    realm_data = REALMS[p["realm"]]
+    stage_idx = realm_data["stages"].index(p["stage"])
+    
+    # Each stage has its own EXP cap based on breakthrough requirements
+    base_exp = (stage_idx + 1) * 100  # 100, 200, 300, etc.
+    exp_cap = int(base_exp * realm_data["exp_multiplier"])
+    
+    return exp_cap
 
 def generate_random_technique(player_realm, player_stage):
     """Generate random cultivation technique dengan AI"""
@@ -970,28 +977,34 @@ async def realms(ctx):
     """Lihat semua realm dan stages dengan detail"""
     embed = discord.Embed(
         title="🌌 Cultivation Realms Hierarchy",
-        description="Path to immortality and beyond",
+        description="Path to immortality and beyond\n*Each stage has its own EXP requirement for breakthrough*",
         color=0x7289da
     )
 
     for realm_name, realm_data in REALMS.items():
+        # Show EXP progression for stages
+        stage_count = len(realm_data["stages"])
+        first_stage_exp = int(100 * realm_data["exp_multiplier"])
+        last_stage_exp = int(stage_count * 100 * realm_data["exp_multiplier"])
+        
         # Create a compact stage list
         stages_list = " → ".join(realm_data["stages"])
 
         # Due to Discord character limits, we'll show first few stages and indicate total
-        if len(stages_list) > 800:  # Keep within Discord embed field limits
-            first_5_stages = " → ".join(realm_data["stages"][:5])
-            stages_display = f"{first_5_stages} → ... ({len(realm_data['stages'])} total stages)"
+        if len(stages_list) > 600:  # Keep within Discord embed field limits
+            first_3_stages = " → ".join(realm_data["stages"][:3])
+            stages_display = f"{first_3_stages} → ... ({len(realm_data['stages'])} total stages)"
         else:
             stages_display = stages_list
 
         embed.add_field(
-            name=f"{realm_name} 🌟 ({len(realm_data['stages'])} Stages)",
-            value=f"**EXP Cap:** {realm_data['exp_cap']:,} | **Power:** {realm_data['power_multiplier']}× | **Stones:** {realm_data['spirit_stone_gain']}/cultivate\n\n"
+            name=f"{realm_name} 🌟 ({stage_count} Stages)",
+            value=f"**EXP Range:** {first_stage_exp:,} - {last_stage_exp:,} | **Power:** {realm_data['power_multiplier']}× | **Stones:** {realm_data['spirit_stone_gain']}/cultivate\n\n"
                   f"**Progression Path:**\n{stages_display}",
             inline=False
         )
 
+    embed.set_footer(text="💡 EXP needed = Stage Position × 100 × Realm Multiplier")
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1003,8 +1016,10 @@ async def myrealm(ctx):
     p = get_player(ctx.author.id)
     realm_data = REALMS[p["realm"]]
     current_stage_idx = realm_data["stages"].index(p["stage"])
+    current_exp_cap = get_exp_cap(p)
 
     next_stage = None
+    exp_needed = None
     if current_stage_idx + 1 < len(realm_data["stages"]):
         next_stage = realm_data["stages"][current_stage_idx + 1]
         exp_needed = int((current_stage_idx + 2) * 100 * realm_data["exp_multiplier"])
@@ -1013,7 +1028,7 @@ async def myrealm(ctx):
         if realm_idx + 1 < len(REALM_ORDER):
             next_realm = REALM_ORDER[realm_idx + 1]
             next_stage = f"Ascend to {next_realm}"
-            exp_needed = 1000
+            exp_needed = current_exp_cap
 
     embed = discord.Embed(
         title=f"🌠 {ctx.author.name}'s Realm Progress",
@@ -1022,7 +1037,7 @@ async def myrealm(ctx):
 
     embed.add_field(
         name="Current Realm",
-        value=f"**{p['realm']}**\nEXP Cap: {realm_data['exp_cap']:,}",
+        value=f"**{p['realm']}**",
         inline=True
     )
 
@@ -1034,22 +1049,22 @@ async def myrealm(ctx):
 
     embed.add_field(
         name="EXP Progress",
-        value=f"{p['exp']}/{realm_data['exp_cap']}",
+        value=f"{p['exp']}/{current_exp_cap}",
         inline=True
     )
 
-    if next_stage:
+    if next_stage and exp_needed:
         embed.add_field(
             name="Next Breakthrough",
-            value=f"**{next_stage}**\nButuh: {exp_needed} EXP",
+            value=f"**{next_stage}**\nNeeded: {exp_needed} EXP",
             inline=False
         )
 
-    progress_percentage = min(100, (p["exp"] / realm_data["exp_cap"]) * 100)
+    progress_percentage = min(100, (p["exp"] / current_exp_cap) * 100)
     progress_bar = "█" * int(progress_percentage / 10) + "░" * (10 - int(progress_percentage / 10))
 
     embed.add_field(
-        name="Overall Progress",
+        name="Current Stage Progress",
         value=f"```[{progress_bar}] {progress_percentage:.1f}%```",
         inline=False
     )
@@ -1066,7 +1081,8 @@ async def progress(ctx):
 
     realm_data = REALMS[p["realm"]]
     current_stage_idx = realm_data["stages"].index(p["stage"])
-    stage_progress = (current_stage_idx + 1) / len(realm_data["stages"]) * 100
+    current_exp_cap = get_exp_cap(p)
+    stage_progress = (p["exp"] / current_exp_cap) * 100
 
     total_stages = sum(len(REALMS[realm]["stages"]) for realm in REALMS)
     current_global_stage = 0
@@ -1092,6 +1108,12 @@ async def progress(ctx):
         inline=False
     )
 
+    embed.add_field(
+        name="Current Stage Progress",
+        value=f"EXP: {p['exp']}/{current_exp_cap} ({stage_progress:.1f}%)",
+        inline=False
+    )
+
     global_bar = "█" * int(global_progress / 10) + "░" * (10 - int(global_progress / 10))
     embed.add_field(
         name="Global Progress",
@@ -1099,17 +1121,22 @@ async def progress(ctx):
         inline=False
     )
 
-    if p["realm"] != "God Realm" or p["stage"] != "God King [Peak]":
+    if p["realm"] != "God Realm" or p["stage"] != "Universe Creator [Peak]":
         next_milestone = ""
+        next_exp_needed = 0
         if current_stage_idx + 1 < len(realm_data["stages"]):
             next_milestone = realm_data["stages"][current_stage_idx + 1]
+            next_exp_needed = int((current_stage_idx + 2) * 100 * realm_data["exp_multiplier"])
         else:
             next_realm_idx = REALM_ORDER.index(p["realm"]) + 1
-            next_milestone = REALM_ORDER[next_realm_idx]
+            if next_realm_idx < len(REALM_ORDER):
+                next_milestone = REALM_ORDER[next_realm_idx]
+                next_realm_data = REALMS[REALM_ORDER[next_realm_idx]]
+                next_exp_needed = int(100 * next_realm_data["exp_multiplier"])
 
         embed.add_field(
             name="Next Milestone",
-            value=f"**{next_milestone}**",
+            value=f"**{next_milestone}**\nNeeded: {next_exp_needed} EXP",
             inline=True
         )
 
@@ -1258,20 +1285,22 @@ async def breakthrough(ctx):
     realm_data = REALMS[p["realm"]]
     stages = realm_data["stages"]
     idx = stages.index(p["stage"])
+    
+    # Current stage EXP cap is the breakthrough requirement
+    exp_cap = get_exp_cap(p)
 
-    base_exp = (idx + 1) * 100
-    exp_needed = int(base_exp * realm_data["exp_multiplier"])
-
-    if p["exp"] < exp_needed:
-        return await ctx.send(f"❌ Not enough EXP. You need {exp_needed} to breakthrough!")
+    if p["exp"] < exp_cap:
+        return await ctx.send(f"❌ Not enough EXP. You need {exp_cap} EXP to breakthrough! (Current: {p['exp']}/{exp_cap})")
 
     if idx + 1 < len(stages):
+        # Advance to next stage in same realm
         p["stage"] = stages[idx + 1]
         p["exp"] = 0
         p["base_power"] += 15
         p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
         message = f"🔥 {ctx.author.mention} broke through to **{p['stage']}**!"
     else:
+        # Advance to next realm
         r_idx = REALM_ORDER.index(p["realm"])
         if r_idx + 1 < len(REALM_ORDER):
             next_realm = REALM_ORDER[r_idx + 1]
