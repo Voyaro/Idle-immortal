@@ -2,16 +2,16 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Body Refining [Middle]",
-            "exp": 359,
+            "stage": "Body Refining [Peak]",
+            "exp": 0,
             "qi": 764,
             "spirit_stones": 323,
             "equipment": {},
             "techniques": [],
             "current_technique": null,
             "sect": null,
-            "base_power": 529,
-            "total_power": 529,
+            "base_power": 544,
+            "total_power": 544,
             "pvp_wins": 2,
             "pvp_losses": 0,
             "last_pvp": "1757015734.4743714",
@@ -20,29 +20,11 @@
             "dungeons_completed": 1,
             "techniques_learned": 0,
             "created_at": "2025-09-04T17:48:27.977172",
-            "last_updated": "2025-09-05T05:11:05.056724"
-        },
-        "1090452614212231201": {
-            "realm": "Mortal Realm",
-            "stage": "Nirvana [Peak]",
-            "exp": 0,
-            "qi": 0,
-            "spirit_stones": 50,
-            "equipment": {},
-            "techniques": [],
-            "current_technique": null,
-            "sect": null,
-            "base_power": 10,
-            "total_power": 10,
-            "pvp_wins": 0,
-            "pvp_losses": 0,
-            "last_pvp": "0",
-            "last_dungeon": "0",
-            "last_technique_find": "0",
-            "dungeons_completed": 0,
-            "techniques_learned": 0,
-            "created_at": "2025-09-04T19:10:06.833142",
-            "last_updated": "2025-09-05T05:53:24.512858"
+            "last_updated": "2025-09-05T08:42:40.479919",
+            "guild": null,
+            "guild_role": null,
+            "last_daily_quest": "0",
+            "daily_streak": 0
         },
         "1413181137802756288": {
             "realm": "Mortal Realm",
@@ -112,12 +94,12 @@
         }
     },
     "last_backup": 0,
-    "total_players": 5,
+    "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 2,
         "total_breakthroughs": 1,
         "total_dungeons": 1,
         "total_techniques_learned": 0,
-        "last_update": "2025-09-05T07:56:45.879559"
+        "last_update": "2025-09-05T08:42:40.480176"
     }
 }

@@ -2,16 +2,16 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Body Refining [Middle]",
-            "exp": 359,
+            "stage": "Body Refining [Peak]",
+            "exp": 0,
             "qi": 764,
             "spirit_stones": 323,
             "equipment": {},
             "techniques": [],
             "current_technique": null,
             "sect": null,
-            "base_power": 529,
-            "total_power": 529,
+            "base_power": 544,
+            "total_power": 544,
             "pvp_wins": 2,
             "pvp_losses": 0,
             "last_pvp": "1757015734.4743714",
@@ -20,7 +20,11 @@
             "dungeons_completed": 1,
             "techniques_learned": 0,
             "created_at": "2025-09-04T17:48:27.977172",
-            "last_updated": "2025-09-05T05:11:05.056724"
+            "last_updated": "2025-09-05T08:42:40.479919",
+            "guild": null,
+            "guild_role": null,
+            "last_daily_quest": "0",
+            "daily_streak": 0
         },
         "1413181137802756288": {
             "realm": "Mortal Realm",
@@ -93,9 +97,9 @@
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 2,
-        "total_breakthroughs": 1,
+        "total_breakthroughs": 2,
         "total_dungeons": 1,
         "total_techniques_learned": 0,
-        "last_update": "2025-09-05T08:02:34.655495"
+        "last_update": "2025-09-05T08:42:51.233826"
     }
 }
