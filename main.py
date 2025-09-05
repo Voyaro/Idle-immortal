@@ -574,7 +574,7 @@ def create_progress_bar(current, maximum, length=10, filled_char="█", empty_ch
     """Create visual progress bar"""
     if maximum == 0:
         return empty_char * length
-    
+
     progress = min(1.0, current / maximum)
     filled_length = int(length * progress)
     bar = filled_char * filled_length + empty_char * (length - filled_length)
@@ -871,6 +871,16 @@ async def idle_cultivation_task(user_id, player_data, realm_data):
             spirit_stones_gain = random.randint(1, realm_data["spirit_stone_gain"])
 
             # Adjust gain jika melebihi cap
+            if p["exp"] + gain > exp_cap:
+                gain = exp_cap - p["exp"]
+
+            # Update player
+            p["exp"] += gain
+            p["qi"] += qi_gain
+            p["base_power"] += power_gain
+            p["spirit_stones"] += spirit_stones_gain
+
+            # Update power jika melebihi cap
             if p["exp"] + gain > exp_cap:
                 gain = exp_cap - p["exp"]
 
@@ -1458,7 +1468,7 @@ async def status(ctx):
         value=f"```{create_progress_bar(p['exp'], exp_cap, 15)}```",
         inline=False
     )
-    
+
     # Guild info if member
     if p.get("guild"):
         data = load_data()
@@ -1584,34 +1594,34 @@ async def leave_guild(ctx):
     """Leave your current guild"""
     p = get_player(ctx.author.id)
     data = load_data()
-    
+
     if not p["guild"]:
         return await ctx.send("❌ You're not in any guild!")
-    
+
     guild_id = p["guild"]
     guild_data = data["guilds"][guild_id]
-    
+
     # Remove from guild
     if str(ctx.author.id) in guild_data["members"]:
         del guild_data["members"][str(ctx.author.id)]
-    
+
     # If was leader and guild has other members, transfer leadership
     if p["guild_role"] == "Leader" and len(guild_data["members"]) > 0:
         new_leader_id = list(guild_data["members"].keys())[0]
         guild_data["members"][new_leader_id] = "Leader"
         guild_data["leader"] = new_leader_id
-    
+
     # If no members left, delete guild
     if len(guild_data["members"]) == 0:
         del data["guilds"][guild_id]
-    
+
     # Update player
     p["guild"] = None
     p["guild_role"] = None
-    
+
     update_player(ctx.author.id, p)
     save_data(data)
-    
+
     await ctx.send(f"✅ {ctx.author.mention} left the guild!")
 
 @bot.command()
@@ -1622,12 +1632,12 @@ async def guild_benefits(ctx):
         description="Bonuses for guild members",
         color=0x7289da
     )
-    
+
     embed.add_field(name="EXP Bonus", value=f"+{GUILD_BENEFITS['exp_bonus']*100}%", inline=True)
     embed.add_field(name="Qi Bonus", value=f"+{GUILD_BENEFITS['qi_bonus']*100}%", inline=True)
     embed.add_field(name="Spirit Stone Bonus", value=f"+{GUILD_BENEFITS['spirit_stone_bonus']*100}%", inline=True)
     embed.add_field(name="Technique Discount", value=f"{GUILD_BENEFITS['technique_discount']*100}% off", inline=True)
-    
+
     embed.set_footer(text="Join a guild to enjoy these benefits!")
     await ctx.send(embed=embed)
 @bot.command()
@@ -1635,21 +1645,21 @@ async def create_guild(ctx, *, guild_name: str):
     """Create a cultivation guild"""
     p = get_player(ctx.author.id)
     data = load_data()
-    
+
     if p["guild"]:
         return await ctx.send("❌ You're already in a guild! Leave first with `!leave_guild`")
-    
+
     if p["spirit_stones"] < GUILD_COSTS["create"]:
         return await ctx.send(f"❌ Need {GUILD_COSTS['create']} Spirit Stones to create a guild!")
-    
+
     # Initialize guilds if not exists
     if "guilds" not in data:
         data["guilds"] = {}
-    
+
     guild_id = guild_name.lower().replace(" ", "_")
     if guild_id in data["guilds"]:
         return await ctx.send("❌ Guild name already exists!")
-    
+
     # Create guild
     data["guilds"][guild_id] = {
         "name": guild_name,
@@ -1660,15 +1670,15 @@ async def create_guild(ctx, *, guild_name: str):
         "treasury": 0,
         "created_at": datetime.datetime.now().isoformat()
     }
-    
+
     # Update player
     p["spirit_stones"] -= GUILD_COSTS["create"]
     p["guild"] = guild_id
     p["guild_role"] = "Leader"
-    
+
     update_player(ctx.author.id, p)
     save_data(data)
-    
+
     embed = discord.Embed(
         title="🏰 Guild Created!",
         description=f"{ctx.author.mention} created guild **{guild_name}**!",
@@ -1677,7 +1687,7 @@ async def create_guild(ctx, *, guild_name: str):
     embed.add_field(name="Guild Level", value="1", inline=True)
     embed.add_field(name="Members", value="1", inline=True)
     embed.add_field(name="Cost", value=f"{GUILD_COSTS['create']} Spirit Stones", inline=True)
-    
+
     await ctx.send(embed=embed)
 
 @bot.command()
@@ -1685,33 +1695,33 @@ async def join_guild(ctx, *, guild_name: str):
     """Join an existing guild"""
     p = get_player(ctx.author.id)
     data = load_data()
-    
+
     if p["guild"]:
         return await ctx.send("❌ You're already in a guild!")
-    
+
     if p["spirit_stones"] < GUILD_COSTS["join"]:
         return await ctx.send(f"❌ Need {GUILD_COSTS['join']} Spirit Stones to join a guild!")
-    
+
     if "guilds" not in data:
         return await ctx.send("❌ No guilds exist yet!")
-    
+
     guild_id = guild_name.lower().replace(" ", "_")
     if guild_id not in data["guilds"]:
         return await ctx.send("❌ Guild not found!")
-    
+
     guild_data = data["guilds"][guild_id]
     if len(guild_data["members"]) >= 20:  # Max 20 members
         return await ctx.send("❌ Guild is full! (Max 20 members)")
-    
+
     # Join guild
     guild_data["members"][str(ctx.author.id)] = "Member"
     p["spirit_stones"] -= GUILD_COSTS["join"]
     p["guild"] = guild_id
     p["guild_role"] = "Member"
-    
+
     update_player(ctx.author.id, p)
     save_data(data)
-    
+
     await ctx.send(f"✅ {ctx.author.mention} joined guild **{guild_data['name']}**!")
 
 @bot.command()
@@ -1719,10 +1729,10 @@ async def guild_info(ctx, *, guild_name: str = None):
     """View guild information"""
     data = load_data()
     p = get_player(ctx.author.id)
-    
+
     if "guilds" not in data:
         return await ctx.send("❌ No guilds exist yet!")
-    
+
     # Use player's guild if no name specified
     if not guild_name:
         if not p["guild"]:
@@ -1730,12 +1740,12 @@ async def guild_info(ctx, *, guild_name: str = None):
         guild_id = p["guild"]
     else:
         guild_id = guild_name.lower().replace(" ", "_")
-    
+
     if guild_id not in data["guilds"]:
         return await ctx.send("❌ Guild not found!")
-    
+
     guild_data = data["guilds"][guild_id]
-    
+
     # Get member list
     member_list = []
     for member_id, role in guild_data["members"].items():
@@ -1744,7 +1754,7 @@ async def guild_info(ctx, *, guild_name: str = None):
             member_list.append(f"{role}: {user.name}")
         except:
             member_list.append(f"{role}: Unknown User")
-    
+
     embed = discord.Embed(
         title=f"🏰 Guild: {guild_data['name']}",
         color=0x7289da
@@ -1754,7 +1764,7 @@ async def guild_info(ctx, *, guild_name: str = None):
     embed.add_field(name="Treasury", value=f"{guild_data['treasury']} Spirit Stones", inline=True)
     embed.add_field(name="Members List", value="\n".join(member_list), inline=False)
     embed.add_field(name="Created", value=guild_data["created_at"][:10], inline=True)
-    
+
     await ctx.send(embed=embed)
 
 @bot.command()
@@ -1762,26 +1772,26 @@ async def guild_donate(ctx, amount: int):
     """Donate Spirit Stones to guild treasury"""
     p = get_player(ctx.author.id)
     data = load_data()
-    
+
     if not p["guild"]:
         return await ctx.send("❌ You're not in any guild!")
-    
+
     if amount <= 0:
         return await ctx.send("❌ Donation amount must be positive!")
-        
+
     if p["spirit_stones"] < amount:
         return await ctx.send(f"❌ Not enough Spirit Stones! You have {p['spirit_stones']}")
-    
+
     guild_id = p["guild"]
     guild_data = data["guilds"][guild_id]
-    
+
     # Process donation
     p["spirit_stones"] -= amount
     guild_data["treasury"] += amount
-    
+
     update_player(ctx.author.id, p)
     save_data(data)
-    
+
     embed = discord.Embed(
         title="💰 Guild Donation",
         description=f"{ctx.author.mention} donated {amount} Spirit Stones to {guild_data['name']}!",
@@ -1789,23 +1799,23 @@ async def guild_donate(ctx, amount: int):
     )
     embed.add_field(name="Guild Treasury", value=f"{guild_data['treasury']} Spirit Stones", inline=True)
     embed.add_field(name="Your Remaining", value=f"{p['spirit_stones']} Spirit Stones", inline=True)
-    
+
     await ctx.send(embed=embed)
 
 @bot.command()
 async def guilds(ctx):
     """List all guilds"""
     data = load_data()
-    
+
     if "guilds" not in data or not data["guilds"]:
         return await ctx.send("❌ No guilds exist yet! Create one with `!create_guild <name>`")
-    
+
     embed = discord.Embed(
         title="🏰 All Guilds",
         description="Use `!guild_info <name>` for details",
         color=0x7289da
     )
-    
+
     for guild_id, guild_data in data["guilds"].items():
         member_count = len(guild_data["members"])
         embed.add_field(
@@ -1813,7 +1823,7 @@ async def guilds(ctx):
             value=f"Members: {member_count}/20\nTreasury: {guild_data['treasury']} Stones",
             inline=True
         )
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1831,45 +1841,45 @@ DAILY_QUESTS = [
 async def daily_quests(ctx):
     """View today's daily quests"""
     p = get_player(ctx.author.id)
-    
+
     # Initialize daily quest data
     if "daily_quests" not in p:
         p["daily_quests"] = {}
         p["last_daily_reset"] = datetime.date.today().isoformat()
-    
+
     # Check if daily reset needed
     today = datetime.date.today().isoformat()
     if p.get("last_daily_reset", "") != today:
         p["daily_quests"] = {}
         p["last_daily_reset"] = today
         p["daily_streak"] += 1
-    
+
     embed = discord.Embed(
         title="📋 Daily Quests",
         description=f"Daily Streak: {p['daily_streak']} days",
         color=0xffd700
     )
-    
+
     # Generate daily quests (3 random quests)
     import random
     available_quests = random.sample(DAILY_QUESTS, 3)
-    
+
     for quest in available_quests:
         quest_progress = p["daily_quests"].get(quest["id"], 0)
         completed = quest_progress >= quest["progress_needed"]
-        
+
         status_emoji = "✅" if completed else "⏳"
         progress_text = f"{quest_progress}/{quest['progress_needed']}"
-        
+
         reward_text = ", ".join([f"{amount} {resource.replace('_', ' ').title()}" 
                                for resource, amount in quest["reward"].items()])
-        
+
         embed.add_field(
             name=f"{status_emoji} {quest['name']}",
             value=f"Progress: {progress_text}\nReward: {reward_text}",
             inline=False
         )
-    
+
     update_player(ctx.author.id, p)
     await ctx.send(embed=embed)
 
@@ -1877,17 +1887,17 @@ async def daily_quests(ctx):
 async def claim_daily(ctx):
     """Claim completed daily quest rewards"""
     p = get_player(ctx.author.id)
-    
+
     if "daily_quests" not in p:
         return await ctx.send("❌ No daily quests data! Use `!daily_quests` first.")
-    
+
     # Check for completed quests
     completed_quests = []
     total_rewards = {"exp": 0, "qi": 0, "spirit_stones": 0}
-    
+
     import random
     available_quests = random.sample(DAILY_QUESTS, 3)
-    
+
     for quest in available_quests:
         quest_progress = p["daily_quests"].get(quest["id"], 0)
         if quest_progress >= quest["progress_needed"]:
@@ -1896,27 +1906,27 @@ async def claim_daily(ctx):
                 total_rewards[resource] += amount
             # Mark as claimed
             p["daily_quests"][quest["id"]] = -1
-    
+
     if not completed_quests:
         return await ctx.send("❌ No completed quests to claim!")
-    
+
     # Apply rewards
     exp_cap = get_exp_cap(p)
     if total_rewards["exp"] > 0:
         p["exp"] = min(p["exp"] + total_rewards["exp"], exp_cap)
-    
+
     p["qi"] += total_rewards["qi"]
     p["spirit_stones"] += total_rewards["spirit_stones"]
-    
+
     update_player(ctx.author.id, p)
-    
+
     embed = discord.Embed(
         title="🎉 Daily Rewards Claimed!",
         color=0x00ff00
     )
     embed.add_field(name="Completed Quests", value="\n".join(completed_quests), inline=False)
     embed.add_field(name="Rewards", value=f"EXP: +{total_rewards['exp']}\nQi: +{total_rewards['qi']}\nSpirit Stones: +{total_rewards['spirit_stones']}", inline=True)
-    
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -1926,10 +1936,10 @@ async def claim_daily(ctx):
 async def seasonal_event(ctx):
     """Check current seasonal event"""
     import calendar
-    
+
     now = datetime.datetime.now()
     month = now.month
-    
+
     events = {
         1: {"name": "New Year Blessing", "bonus": "Double EXP from cultivation", "emoji": "🎊"},
         2: {"name": "Lunar Festival", "bonus": "25% discount on techniques", "emoji": "🏮"},
@@ -1938,7 +1948,7 @@ async def seasonal_event(ctx):
         10: {"name": "Autumn Harvest", "bonus": "Spirit Stone gain doubled", "emoji": "🍂"},
         12: {"name": "Winter Meditation", "bonus": "Breakthrough costs reduced", "emoji": "❄️"}
     }
-    
+
     if month in events:
         event = events[month]
         embed = discord.Embed(
@@ -1953,1248 +1963,6 @@ async def seasonal_event(ctx):
             description="Check back next month for seasonal bonuses!",
             color=0x888888
         )
-    
-    await ctx.send(embed=embed)
-
-    elif category.lower() == "guild":
-        embed = discord.Embed(
-            title="🏰 Guild Commands",
-            description="Join forces with other cultivators and grow stronger together!",
-            color=0x7289da
-        )
-
-        embed.add_field(
-            name="🏰 Guild Management",
-            value="`!create_guild <name>` - Create a new guild (5000 Spirit Stones)\n"
-                  "`!join_guild <name>` - Join an existing guild (500 Spirit Stones)\n"
-                  "`!leave_guild` - Leave your current guild\n"
-                  "`!guild_info [name]` - View guild information",
-            inline=False
-        )
-
-        embed.add_field(
-            name="📋 Guild Features",
-            value="`!guilds` - List all available guilds\n"
-                  "`!guild_donate <amount>` - Donate to guild treasury\n"
-                  "`!guild_benefits` - View guild member benefits",
-            inline=False
-        )
-
-        embed.set_footer(text="🌟 Guild Benefits: +15% EXP, +10% Qi, +20% Spirit Stones, -25% Technique costs!")
-
-    elif category.lower() == "daily":
-        embed = discord.Embed(
-            title="📋 Daily & Events Commands",
-            description="Complete daily quests and participate in seasonal events!",
-            color=0xffd700
-        )
-
-        embed.add_field(
-            name="📋 Daily Quests",
-            value="`!daily_quests` - View today's daily quests\n"
-                  "`!claim_daily` - Claim completed quest rewards\n"
-                  "`!daily_streak` - View your login streak",
-            inline=False
-        )
-
-        embed.add_field(
-            name="🎉 Events",
-            value="`!seasonal_event` - Check current seasonal event\n"
-                  "`!event_rewards` - View available event rewards",
-            inline=False
-        )
-
-        embed.set_footer(text="🎯 Daily quests reset every 24 hours! Keep your streak going!")
-
-    else:
-        embed = discord.Embed(
-            title="🌟 No Active Event",
-            description="Check back next month for seasonal bonuses!",
-            color=0x888888
-        )
-    
-    await ctx.send(embed=embed)
-
-
-        "Immortal Realm": [],
-        "God Realm": []
-    }
-
-    for item_id, item_data in EQUIPMENT_SHOP.items():
-        realm_name = item_data["realm"]
-        if realm_name in realms_equipment:
-            realms_equipment[realm_name].append((item_id, item_data))
-
-    # If specific realm requested, show only that realm
-    if realm and realm.lower().replace(" ", "_") in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
-        if realm.lower() in ["mortal", "mortal_realm"]:
-            target_realm = "Mortal Realm"
-        elif realm.lower() in ["immortal", "immortal_realm"]:
-            target_realm = "Immortal Realm"
-        elif realm.lower() in ["god", "god_realm"]:
-            target_realm = "God Realm"
-
-        embed = discord.Embed(
-            title=f"🏪 {target_realm} Equipment Shop",
-            description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_name>` to purchase",
-            color=0xffd700
-        )
-
-        can_access = can_access_equipment(player_realm, target_realm)
-        access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
-        embed.add_field(name="Access Status", value=access_status, inline=False)
-
-        for item_id, item_data in realms_equipment[target_realm]:
-            embed.add_field(
-                name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
-                value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\n**Tier:** {item_data['tier']} | **Set:** {item_data['set']}\nID: `{item_id}`",
-                inline=False
-            )
-
-    else:
-        # Show overview of all realms
-        embed = discord.Embed(
-            title="🏪 Cultivation Equipment Shop",
-            description=f"**Your Realm:** {player_realm}\nUse `!shop [realm]` for detailed view\nExample: `!shop mortal`, `!shop immortal`, `!shop god`",
-            color=0xffd700
-        )
-
-        for realm_name, items in realms_equipment.items():
-            if not items:
-                continue
-
-            can_access = can_access_equipment(player_realm, realm_name)
-            access_emoji = "✅" if can_access else "🔒"
-
-            # Show first few items as preview
-            preview_items = items[:3]
-            preview_text = ""
-            for item_id, item_data in preview_items:
-                preview_text += f"{item_data['emoji']} {item_data['name']} ({item_data['cost']:,} Qi)\n"
-
-            if len(items) > 3:
-                preview_text += f"... and {len(items)-3} more items"
-
-            embed.add_field(
-                name=f"{access_emoji} {realm_name} ({len(items)} items)",
-                value=preview_text or "No items",
-                inline=False
-            )
-
-    embed.set_footer(text="💡 Tip: Higher realms unlock more powerful equipment!")
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: buy
-# ===============================
-@bot.command()
-async def buy(ctx, *, item_name: str):
-    """Beli equipment dari shop"""
-    item_name = item_name.lower().replace(" ", "_")
-
-    if item_name not in EQUIPMENT_SHOP:
-        return await ctx.send("❌ Item tidak ditemukan! Gunakan `!shop` untuk melihat list item.")
-
-    item_data = EQUIPMENT_SHOP[item_name]
-    p = get_player(ctx.author.id)
-
-    # Check realm requirement
-    if not can_access_equipment(p["realm"], item_data["realm"]):
-        required_realm = item_data["realm"]
-        return await ctx.send(f"❌ Realm tidak cukup tinggi! Item ini membutuhkan **{required_realm}** atau lebih tinggi. Anda masih di **{p['realm']}**.")
-
-    if p["qi"] < item_data["cost"]:
-        return await ctx.send(f"❌ Qi tidak cukup! Butuh {item_data['cost']} Qi, Anda punya {p['qi']} Qi.")
-
-    # Remove old equipment of same type
-    old_equipment_power = 0
-    current_equipment = p["equipment"]
-    for eq_id, eq_power in current_equipment.items():
-        if EQUIPMENT_SHOP.get(eq_id, {}).get("type") == item_data["type"]:
-            old_equipment_power = eq_power
-            p["base_power"] -= eq_power
-            break
-
-    # Add new equipment
-    p["qi"] -= item_data["cost"]
-    p["equipment"][item_name] = item_data["power"]
-    p["base_power"] += item_data["power"]
-
-    # Calculate set bonus
-    set_bonus = calculate_set_bonus(p["equipment"])
-    technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
-
-    # Update total power with set bonuses
-    p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
-
-    update_player(ctx.author.id, p)
-
-    # Create enhanced purchase message
-    embed = discord.Embed(
-        title="🛍️ Purchase Successful!",
-        description=f"{ctx.author.mention} membeli {item_data['emoji']} {item_data['name']}",
-        color=0x00ff00
-    )
-    embed.add_field(name="Power", value=f"+{item_data['power']}", inline=True)
-    embed.add_field(name="Tier", value=f"{item_data['tier']} ({item_data['realm']})", inline=True)
-    embed.add_field(name="Cost", value=f"{item_data['cost']} Qi", inline=True)
-
-    if set_bonus > 0:
-        embed.add_field(name="Set Bonus", value=f"+{set_bonus*100:.0f}% Total Power", inline=True)
-
-    embed.add_field(name="Total Power", value=f"{p['total_power']}", inline=True)
-    embed.add_field(name="Remaining Qi", value=f"{p['qi']} Qi", inline=True)
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: inventory
-# ===============================
-@bot.command()
-async def inventory(ctx):
-    """Lihat inventory equipment"""
-    p = get_player(ctx.author.id)
-
-    if not p["equipment"]:
-        return await ctx.send("🎒 Inventory kosong! Gunakan `!shop` untuk melihat item yang bisa dibeli.")
-
-    total_equip_power = sum(p["equipment"].values())
-    set_bonus = calculate_set_bonus(p["equipment"])
-
-    embed = discord.Embed(
-        title=f"🎒 {ctx.author.name}'s Inventory",
-        description=f"Total Equipment Power: +{total_equip_power}\nSet Bonus: +{set_bonus*100:.0f}% Total Power",
-        color=0x7289da
-    )
-
-    for item_id, power in p["equipment"].items():
-        item_data = EQUIPMENT_SHOP.get(item_id, {"name": item_id.replace("_", " ").title(), "type": "unknown", "emoji": "⚙️"})
-
-        # Check enchantment level
-        enchant_level = p.get("enchanted", {}).get(item_id, 0)
-        enchant_text = f" +{enchant_level}" if enchant_level > 0 else ""
-        tier_text = f" ({item_data.get('tier', 'Unknown')})" if 'tier' in item_data else ""
-
-        embed.add_field(
-            name=f"{item_data['emoji']} {item_data['name']}{enchant_text}",
-            value=f"**Power:** +{power} | **Type:** {item_data['type']}{tier_text}\n**Set:** {item_data.get('set', 'None')}",
-            inline=False
-        )
-
-    embed.add_field(name="Total Qi", value=f"{p['qi']} Qi", inline=True)
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: sell
-# ===============================
-@bot.command()
-async def sell(ctx, *, item_name: str):
-    """Jual equipment"""
-    item_name = item_name.lower().replace(" ", "_")
-
-    p = get_player(ctx.author.id)
-
-    if item_name not in p["equipment"]:
-        return await ctx.send("❌ Item tidak ditemukan di inventory!")
-
-    item_data = EQUIPMENT_SHOP.get(item_name, {"name": item_name.replace("_", " ").title(), "cost": 50})
-    sell_price = max(10, item_data["cost"] // 2)
-
-    p["base_power"] -= p["equipment"][item_name]
-    del p["equipment"][item_name]
-    p["qi"] += sell_price
-
-    # Recalculate total power with updated set bonuses
-    set_bonus = calculate_set_bonus(p["equipment"])
-    technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
-    p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
-
-    update_player(ctx.author.id, p)
-
-    await ctx.send(f"💰 {ctx.author.mention} menjual {item_data['name']} dan mendapatkan {sell_price} Qi!")
-
-# ===============================
-# Command: enchant (Equipment Enhancement)
-# ===============================
-@bot.command()
-async def enchant(ctx, *, item_name: str):
-    """Upgrade equipment dengan Spirit Stones"""
-    item_name = item_name.lower().replace(" ", "_")
-
-    p = get_player(ctx.author.id)
-
-    if item_name not in p["equipment"]:
-        return await ctx.send("❌ Item tidak ditemukan di inventory! Gunakan `!inventory` untuk melihat equipment Anda.")
-
-    if "enchanted" not in p:
-        p["enchanted"] = {}
-
-    current_enchant = p["enchanted"].get(item_name, 0)
-    max_enchant = 10  # Maximum +10 enchantment
-
-    if current_enchant >= max_enchant:
-        return await ctx.send(f"❌ {EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name)} sudah mencapai enchantment maksimum (+{max_enchant})!")
-
-    # Calculate cost based on current enchant level
-    base_cost = 50
-    enchant_cost = base_cost * (current_enchant + 1) * (current_enchant + 1)  # Exponential cost
-
-    if p["spirit_stones"] < enchant_cost:
-        return await ctx.send(f"❌ Spirit Stones tidak cukup! Butuh {enchant_cost} Spirit Stones, Anda punya {p['spirit_stones']}.")
-
-    # Calculate success rate (decreases with higher enchant levels)
-    success_rate = max(20, 100 - (current_enchant * 8))  # 100% -> 92% -> 84% ... -> 20%
-
-    import random
-    success = random.randint(1, 100) <= success_rate
-
-    p["spirit_stones"] -= enchant_cost
-
-    if success:
-        # Success! Increase enchantment
-        p["enchanted"][item_name] = current_enchant + 1
-        new_enchant = current_enchant + 1
-
-        # Increase base power of the item
-        power_increase = 5 + (new_enchant * 2)  # +5, +7, +9, +11, etc.
-        p["equipment"][item_name] += power_increase
-        p["base_power"] += power_increase
-
-        # Recalculate total power with bonuses
-        set_bonus = calculate_set_bonus(p["equipment"])
-        technique_bonus = sum(t['power_bonus'] for t in p["techniques"])
-        p["total_power"] = int(p["base_power"] * (1 + technique_bonus + set_bonus))
-
-        update_player(ctx.author.id, p)
-
-        item_display_name = EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name.replace('_', ' ').title())
-
-        embed = discord.Embed(
-            title="✨ Enchantment Successful!",
-            description=f"{ctx.author.mention} berhasil meng-enchant {item_display_name}!",
-            color=0x00ff00
-        )
-        embed.add_field(name="New Level", value=f"+{new_enchant} Enhancement", inline=True)
-        embed.add_field(name="Power Boost", value=f"+{power_increase} Power", inline=True)
-        embed.add_field(name="Cost", value=f"{enchant_cost} Spirit Stones", inline=True)
-        embed.add_field(name="Total Power", value=f"{p['total_power']}", inline=True)
-        embed.add_field(name="Success Rate", value=f"{success_rate}%", inline=True)
-        embed.add_field(name="Remaining Stones", value=f"{p['spirit_stones']}", inline=True)
-
-        await ctx.send(embed=embed)
-
-    else:
-        # Failed! No enchantment increase, just consume stones
-        update_player(ctx.author.id, p)
-
-        item_display_name = EQUIPMENT_SHOP.get(item_name, {}).get('name', item_name.replace('_', ' ').title())
-
-        embed = discord.Embed(
-            title="💥 Enchantment Failed!",
-            description=f"{ctx.author.mention} gagal meng-enchant {item_display_name}...",
-            color=0xff0000
-        )
-        embed.add_field(name="Current Level", value=f"+{current_enchant} Enhancement", inline=True)
-        embed.add_field(name="Success Rate", value=f"{success_rate}%", inline=True)
-        embed.add_field(name="Cost", value=f"{enchant_cost} Spirit Stones", inline=True)
-        embed.add_field(name="Remaining Stones", value=f"{p['spirit_stones']}", inline=True)
-        embed.set_footer(text="💡 Tip: Higher enhancement levels have lower success rates!")
-
-        await ctx.send(embed=embed)
-
-# ===============================
-# Command: dungeons
-# ===============================
-@bot.command()
-async def dungeons(ctx):
-    """Lihat semua dungeon yang tersedia"""
-    embed = discord.Embed(
-        title="🏰 Available Dungeons",
-        description="Gunakan `!enter <dungeon_name>` untuk memasuki dungeon\nContoh: `!enter forest`",
-        color=0x8B4513
-    )
-
-    for dungeon_id, dungeon_data in DUNGEONS.items():
-        embed.add_field(
-            name=f"{dungeon_data['emoji']} {dungeon_data['name']}",
-            value=f"Level: {dungeon_data['min_level']}-{dungeon_data['max_level']}\nReward: {dungeon_data['min_reward']}-{dungeon_data['max_reward']} EXP\nSpirit Stones: {dungeon_data['spirit_stone_reward'][0]}-{dungeon_data['spirit_stone_reward'][1]}\nID: `{dungeon_id}`",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: enter (dungeon)
-# ===============================
-@bot.command()
-@commands.cooldown(1, 300, commands.BucketType.user)
-async def enter(ctx, *, dungeon_name: str):
-    """Masuk ke dungeon"""
-    dungeon_name = dungeon_name.lower()
-
-    if dungeon_name not in DUNGEONS:
-        return await ctx.send("❌ Dungeon tidak ditemukan! Gunakan `!dungeons` untuk melihat list dungeon.")
-
-    dungeon_data = DUNGEONS[dungeon_name]
-    p = get_player(ctx.author.id)
-    player_level = get_player_level(p)
-    exp_cap = get_exp_cap(p)
-
-    if player_level < dungeon_data["min_level"]:
-        return await ctx.send(f"❌ Level Anda ({player_level}) terlalu rendah untuk dungeon ini! (Min: {dungeon_data['min_level']})")
-
-    if player_level > dungeon_data["max_level"]:
-        return await ctx.send(f"❌ Level Anda ({player_level}) terlalu tinggi untuk dungeon ini! (Max: {dungeon_data['max_level']})")
-
-    now = time.time()
-    last_dungeon = float(p.get("last_dungeon", "0"))
-    if last_dungeon + 300 > now:
-        remaining = int(last_dungeon + 300 - now)
-        return await ctx.send(f"⏳ Anda harus menunggu {remaining} detik sebelum masuk dungeon lagi!")
-
-    p["last_dungeon"] = str(now)
-
-    level_diff = min(dungeon_data["max_level"] - player_level, 10)
-    exp_reward = random.randint(
-        dungeon_data["min_reward"], 
-        dungeon_data["max_reward"] + level_diff * 5
-    )
-    qi_reward = random.randint(5, 15)
-    spirit_stones_reward = random.randint(dungeon_data["spirit_stone_reward"][0], dungeon_data["spirit_stone_reward"][1])
-
-    if p["exp"] + exp_reward > exp_cap:
-        exp_reward = max(0, exp_cap - p["exp"])
-        if exp_reward == 0:
-            return await ctx.send(f"❌ EXP sudah mencapai batas maksimum untuk realm ini! ({exp_cap} EXP)")
-
-    success_chance = min(90, 50 + (p["total_power"] // 5))
-    success = random.randint(1, 100) <= success_chance
-
-    if success:
-        p["exp"] += exp_reward
-        p["qi"] += qi_reward
-        p["spirit_stones"] += spirit_stones_reward
-        p["base_power"] += random.randint(1, 3)
-        p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
-        p["dungeons_completed"] += 1
-
-        data = load_data()
-        data["server_stats"]["total_dungeons"] += 1
-        save_data(data)
-
-        embed = discord.Embed(
-            title=f"🎉 {dungeon_data['emoji']} Dungeon Cleared!",
-            description=f"{ctx.author.mention} berhasil menyelesaikan {dungeon_data['name']}!",
-            color=0x00ff00
-        )
-        embed.add_field(name="EXP Reward", value=f"+{exp_reward}", inline=True)
-        embed.add_field(name="Qi Reward", value=f"+{qi_reward}", inline=True)
-        embed.add_field(name="Spirit Stones", value=f"+{spirit_stones_reward}", inline=True)
-        embed.add_field(name="Success Chance", value=f"{success_chance}%", inline=True)
-        embed.add_field(name="Total EXP", value=f"{p['exp']}/{exp_cap}", inline=False)
-
-    else:
-        embed = discord.Embed(
-            title=f"💀 {dungeon_data['emoji']} Dungeon Failed!",
-            description=f"{ctx.author.mention} gagal menyelesaikan {dungeon_data['name']}...",
-            color=0xff0000
-        )
-        embed.add_field(name="Success Chance", value=f"{success_chance}%", inline=True)
-        embed.add_field(name="Tip", value="Tingkatkan power Anda untuk meningkatkan success chance!", inline=False)
-
-    update_player(ctx.author.id, p)
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: pvp (REAL-TIME BATTLE)
-# ===============================
-@bot.command()
-async def pvp(ctx, enemy: discord.Member):
-    """Battle real-time melawan player lain"""
-    if enemy.id == ctx.author.id:
-        return await ctx.send("❌ You can't PvP yourself!")
-
-    attacker = get_player(ctx.author.id)
-    defender = get_player(enemy.id)
-
-    now = time.time()
-    last_pvp = float(attacker["last_pvp"])
-    if last_pvp + 300 > now:
-        return await ctx.send("⏳ You must wait 5 minutes before PvP again!")
-
-    attacker["last_pvp"] = str(now)
-    update_player(ctx.author.id, attacker)
-
-    # Start real-time battle
-    await start_battle(ctx.author.id, enemy.id, ctx)
-
-@pvp.error
-async def pvp_error(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Usage: `!pvp @user`")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.send("❌ User tidak valid!")
-
-# ===============================
-# Command: pvp_rank
-# ===============================
-@bot.command()
-async def pvp_rank(ctx):
-    data = load_data()
-    players = data["players"]
-
-    ranking = sorted(
-        players.items(),
-        key=lambda x: x[1]["pvp_wins"],
-        reverse=True
-    )[:10]
-
-    embed = discord.Embed(
-        title="🏆 PvP Leaderboard",
-        color=0xffd700
-    )
-
-    for i, (uid, pdata) in enumerate(ranking, 1):
-        try:
-            user = await bot.fetch_user(int(uid))
-            name = user.name
-        except:
-            name = "Unknown User"
-
-        embed.add_field(
-            name=f"{i}. {name}",
-            value=f"W: {pdata['pvp_wins']} | L: {pdata['pvp_losses']} | Power: {pdata['total_power']}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: leaderboard
-# ===============================
-@bot.command()
-async def leaderboard(ctx, page: int = 1):
-    """Leaderboard cultivation berdasarkan stage tertinggi"""
-    data = load_data()
-    players = data["players"]
-
-    # Filter hanya players yang memiliki data lengkap
-    valid_players = []
-    for uid, pdata in players.items():
-        if all(key in pdata for key in ["realm", "stage", "total_power"]):
-            valid_players.append((uid, pdata))
-
-    if not valid_players:
-        return await ctx.send("❌ No players found for leaderboard!")
-
-    # Calculate cultivation score (realm + stage)
-    def calculate_cultivation_score(player_data):
-        realm = player_data["realm"]
-        stage = player_data["stage"]
-
-        # Realm weight (semakin tinggi realm, score lebih tinggi)
-        realm_weights = {"Mortal Realm": 0, "Immortal Realm": 1000, "God Realm": 2000}
-        realm_score = realm_weights.get(realm, 0)
-
-        # Stage progress within realm
-        if realm in REALMS and stage in REALMS[realm]["stages"]:
-            stage_index = REALMS[realm]["stages"].index(stage)
-            total_stages = len(REALMS[realm]["stages"])
-            stage_score = (stage_index / total_stages) * 1000  # Normalize to 0-1000
-        else:
-            stage_score = 0
-
-        return realm_score + stage_score
-
-    # Sort by cultivation score
-    ranked_players = []
-    for uid, pdata in valid_players:
-        try:
-            user = await bot.fetch_user(int(uid))
-            username = user.name
-        except:
-            username = f"Unknown User ({uid})"
-
-        score = calculate_cultivation_score(pdata)
-        ranked_players.append({
-            "username": username,
-            "realm": pdata["realm"],
-            "stage": pdata["stage"],
-            "power": pdata["total_power"],
-            "score": score,
-            "user_id": uid
-        })
-
-    # Sort by score descending
-    ranked_players.sort(key=lambda x: x["score"], reverse=True)
-
-    # Pagination
-    items_per_page = 10
-    total_pages = (len(ranked_players) + items_per_page - 1) // items_per_page
-    page = max(1, min(page, total_pages))
-
-    start_idx = (page - 1) * items_per_page
-    end_idx = start_idx + items_per_page
-    page_players = ranked_players[start_idx:end_idx]
-
-    # Create embed
-    embed = discord.Embed(
-        title="🏆 Cultivation Leaderboard",
-        description="Ranking berdasarkan realm dan stage tertinggi",
-        color=0xFFD700
-    )
-
-    # Add ranking entries
-    for i, player in enumerate(page_players, start=start_idx + 1):
-        realm_emoji = "🌍" if player["realm"] == "Mortal Realm" else "🌟" if player["realm"] == "Immortal Realm" else "✨"
-
-        embed.add_field(
-            name=f"#{i} {realm_emoji} {player['username']}",
-            value=f"**{player['realm']}** - {player['stage']}\n"
-                  f"⚡ Power: {player['power']} | 📊 Score: {player['score']:.1f}",
-            inline=False
-        )
-
-    # Add footer with pagination info
-    embed.set_footer(text=f"Page {page}/{total_pages} • Total players: {len(ranked_players)}")
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: top
-# ===============================
-@bot.command()
-async def top(ctx, count: int = 5):
-    """Top cultivation players (default: top 5)"""
-    count = max(1, min(count, 20))  # Limit to 20 players
-
-    data = load_data()
-    players = data["players"]
-
-    # Get top players by realm progression
-    top_players = []
-    for uid, pdata in players.items():
-        if all(key in pdata for key in ["realm", "stage", "total_power"]):
-            # Calculate progression index
-            realm_order = list(REALMS.keys())
-            if pdata["realm"] in realm_order and pdata["stage"] in REALMS[pdata["realm"]]["stages"]:
-                realm_idx = realm_order.index(pdata["realm"])
-                stage_idx = REALMS[pdata["realm"]]["stages"].index(pdata["stage"])
-                progression = (realm_idx * 100) + stage_idx
-                top_players.append((uid, pdata, progression))
-
-    if not top_players:
-        return await ctx.send("❌ No players found!")
-
-    # Sort by progression
-    top_players.sort(key=lambda x: x[2], reverse=True)
-    top_players = top_players[:count]
-
-    embed = discord.Embed(
-        title=f"👑 Top {count} Cultivators",
-        color=0xFFD700
-    )
-
-    for i, (uid, pdata, progression) in enumerate(top_players, 1):
-        try:
-            user = await bot.fetch_user(int(uid))
-            username = user.name
-        except:
-            username = f"Unknown User ({uid})"
-
-        realm_emoji = "🌍" if pdata["realm"] == "Mortal Realm" else "🌟" if pdata["realm"] == "Immortal Realm" else "✨"
-
-        embed.add_field(
-            name=f"{i}. {realm_emoji} {username}",
-            value=f"**{pdata['realm']}** - {pdata['stage']}\n"
-                  f"⚡ Power: {pdata['total_power']}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: myrank
-# ===============================
-@bot.command()
-async def myrank(ctx):
-    """Lihat ranking cultivation Anda"""
-    data = load_data()
-    players = data["players"]
-    current_player = get_player(ctx.author.id)
-
-    # Calculate all players' scores
-    def calculate_score(pdata):
-        realm_weights = {"Mortal Realm": 0, "Immortal Realm": 1000, "God Realm": 2000}
-        realm_score = realm_weights.get(pdata["realm"], 0)
-
-        if pdata["realm"] in REALMS and pdata["stage"] in REALMS[pdata["realm"]]["stages"]:
-            stage_index = REALMS[pdata["realm"]]["stages"].index(pdata["stage"])
-            total_stages = len(REALMS[pdata["realm"]]["stages"])
-            stage_score = (stage_index / total_stages) * 1000
-        else:
-            stage_score = 0
-
-        return realm_score + stage_score
-
-    # Get all scores
-    all_scores = []
-    for uid, pdata in players.items():
-        if all(key in pdata for key in ["realm", "stage"]):
-            score = calculate_score(pdata)
-            all_scores.append((uid, score))
-
-    # Sort and find rank
-    all_scores.sort(key=lambda x: x[1], reverse=True)
-
-    player_rank = None
-    for rank, (uid, score) in enumerate(all_scores, 1):
-        if uid == str(ctx.author.id):
-            player_rank = rank
-            player_score = score
-            break
-
-    if player_rank is None:
-        return await ctx.send("❌ Rank not found!")
-
-    total_players = len(all_scores)
-    percentile = (total_players - player_rank + 1) / total_players * 100
-
-    embed = discord.Embed(
-        title=f"📊 Your Cultivation Rank",
-        description=f"{ctx.author.name}'s position in the cultivation world",
-        color=0x7289DA
-    )
-
-    realm_emoji = "🌍" if current_player["realm"] == "Mortal Realm" else "🌟" if current_player["realm"] == "Immortal Realm" else "✨"
-
-    embed.add_field(name="Rank", value=f"#{player_rank} / {total_players}", inline=True)
-    embed.add_field(name="Percentile", value=f"Top {percentile:.1f}%", inline=True)
-    embed.add_field(name="Score", value=f"{player_score:.1f}", inline=True)
-    embed.add_field(name="Realm", value=f"{realm_emoji} {current_player['realm']}", inline=True)
-    embed.add_field(name="Stage", value=current_player["stage"], inline=True)
-    embed.add_field(name="Power", value=current_player["total_power"], inline=True)
-
-    # Progress to next rank
-    if player_rank > 1:
-        next_rank_score = all_scores[player_rank - 2][1]  # Score of player above
-        score_needed = next_rank_score - player_score
-        embed.add_field(
-            name="Next Rank Progress", 
-            value=f"Need {score_needed:.1f} score to reach rank #{player_rank-1}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# Command: backup (admin only)
-# ===============================
-@bot.command()
-@commands.has_permissions(administrator=True)
-async def backup(ctx):
-    """Buat manual backup data"""
-    if backup_data():
-        await ctx.send("✅ Backup created successfully!")
-    else:
-        await ctx.send("❌ Failed to create backup!")
-
-# ===============================
-# Command: stats (server statistics)
-# ===============================
-@bot.command()
-async def stats(ctx):
-    """Show server statistics"""
-    data = load_data()
-    stats = data["server_stats"]
-
-    embed = discord.Embed(
-        title="📈 Server Statistics",
-        color=0x7289da
-    )
-    embed.add_field(name="Total Players", value=data["total_players"], inline=True)
-    embed.add_field(name="Total PvP Battles", value=stats["total_pvp_battles"], inline=True)
-    embed.add_field(name="Total Breakthroughs", value=stats["total_breakthroughs"], inline=True)
-    embed.add_field(name="Total Dungeons", value=stats["total_dungeons"], inline=True)
-    embed.add_field(name="Total Techniques Learned", value=stats["total_techniques_learned"], inline=True)
-    embed.add_field(name="Last Update", value=stats["last_update"][:19], inline=False)
-
-    await ctx.send(embed=embed)
-
-# ===============================
-# DEV COMMANDS (Developer Only)
-# ===============================
-# List of developer user IDs (ganti dengan ID Discord Anda)
-DEVELOPER_IDS = ["877390433519562842"]
-
-def is_developer():
-    """Check if user is a developer"""
-    async def predicate(ctx):
-        if str(ctx.author.id) not in DEVELOPER_IDS:
-            await ctx.send("❌ This command is for developers only!")
-            return False
-        return True
-    return commands.check(predicate)
-
-@bot.command()
-@is_developer()
-async def dev_stats(ctx):
-    """Detailed server statistics for developers"""
-    data = load_data()
-    stats = data["server_stats"]
-    players = data["players"]
-
-    # Calculate various metrics
-    total_power = sum(p["total_power"] for p in players.values())
-    avg_power = total_power / len(players) if players else 0
-    max_power = max((p["total_power"] for p in players.values()), default=0)
-
-    # Count players by realm
-    realm_counts = {}
-    for p in players.values():
-        realm = p["realm"]
-        realm_counts[realm] = realm_counts.get(realm, 0) + 1
-
-    # Count equipment usage
-    equipment_counts = {}
-    for p in players.values():
-        for item_id in p["equipment"]:
-            equipment_counts[item_id] = equipment_counts.get(item_id, 0) + 1
-
-    embed = discord.Embed(
-        title="🔧 Developer Statistics",
-        color=0x9932cc
-    )
-
-    embed.add_field(name="Total Players", value=data["total_players"], inline=True)
-    embed.add_field(name="Active Players", value=len(players), inline=True)
-    embed.add_field(name="Average Power", value=f"{avg_power:.1f}", inline=True)
-    embed.add_field(name="Max Power", value=max_power, inline=True)
-    embed.add_field(name="Total PvP Battles", value=stats["total_pvp_battles"], inline=True)
-    embed.add_field(name="Total Breakthroughs", value=stats["total_breakthroughs"], inline=True)
-
-    # Realm distribution
-    realm_text = "\n".join([f"{realm}: {count}" for realm, count in realm_counts.items()])
-    embed.add_field(name="Realm Distribution", value=realm_text, inline=False)
-
-    # File size info
-    file_size = os.path.getsize(DATA_FILE) if os.path.exists(DATA_FILE) else 0
-    embed.add_field(name="Data File Size", value=f"{file_size/1024:.1f} KB", inline=True)
-
-    # Backup count
-    backup_count = len([f for f in os.listdir(BACKUP_DIR) if f.startswith("backup_")]) if os.path.exists(BACKUP_DIR) else 0
-    embed.add_field(name="Backup Count", value=backup_count, inline=True)
-
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_player(ctx, user: discord.Member = None):
-    """View detailed player data (developer only)"""
-    target_user = user or ctx.author
-    p = get_player(target_user.id)
-
-    embed = discord.Embed(
-        title=f"🔍 Player Data: {target_user.name}",
-        color=0x9932cc
-    )
-
-    embed.add_field(name="User ID", value=target_user.id, inline=True)
-    embed.add_field(name="Realm", value=p["realm"], inline=True)
-    embed.add_field(name="Stage", value=p["stage"], inline=True)
-    embed.add_field(name="EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
-    embed.add_field(name="Qi", value=p["qi"], inline=True)
-    embed.add_field(name="Spirit Stones", value=p["spirit_stones"], inline=True)
-    embed.add_field(name="Base Power", value=p["base_power"], inline=True)
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    embed.add_field(name="PvP Record", value=f"{p['pvp_wins']}W/{p['pvp_losses']}L", inline=True)
-    embed.add_field(name="Dungeons Completed", value=p["dungeons_completed"], inline=True)
-    embed.add_field(name="Techniques Learned", value=p["techniques_learned"], inline=True)
-    embed.add_field(name="Created At", value=p["created_at"][:10], inline=True)
-
-    # Equipment list
-    if p["equipment"]:
-        equip_text = "\n".join([f"{item_id}: +{power}" for item_id, power in p["equipment"].items()])
-        embed.add_field(name="Equipment", value=equip_text, inline=False)
-
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_give(ctx, user: discord.Member, resource: str, amount: int):
-    """Give resources to a player (developer only)"""
-    valid_resources = ["exp", "qi", "spirit_stones", "power"]
-
-    if resource not in valid_resources:
-        return await ctx.send(f"❌ Invalid resource! Available: {', '.join(valid_resources)}")
-
-    p = get_player(user.id)
-
-    if resource == "exp":
-        p["exp"] = min(p["exp"] + amount, get_exp_cap(p))
-    elif resource == "qi":
-        p["qi"] += amount
-    elif resource == "spirit_stones":
-        p["spirit_stones"] += amount
-    elif resource == "power":
-        p["base_power"] += amount
-        p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
-
-    update_player(user.id, p)
-
-    await ctx.send(f"✅ Gave {amount} {resource} to {user.mention}")
-
-@bot.command()
-@is_developer()
-async def dev_set_realm(ctx, user: discord.Member, realm: str, stage: str = None):
-    """Set player's realm and stage (developer only)"""
-    if realm not in REALMS:
-        return await ctx.send(f"❌ Invalid realm! Available: {', '.join(REALMS.keys())}")
-
-    p = get_player(user.id)
-
-    if stage and stage not in REALMS[realm]["stages"]:
-        return await ctx.send(f"❌ Invalid stage for {realm}!")
-
-    p["realm"] = realm
-    if stage:
-        p["stage"] = stage
-    else:
-        p["stage"] = REALMS[realm]["stages"][0]
-
-    p["exp"] = 0
-    update_player(user.id, p)
-
-    await ctx.send(f"✅ Set {user.mention} to {realm} - {p['stage']}")
-
-@bot.command()
-@is_developer()
-async def dev_reset_player(ctx, user: discord.Member):
-    """Reset player data (developer only)"""
-    data = load_data()
-    uid_str = str(user.id)
-
-    if uid_str in data["players"]:
-        del data["players"][uid_str]
-        data["total_players"] = max(0, data["total_players"] - 1)
-        save_data(data)
-        await ctx.send(f"✅ Reset player data for {user.mention}")
-    else:
-        await ctx.send(f"❌ Player {user.mention} not found!")
-
-@bot.command()
-@is_developer()
-async def dev_reload_data(ctx):
-    """Reload data from file (developer only)"""
-    global data
-    data = load_data()
-    await ctx.send("✅ Data reloaded from file!")
-
-@bot.command()
-@is_developer()
-async def dev_force_backup(ctx):
-    """Force immediate backup (developer only)"""
-    if backup_data():
-        await ctx.send("✅ Backup created successfully!")
-    else:
-        await ctx.send("❌ Failed to create backup!")
-
-@bot.command()
-@is_developer()
-async def dev_list_backups(ctx):
-    """List all backups (developer only)"""
-    if not os.path.exists(BACKUP_DIR):
-        return await ctx.send("❌ No backup directory found!")
-
-    backups = [f for f in os.listdir(BACKUP_DIR) if f.startswith("backup_") and f.endswith(".json")]
-    backups.sort(reverse=True)
-
-    if not backups:
-        return await ctx.send("❌ No backups found!")
-
-    embed = discord.Embed(
-        title="📦 Backup Files",
-        color=0x9932cc
-    )
-
-    for backup in backups[:10]:  # Show last 10 backups
-        backup_path = os.path.join(BACKUP_DIR, backup)
-        size = os.path.getsize(backup_path)
-        timestamp = backup.replace("backup_", "").replace(".json", "")
-        date_str = datetime.datetime.fromtimestamp(int(timestamp)).strftime("%Y-%m-%d %H:%M")
-
-        embed.add_field(
-            name=backup,
-            value=f"Size: {size/1024:.1f} KB\nCreated: {date_str}",
-            inline=False
-        )
-
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_restore_backup(ctx, backup_name: str):
-    """Restore from specific backup (developer only)"""
-    backup_path = os.path.join(BACKUP_DIR, backup_name)
-
-    if not os.path.exists(backup_path):
-        return await ctx.send("❌ Backup file not found!")
-
-    try:
-        # Create backup of current data first
-        backup_data()
-
-        # Restore from specified backup
-        shutil.copy2(backup_path, DATA_FILE)
-
-        # Reload data
-        global data
-        data = load_data()
-
-        await ctx.send(f"✅ Successfully restored from {backup_name}")
-    except Exception as e:
-        await ctx.send(f"❌ Error restoring backup: {e}")
-
-@bot.command()
-@is_developer()
-async def dev_broadcast(ctx, *, message: str):
-    """Broadcast message to all players (developer only)"""
-    # This would typically send a message to all users who have interacted with the bot
-    # For now, just confirm the command
-    await ctx.send(f"📢 Broadcast message prepared:\n{message}\n\n*(This would be sent to all players in a real implementation)*")
-
-@bot.command()
-@is_developer()
-async def dev_find_player(ctx, *, search_term: str):
-    """Find players by username or partial match (developer only)"""
-    data = load_data()
-    players = data["players"]
-    
-    found_players = []
-    search_term = search_term.lower()
-    
-    for uid, pdata in players.items():
-        try:
-            user = await bot.fetch_user(int(uid))
-            if search_term in user.name.lower():
-                found_players.append((uid, user.name, pdata))
-        except:
-            if search_term in uid:
-                found_players.append((uid, f"Unknown User ({uid})", pdata))
-    
-    if not found_players:
-        return await ctx.send(f"❌ No players found matching '{search_term}'")
-    
-    embed = discord.Embed(
-        title=f"🔍 Players Found: '{search_term}'",
-        color=0x9932cc
-    )
-    
-    for uid, username, pdata in found_players[:10]:  # Limit to 10 results
-        embed.add_field(
-            name=f"{username}",
-            value=f"ID: {uid}\nRealm: {pdata['realm']}\nStage: {pdata['stage']}\nPower: {pdata['total_power']}",
-            inline=True
-        )
-    
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_top_players(ctx, metric: str = "power", count: int = 10):
-    """View top players by specific metric (developer only)"""
-    valid_metrics = ["power", "exp", "qi", "spirit_stones", "pvp_wins", "dungeons_completed"]
-    
-    if metric not in valid_metrics:
-        return await ctx.send(f"❌ Invalid metric! Available: {', '.join(valid_metrics)}")
-    
-    data = load_data()
-    players = data["players"]
-    
-    # Get metric value, handle different field names
-    def get_metric_value(pdata):
-        if metric == "power":
-            return pdata.get("total_power", 0)
-        return pdata.get(metric, 0)
-    
-    # Sort players by metric
-    sorted_players = []
-    for uid, pdata in players.items():
-        try:
-            user = await bot.fetch_user(int(uid))
-            username = user.name
-        except:
-            username = f"Unknown ({uid})"
-        
-        value = get_metric_value(pdata)
-        sorted_players.append((username, value, pdata["realm"], pdata["stage"]))
-    
-    sorted_players.sort(key=lambda x: x[1], reverse=True)
-    sorted_players = sorted_players[:count]
-    
-    embed = discord.Embed(
-        title=f"📊 Top {count} Players by {metric.title()}",
-        color=0x9932cc
-    )
-    
-    for i, (username, value, realm, stage) in enumerate(sorted_players, 1):
-        embed.add_field(
-            name=f"#{i} {username}",
-            value=f"{metric.title()}: {value:,}\n{realm} - {stage}",
-            inline=True
-        )
-    
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_purge_inactive(ctx, days: int = 30):
-    """Remove players inactive for X days (developer only)"""
-    if days < 7:
-        return await ctx.send("❌ Minimum 7 days required for safety!")
-    
-    data = load_data()
-    players = data["players"]
-    
-    cutoff_date = datetime.datetime.now() - datetime.timedelta(days=days)
-    inactive_players = []
-    
-    for uid, pdata in players.items():
-        try:
-            last_updated = datetime.datetime.fromisoformat(pdata.get("last_updated", "2025-01-01T00:00:00"))
-            if last_updated < cutoff_date:
-                try:
-                    user = await bot.fetch_user(int(uid))
-                    username = user.name
-                except:
-                    username = f"Unknown ({uid})"
-                inactive_players.append((uid, username, last_updated))
-        except:
-            continue
-    
-    if not inactive_players:
-        return await ctx.send(f"✅ No inactive players found (>{days} days)")
-    
-    embed = discord.Embed(
-        title=f"⚠️ Inactive Players (>{days} days)",
-        description=f"Found {len(inactive_players)} inactive players\nUse `!dev_confirm_purge` to remove them",
-        color=0xff9900
-    )
-    
-    for uid, username, last_updated in inactive_players[:10]:
-        days_inactive = (datetime.datetime.now() - last_updated).days
-        embed.add_field(
-            name=username,
-            value=f"Inactive: {days_inactive} days\nLast seen: {last_updated.date()}",
-            inline=True
-        )
-    
-    # Store for confirmation
-    if not hasattr(bot, 'pending_purge'):
-        bot.pending_purge = {}
-    bot.pending_purge[ctx.author.id] = [uid for uid, _, _ in inactive_players]
-    
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_confirm_purge(ctx):
-    """Confirm and execute player purge (developer only)"""
-    if not hasattr(bot, 'pending_purge') or ctx.author.id not in bot.pending_purge:
-        return await ctx.send("❌ No pending purge found! Use `!dev_purge_inactive` first")
-    
-    to_purge = bot.pending_purge[ctx.author.id]
-    data = load_data()
-    
-    # Create backup before purging
-    backup_data()
-    
-    # Remove players
-    removed_count = 0
-    for uid in to_purge:
-        if uid in data["players"]:
-            del data["players"][uid]
-            removed_count += 1
-    
-    data["total_players"] = max(0, data["total_players"] - removed_count)
-    save_data(data)
-    
-    # Clean up pending purge
-    del bot.pending_purge[ctx.author.id]
-    
-    await ctx.send(f"✅ Purged {removed_count} inactive players and created backup!")
-
-@bot.command()
-@is_developer()
-async def dev_system_info(ctx):
-    """Show system and bot information (developer only)"""
-    import psutil
-    import sys
-    
-    # Get system info
-    memory_info = psutil.virtual_memory()
-    cpu_percent = psutil.cpu_percent(interval=1)
-    
-    embed = discord.Embed(
-        title="🖥️ System Information",
-        color=0x9932cc
-    )
-    
-    embed.add_field(name="Python Version", value=f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}", inline=True)
-    embed.add_field(name="Discord.py Version", value=discord.__version__, inline=True)
-    embed.add_field(name="Bot Latency", value=f"{round(bot.latency * 1000)}ms", inline=True)
-    
-    embed.add_field(name="Memory Usage", value=f"{memory_info.percent}%", inline=True)
-    embed.add_field(name="CPU Usage", value=f"{cpu_percent}%", inline=True)
-    embed.add_field(name="Bot Uptime", value="Running", inline=True)
-    
-    embed.add_field(name="Active Cultivations", value=len(ACTIVE_CULTIVATIONS), inline=True)
-    embed.add_field(name="Active Battles", value=len(ACTIVE_BATTLES), inline=True)
-    embed.add_field(name="Connected Guilds", value=len(bot.guilds), inline=True)
-    
-    # File sizes
-    data_size = os.path.getsize(DATA_FILE) if os.path.exists(DATA_FILE) else 0
-    backup_size = sum(os.path.getsize(os.path.join(BACKUP_DIR, f)) 
-                     for f in os.listdir(BACKUP_DIR) 
-                     if f.startswith("backup_")) if os.path.exists(BACKUP_DIR) else 0
-    
-    embed.add_field(name="Data File Size", value=f"{data_size/1024:.1f} KB", inline=True)
-    embed.add_field(name="Total Backup Size", value=f"{backup_size/1024:.1f} KB", inline=True)
-    
-    await ctx.send(embed=embed)
-
-@bot.command()
-@is_developer()
-async def dev_help(ctx):
-    """Show developer commands help (developer only)"""
-    embed = discord.Embed(
-        title="🔧 Developer Commands Help",
-        color=0x9932cc
-    )
-
-    commands_list = [
-        ("!dev_stats", "Detailed server statistics"),
-        ("!dev_player [@user]", "View detailed player data"),
-        ("!dev_find_player <name>", "Find players by username"),
-        ("!dev_top_players [metric] [count]", "Top players by metric (power/exp/qi/etc)"),
-        ("!dev_give @user resource amount", "Give resources to player"),
-        ("!dev_set_realm @user realm [stage]", "Set player's realm and stage"),
-        ("!dev_reset_player @user", "Reset player data"),
-        ("!dev_purge_inactive [days]", "Find inactive players"),
-        ("!dev_confirm_purge", "Confirm player purge"),
-        ("!dev_system_info", "System and bot information"),
-        ("!dev_reload_data", "Reload data from file"),
-        ("!dev_force_backup", "Force immediate backup"),
-        ("!dev_list_backups", "List all backup files"),
-        ("!dev_restore_backup filename", "Restore from specific backup"),
-        ("!dev_broadcast message", "Broadcast message to all players"),
-        ("!dev_help", "This help message")
-    ]
-
-    for cmd, desc in commands_list:
-        embed.add_field(name=cmd, value=desc, inline=False)
 
     await ctx.send(embed=embed)
 
@@ -3373,6 +2141,56 @@ async def help_command(ctx, category: str = None):
 
         embed.set_footer(text="👑 Climb the ranks to become the ultimate cultivator!")
 
+    elif category.lower() == "guild":
+        embed = discord.Embed(
+            title="🏰 Guild Commands",
+            description="Join forces with other cultivators and grow stronger together!",
+            color=0x7289da
+        )
+
+        embed.add_field(
+            name="🏰 Guild Management",
+            value="`!create_guild <name>` - Create a new guild (5000 Spirit Stones)\n"
+                  "`!join_guild <name>` - Join an existing guild (500 Spirit Stones)\n"
+                  "`!leave_guild` - Leave your current guild\n"
+                  "`!guild_info [name]` - View guild information",
+            inline=False
+        )
+
+        embed.add_field(
+            name="📋 Guild Features",
+            value="`!guilds` - List all available guilds\n"
+                  "`!guild_donate <amount>` - Donate to guild treasury\n"
+                  "`!guild_benefits` - View guild member benefits",
+            inline=False
+        )
+
+        embed.set_footer(text="🌟 Guild Benefits: +15% EXP, +10% Qi, +20% Spirit Stones, -25% Technique costs!")
+
+    elif category.lower() == "daily":
+        embed = discord.Embed(
+            title="📋 Daily & Events Commands",
+            description="Complete daily quests and participate in seasonal events!",
+            color=0xffd700
+        )
+
+        embed.add_field(
+            name="📋 Daily Quests",
+            value="`!daily_quests` - View today's daily quests\n"
+                  "`!claim_daily` - Claim completed quest rewards\n"
+                  "`!daily_streak` - View your login streak",
+            inline=False
+        )
+
+        embed.add_field(
+            name="🎉 Events",
+            value="`!seasonal_event` - Check current seasonal event\n"
+                  "`!event_rewards` - View available event rewards",
+            inline=False
+        )
+
+        embed.set_footer(text="🎯 Daily quests reset every 24 hours! Keep your streak going!")
+
     elif category.lower() == "system":
         embed = discord.Embed(
             title="🔧 System Commands",
@@ -3401,6 +2219,8 @@ async def help_command(ctx, category: str = None):
             value="• `cultivation` - Core cultivation commands\n"
                   "• `combat` - PvP and dungeons\n"
                   "• `economy` - Shop and inventory\n"
+                  "• `guild` - Guild system and teamwork\n"
+                  "• `daily` - Daily quests and events\n"
                   "• `info` - Statistics and information\n"
                   "• `ranking` - Leaderboards and competition\n"
                   "• `system` - Bot utilities",
