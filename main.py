@@ -1514,6 +1514,57 @@ async def shop(ctx, realm: str = None):
 # Guild System Commands
 # ===============================
 @bot.command()
+async def leave_guild(ctx):
+    """Leave your current guild"""
+    p = get_player(ctx.author.id)
+    data = load_data()
+    
+    if not p["guild"]:
+        return await ctx.send("❌ You're not in any guild!")
+    
+    guild_id = p["guild"]
+    guild_data = data["guilds"][guild_id]
+    
+    # Remove from guild
+    if str(ctx.author.id) in guild_data["members"]:
+        del guild_data["members"][str(ctx.author.id)]
+    
+    # If was leader and guild has other members, transfer leadership
+    if p["guild_role"] == "Leader" and len(guild_data["members"]) > 0:
+        new_leader_id = list(guild_data["members"].keys())[0]
+        guild_data["members"][new_leader_id] = "Leader"
+        guild_data["leader"] = new_leader_id
+    
+    # If no members left, delete guild
+    if len(guild_data["members"]) == 0:
+        del data["guilds"][guild_id]
+    
+    # Update player
+    p["guild"] = None
+    p["guild_role"] = None
+    
+    update_player(ctx.author.id, p)
+    save_data(data)
+    
+    await ctx.send(f"✅ {ctx.author.mention} left the guild!")
+
+@bot.command()
+async def guild_benefits(ctx):
+    """View guild member benefits"""
+    embed = discord.Embed(
+        title="🏰 Guild Benefits",
+        description="Bonuses for guild members",
+        color=0x7289da
+    )
+    
+    embed.add_field(name="EXP Bonus", value=f"+{GUILD_BENEFITS['exp_bonus']*100}%", inline=True)
+    embed.add_field(name="Qi Bonus", value=f"+{GUILD_BENEFITS['qi_bonus']*100}%", inline=True)
+    embed.add_field(name="Spirit Stone Bonus", value=f"+{GUILD_BENEFITS['spirit_stone_bonus']*100}%", inline=True)
+    embed.add_field(name="Technique Discount", value=f"{GUILD_BENEFITS['technique_discount']*100}% off", inline=True)
+    
+    embed.set_footer(text="Join a guild to enjoy these benefits!")
+    await ctx.send(embed=embed)
+@bot.command()
 async def create_guild(ctx, *, guild_name: str):
     """Create a cultivation guild"""
     p = get_player(ctx.author.id)
@@ -1797,6 +1848,12 @@ async def seasonal_event(ctx):
         embed.add_field(name="Duration", value=f"All of {calendar.month_name[month]}", inline=True)
     else:
         embed = discord.Embed(
+            title="🌟 No Active Event",
+            description="Check back next month for seasonal bonuses!",
+            color=0x888888
+        )
+    
+    await ctx.send(embed=embed)
 
     elif category.lower() == "guild":
         embed = discord.Embed(
