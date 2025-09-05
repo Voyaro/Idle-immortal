@@ -1508,7 +1508,73 @@ async def shop(ctx, realm: str = None):
     # Organize equipment by realm
     realms_equipment = {
         "Mortal Realm": [],
+        "Immortal Realm": [],
+        "God Realm": []
+    }
 
+    for item_id, item_data in EQUIPMENT_SHOP.items():
+        realm_name = item_data["realm"]
+        if realm_name in realms_equipment:
+            realms_equipment[realm_name].append((item_id, item_data))
+
+    # If specific realm requested, show only that realm
+    if realm and realm.lower().replace(" ", "_") in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
+        if realm.lower() in ["mortal", "mortal_realm"]:
+            target_realm = "Mortal Realm"
+        elif realm.lower() in ["immortal", "immortal_realm"]:
+            target_realm = "Immortal Realm"
+        elif realm.lower() in ["god", "god_realm"]:
+            target_realm = "God Realm"
+
+        embed = discord.Embed(
+            title=f"🏪 {target_realm} Equipment Shop",
+            description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_name>` to purchase",
+            color=0xffd700
+        )
+
+        can_access = can_access_equipment(player_realm, target_realm)
+        access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
+        embed.add_field(name="Access Status", value=access_status, inline=False)
+
+        for item_id, item_data in realms_equipment[target_realm]:
+            embed.add_field(
+                name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
+                value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\n**Tier:** {item_data['tier']} | **Set:** {item_data['set']}\nID: `{item_id}`",
+                inline=False
+            )
+
+    else:
+        # Show overview of all realms
+        embed = discord.Embed(
+            title="🏪 Cultivation Equipment Shop",
+            description=f"**Your Realm:** {player_realm}\nUse `!shop [realm]` for detailed view\nExample: `!shop mortal`, `!shop immortal`, `!shop god`",
+            color=0xffd700
+        )
+
+        for realm_name, items in realms_equipment.items():
+            if not items:
+                continue
+
+            can_access = can_access_equipment(player_realm, realm_name)
+            access_emoji = "✅" if can_access else "🔒"
+
+            # Show first few items as preview
+            preview_items = items[:3]
+            preview_text = ""
+            for item_id, item_data in preview_items:
+                preview_text += f"{item_data['emoji']} {item_data['name']} ({item_data['cost']:,} Qi)\n"
+
+            if len(items) > 3:
+                preview_text += f"... and {len(items)-3} more items"
+
+            embed.add_field(
+                name=f"{access_emoji} {realm_name} ({len(items)} items)",
+                value=preview_text or "No items",
+                inline=False
+            )
+
+    embed.set_footer(text="💡 Tip: Higher realms unlock more powerful equipment!")
+    await ctx.send(embed=embed)
 
 # ===============================
 # Guild System Commands
@@ -1688,6 +1754,41 @@ async def guild_info(ctx, *, guild_name: str = None):
     embed.add_field(name="Treasury", value=f"{guild_data['treasury']} Spirit Stones", inline=True)
     embed.add_field(name="Members List", value="\n".join(member_list), inline=False)
     embed.add_field(name="Created", value=guild_data["created_at"][:10], inline=True)
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def guild_donate(ctx, amount: int):
+    """Donate Spirit Stones to guild treasury"""
+    p = get_player(ctx.author.id)
+    data = load_data()
+    
+    if not p["guild"]:
+        return await ctx.send("❌ You're not in any guild!")
+    
+    if amount <= 0:
+        return await ctx.send("❌ Donation amount must be positive!")
+        
+    if p["spirit_stones"] < amount:
+        return await ctx.send(f"❌ Not enough Spirit Stones! You have {p['spirit_stones']}")
+    
+    guild_id = p["guild"]
+    guild_data = data["guilds"][guild_id]
+    
+    # Process donation
+    p["spirit_stones"] -= amount
+    guild_data["treasury"] += amount
+    
+    update_player(ctx.author.id, p)
+    save_data(data)
+    
+    embed = discord.Embed(
+        title="💰 Guild Donation",
+        description=f"{ctx.author.mention} donated {amount} Spirit Stones to {guild_data['name']}!",
+        color=0x00ff00
+    )
+    embed.add_field(name="Guild Treasury", value=f"{guild_data['treasury']} Spirit Stones", inline=True)
+    embed.add_field(name="Your Remaining", value=f"{p['spirit_stones']} Spirit Stones", inline=True)
     
     await ctx.send(embed=embed)
 
@@ -1905,7 +2006,8 @@ async def seasonal_event(ctx):
 
         embed.set_footer(text="🎯 Daily quests reset every 24 hours! Keep your streak going!")
 
-
+    else:
+        embed = discord.Embed(
             title="🌟 No Active Event",
             description="Check back next month for seasonal bonuses!",
             color=0x888888
