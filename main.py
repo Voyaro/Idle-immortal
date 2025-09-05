@@ -214,6 +214,22 @@ REALMS = {
 REALM_ORDER = list(REALMS.keys())
 
 # ===============================
+# Guild/Sect System
+# ===============================
+GUILD_BENEFITS = {
+    "exp_bonus": 0.15,      # 15% bonus EXP for guild members
+    "qi_bonus": 0.10,       # 10% bonus Qi generation
+    "spirit_stone_bonus": 0.20,  # 20% bonus Spirit Stones
+    "technique_discount": 0.25,   # 25% discount on technique learning
+}
+
+GUILD_COSTS = {
+    "create": 5000,         # Cost to create a guild
+    "join": 500,            # Cost to join a guild
+    "upgrade": 10000,       # Cost to upgrade guild level
+}
+
+# ===============================
 # Cultivation Sects & Random Techniques
 # ===============================
 CULTIVATION_SECTS = {
@@ -458,6 +474,8 @@ def get_player(uid):
             "techniques": [],
             "current_technique": None,
             "sect": None,
+            "guild": None,           # Guild membership
+            "guild_role": None,      # Role in guild
             "base_power": 10,
             "total_power": 10,
             "pvp_wins": 0,
@@ -465,8 +483,10 @@ def get_player(uid):
             "last_pvp": "0",
             "last_dungeon": "0",
             "last_technique_find": "0",
+            "last_daily_quest": "0",  # Daily quest system
             "dungeons_completed": 0,
             "techniques_learned": 0,
+            "daily_streak": 0,       # Daily login streak
             "created_at": datetime.datetime.now().isoformat(),
             "last_updated": datetime.datetime.now().isoformat()
         }
@@ -480,10 +500,14 @@ def get_player(uid):
             "techniques": [],
             "current_technique": None,
             "sect": None,
+            "guild": None,
+            "guild_role": None,
             "base_power": player_data.get("power", 10),
             "total_power": player_data.get("power", 10),
             "last_technique_find": "0",
+            "last_daily_quest": "0",
             "techniques_learned": 0,
+            "daily_streak": 0,
             "created_at": datetime.datetime.now().isoformat(),
             "last_updated": datetime.datetime.now().isoformat()
         }
@@ -545,6 +569,16 @@ def can_access_equipment(player_realm, equipment_realm):
     player_index = get_realm_order_index(player_realm)
     equipment_index = get_realm_order_index(equipment_realm)
     return player_index >= equipment_index
+
+def create_progress_bar(current, maximum, length=10, filled_char="█", empty_char="░"):
+    """Create visual progress bar"""
+    if maximum == 0:
+        return empty_char * length
+    
+    progress = min(1.0, current / maximum)
+    filled_length = int(length * progress)
+    bar = filled_char * filled_length + empty_char * (length - filled_length)
+    return f"[{bar}] {progress*100:.1f}%"
 
 def get_all_players():
     """Dapatkan semua data players"""
@@ -1421,9 +1455,20 @@ async def status(ctx):
 
     embed.add_field(
         name="📈 EXP Progress",
-        value=f"```[{progress_bar}] {exp_percentage:.1f}%```",
+        value=f"```{create_progress_bar(p['exp'], exp_cap, 15)}```",
         inline=False
     )
+    
+    # Guild info if member
+    if p.get("guild"):
+        data = load_data()
+        if "guilds" in data and p["guild"] in data["guilds"]:
+            guild_data = data["guilds"][p["guild"]]
+            embed.add_field(
+                name="🏰 Guild",
+                value=f"{guild_data['name']} (Level {guild_data['level']})\nRole: {p['guild_role']}",
+                inline=True
+            )
 
     embed.add_field(
         name="⚔️ PvP Record",
@@ -1463,6 +1508,355 @@ async def shop(ctx, realm: str = None):
     # Organize equipment by realm
     realms_equipment = {
         "Mortal Realm": [],
+
+
+# ===============================
+# Guild System Commands
+# ===============================
+@bot.command()
+async def create_guild(ctx, *, guild_name: str):
+    """Create a cultivation guild"""
+    p = get_player(ctx.author.id)
+    data = load_data()
+    
+    if p["guild"]:
+        return await ctx.send("❌ You're already in a guild! Leave first with `!leave_guild`")
+    
+    if p["spirit_stones"] < GUILD_COSTS["create"]:
+        return await ctx.send(f"❌ Need {GUILD_COSTS['create']} Spirit Stones to create a guild!")
+    
+    # Initialize guilds if not exists
+    if "guilds" not in data:
+        data["guilds"] = {}
+    
+    guild_id = guild_name.lower().replace(" ", "_")
+    if guild_id in data["guilds"]:
+        return await ctx.send("❌ Guild name already exists!")
+    
+    # Create guild
+    data["guilds"][guild_id] = {
+        "name": guild_name,
+        "leader": str(ctx.author.id),
+        "members": {str(ctx.author.id): "Leader"},
+        "level": 1,
+        "exp": 0,
+        "treasury": 0,
+        "created_at": datetime.datetime.now().isoformat()
+    }
+    
+    # Update player
+    p["spirit_stones"] -= GUILD_COSTS["create"]
+    p["guild"] = guild_id
+    p["guild_role"] = "Leader"
+    
+    update_player(ctx.author.id, p)
+    save_data(data)
+    
+    embed = discord.Embed(
+        title="🏰 Guild Created!",
+        description=f"{ctx.author.mention} created guild **{guild_name}**!",
+        color=0x00ff00
+    )
+    embed.add_field(name="Guild Level", value="1", inline=True)
+    embed.add_field(name="Members", value="1", inline=True)
+    embed.add_field(name="Cost", value=f"{GUILD_COSTS['create']} Spirit Stones", inline=True)
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def join_guild(ctx, *, guild_name: str):
+    """Join an existing guild"""
+    p = get_player(ctx.author.id)
+    data = load_data()
+    
+    if p["guild"]:
+        return await ctx.send("❌ You're already in a guild!")
+    
+    if p["spirit_stones"] < GUILD_COSTS["join"]:
+        return await ctx.send(f"❌ Need {GUILD_COSTS['join']} Spirit Stones to join a guild!")
+    
+    if "guilds" not in data:
+        return await ctx.send("❌ No guilds exist yet!")
+    
+    guild_id = guild_name.lower().replace(" ", "_")
+    if guild_id not in data["guilds"]:
+        return await ctx.send("❌ Guild not found!")
+    
+    guild_data = data["guilds"][guild_id]
+    if len(guild_data["members"]) >= 20:  # Max 20 members
+        return await ctx.send("❌ Guild is full! (Max 20 members)")
+    
+    # Join guild
+    guild_data["members"][str(ctx.author.id)] = "Member"
+    p["spirit_stones"] -= GUILD_COSTS["join"]
+    p["guild"] = guild_id
+    p["guild_role"] = "Member"
+    
+    update_player(ctx.author.id, p)
+    save_data(data)
+    
+    await ctx.send(f"✅ {ctx.author.mention} joined guild **{guild_data['name']}**!")
+
+@bot.command()
+async def guild_info(ctx, *, guild_name: str = None):
+    """View guild information"""
+    data = load_data()
+    p = get_player(ctx.author.id)
+    
+    if "guilds" not in data:
+        return await ctx.send("❌ No guilds exist yet!")
+    
+    # Use player's guild if no name specified
+    if not guild_name:
+        if not p["guild"]:
+            return await ctx.send("❌ You're not in a guild! Specify a guild name.")
+        guild_id = p["guild"]
+    else:
+        guild_id = guild_name.lower().replace(" ", "_")
+    
+    if guild_id not in data["guilds"]:
+        return await ctx.send("❌ Guild not found!")
+    
+    guild_data = data["guilds"][guild_id]
+    
+    # Get member list
+    member_list = []
+    for member_id, role in guild_data["members"].items():
+        try:
+            user = await bot.fetch_user(int(member_id))
+            member_list.append(f"{role}: {user.name}")
+        except:
+            member_list.append(f"{role}: Unknown User")
+    
+    embed = discord.Embed(
+        title=f"🏰 Guild: {guild_data['name']}",
+        color=0x7289da
+    )
+    embed.add_field(name="Level", value=guild_data["level"], inline=True)
+    embed.add_field(name="Members", value=f"{len(guild_data['members'])}/20", inline=True)
+    embed.add_field(name="Treasury", value=f"{guild_data['treasury']} Spirit Stones", inline=True)
+    embed.add_field(name="Members List", value="\n".join(member_list), inline=False)
+    embed.add_field(name="Created", value=guild_data["created_at"][:10], inline=True)
+    
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def guilds(ctx):
+    """List all guilds"""
+    data = load_data()
+    
+    if "guilds" not in data or not data["guilds"]:
+        return await ctx.send("❌ No guilds exist yet! Create one with `!create_guild <name>`")
+    
+    embed = discord.Embed(
+        title="🏰 All Guilds",
+        description="Use `!guild_info <name>` for details",
+        color=0x7289da
+    )
+    
+    for guild_id, guild_data in data["guilds"].items():
+        member_count = len(guild_data["members"])
+        embed.add_field(
+            name=f"{guild_data['name']} (Level {guild_data['level']})",
+            value=f"Members: {member_count}/20\nTreasury: {guild_data['treasury']} Stones",
+            inline=True
+        )
+    
+    await ctx.send(embed=embed)
+
+# ===============================
+# Daily Quest System
+# ===============================
+DAILY_QUESTS = [
+    {"id": "cultivate_5", "name": "Cultivate 5 times", "reward": {"exp": 100, "spirit_stones": 20}, "progress_needed": 5},
+    {"id": "pvp_battle", "name": "Win 1 PvP battle", "reward": {"exp": 150, "qi": 50}, "progress_needed": 1},
+    {"id": "complete_dungeon", "name": "Complete 2 dungeons", "reward": {"spirit_stones": 30, "qi": 100}, "progress_needed": 2},
+    {"id": "learn_technique", "name": "Learn a new technique", "reward": {"exp": 200, "spirit_stones": 50}, "progress_needed": 1},
+    {"id": "breakthrough", "name": "Achieve breakthrough", "reward": {"exp": 300, "spirit_stones": 100}, "progress_needed": 1}
+]
+
+@bot.command()
+async def daily_quests(ctx):
+    """View today's daily quests"""
+    p = get_player(ctx.author.id)
+    
+    # Initialize daily quest data
+    if "daily_quests" not in p:
+        p["daily_quests"] = {}
+        p["last_daily_reset"] = datetime.date.today().isoformat()
+    
+    # Check if daily reset needed
+    today = datetime.date.today().isoformat()
+    if p.get("last_daily_reset", "") != today:
+        p["daily_quests"] = {}
+        p["last_daily_reset"] = today
+        p["daily_streak"] += 1
+    
+    embed = discord.Embed(
+        title="📋 Daily Quests",
+        description=f"Daily Streak: {p['daily_streak']} days",
+        color=0xffd700
+    )
+    
+    # Generate daily quests (3 random quests)
+    import random
+    available_quests = random.sample(DAILY_QUESTS, 3)
+    
+    for quest in available_quests:
+        quest_progress = p["daily_quests"].get(quest["id"], 0)
+        completed = quest_progress >= quest["progress_needed"]
+        
+        status_emoji = "✅" if completed else "⏳"
+        progress_text = f"{quest_progress}/{quest['progress_needed']}"
+        
+        reward_text = ", ".join([f"{amount} {resource.replace('_', ' ').title()}" 
+                               for resource, amount in quest["reward"].items()])
+        
+        embed.add_field(
+            name=f"{status_emoji} {quest['name']}",
+            value=f"Progress: {progress_text}\nReward: {reward_text}",
+            inline=False
+        )
+    
+    update_player(ctx.author.id, p)
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def claim_daily(ctx):
+    """Claim completed daily quest rewards"""
+    p = get_player(ctx.author.id)
+    
+    if "daily_quests" not in p:
+        return await ctx.send("❌ No daily quests data! Use `!daily_quests` first.")
+    
+    # Check for completed quests
+    completed_quests = []
+    total_rewards = {"exp": 0, "qi": 0, "spirit_stones": 0}
+    
+    import random
+    available_quests = random.sample(DAILY_QUESTS, 3)
+    
+    for quest in available_quests:
+        quest_progress = p["daily_quests"].get(quest["id"], 0)
+        if quest_progress >= quest["progress_needed"]:
+            completed_quests.append(quest["name"])
+            for resource, amount in quest["reward"].items():
+                total_rewards[resource] += amount
+            # Mark as claimed
+            p["daily_quests"][quest["id"]] = -1
+    
+    if not completed_quests:
+        return await ctx.send("❌ No completed quests to claim!")
+    
+    # Apply rewards
+    exp_cap = get_exp_cap(p)
+    if total_rewards["exp"] > 0:
+        p["exp"] = min(p["exp"] + total_rewards["exp"], exp_cap)
+    
+    p["qi"] += total_rewards["qi"]
+    p["spirit_stones"] += total_rewards["spirit_stones"]
+    
+    update_player(ctx.author.id, p)
+    
+    embed = discord.Embed(
+        title="🎉 Daily Rewards Claimed!",
+        color=0x00ff00
+    )
+    embed.add_field(name="Completed Quests", value="\n".join(completed_quests), inline=False)
+    embed.add_field(name="Rewards", value=f"EXP: +{total_rewards['exp']}\nQi: +{total_rewards['qi']}\nSpirit Stones: +{total_rewards['spirit_stones']}", inline=True)
+    
+    await ctx.send(embed=embed)
+
+# ===============================
+# Seasonal Events
+# ===============================
+@bot.command()
+async def seasonal_event(ctx):
+    """Check current seasonal event"""
+    import calendar
+    
+    now = datetime.datetime.now()
+    month = now.month
+    
+    events = {
+        1: {"name": "New Year Blessing", "bonus": "Double EXP from cultivation", "emoji": "🎊"},
+        2: {"name": "Lunar Festival", "bonus": "25% discount on techniques", "emoji": "🏮"},
+        3: {"name": "Spring Awakening", "bonus": "Extra Qi from all activities", "emoji": "🌸"},
+        6: {"name": "Summer Solstice", "bonus": "Dungeon rewards increased", "emoji": "☀️"},
+        10: {"name": "Autumn Harvest", "bonus": "Spirit Stone gain doubled", "emoji": "🍂"},
+        12: {"name": "Winter Meditation", "bonus": "Breakthrough costs reduced", "emoji": "❄️"}
+    }
+    
+    if month in events:
+        event = events[month]
+        embed = discord.Embed(
+            title=f"{event['emoji']} Current Event: {event['name']}",
+            description=f"**Special Bonus:** {event['bonus']}",
+            color=0xff6b9d
+        )
+        embed.add_field(name="Duration", value=f"All of {calendar.month_name[month]}", inline=True)
+    else:
+        embed = discord.Embed(
+
+    elif category.lower() == "guild":
+        embed = discord.Embed(
+            title="🏰 Guild Commands",
+            description="Join forces with other cultivators and grow stronger together!",
+            color=0x7289da
+        )
+
+        embed.add_field(
+            name="🏰 Guild Management",
+            value="`!create_guild <name>` - Create a new guild (5000 Spirit Stones)\n"
+                  "`!join_guild <name>` - Join an existing guild (500 Spirit Stones)\n"
+                  "`!leave_guild` - Leave your current guild\n"
+                  "`!guild_info [name]` - View guild information",
+            inline=False
+        )
+
+        embed.add_field(
+            name="📋 Guild Features",
+            value="`!guilds` - List all available guilds\n"
+                  "`!guild_donate <amount>` - Donate to guild treasury\n"
+                  "`!guild_benefits` - View guild member benefits",
+            inline=False
+        )
+
+        embed.set_footer(text="🌟 Guild Benefits: +15% EXP, +10% Qi, +20% Spirit Stones, -25% Technique costs!")
+
+    elif category.lower() == "daily":
+        embed = discord.Embed(
+            title="📋 Daily & Events Commands",
+            description="Complete daily quests and participate in seasonal events!",
+            color=0xffd700
+        )
+
+        embed.add_field(
+            name="📋 Daily Quests",
+            value="`!daily_quests` - View today's daily quests\n"
+                  "`!claim_daily` - Claim completed quest rewards\n"
+                  "`!daily_streak` - View your login streak",
+            inline=False
+        )
+
+        embed.add_field(
+            name="🎉 Events",
+            value="`!seasonal_event` - Check current seasonal event\n"
+                  "`!event_rewards` - View available event rewards",
+            inline=False
+        )
+
+        embed.set_footer(text="🎯 Daily quests reset every 24 hours! Keep your streak going!")
+
+
+            title="🌟 No Active Event",
+            description="Check back next month for seasonal bonuses!",
+            color=0x888888
+        )
+    
+    await ctx.send(embed=embed)
+
+
         "Immortal Realm": [],
         "God Realm": []
     }
@@ -2464,6 +2858,8 @@ async def help_command(ctx, category: str = None):
                   "🧘 **cultivation** - Core cultivation & progression\n"
                   "⚔️ **combat** - PvP battles and dungeons\n"
                   "🛒 **economy** - Shop, equipment, and trading\n"
+                  "🏰 **guild** - Guild system and teamwork\n"
+                  "📋 **daily** - Daily quests and events\n"
                   "📊 **info** - Stats, progress, and information\n"
                   "🏆 **ranking** - Leaderboards and competition\n"
                   "🔧 **system** - Bot utilities and admin\n",
