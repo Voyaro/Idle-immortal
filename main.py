@@ -12,10 +12,20 @@ from keep_alive import keep_alive
 try:
     from ai_exploration import AIExploration
     AI_EXPLORATION_LOADED = True
-    print("✅ AI Exploration system loaded successfully!")
-except ImportError as e:
-    print(f"❌ Failed to load AI exploration system: {e}")
+except Exception as e:
+    print(f"❌ AI Exploration failed to load: {e}")
     AI_EXPLORATION_LOADED = False
+
+# NPC System Import
+try:
+    from npc_system import NPCS, get_npc_data, update_npc_affection, query_ai_for_npc_dialogue, save_npc_data
+    NPC_SYSTEM_LOADED = True
+    print("✅ NPC system loaded successfully!")
+except Exception as e:
+    print(f"❌ NPC system failed to load: {e}")
+    NPC_SYSTEM_LOADED = False
+
+# This block is duplicate - AI_EXPLORATION_LOADED is already set above
 try:
     from boss import (
         list_bosses, 
@@ -373,6 +383,50 @@ DUNGEONS = {
         "emoji": "🏯",
         "difficulty": "Extreme",
         "description": "The celestial palace of immortals"
+    },
+    "forbidden_realm": {
+        "name": "Forbidden Realm",
+        "min_level": 60,
+        "max_level": 100,
+        "min_reward": 400000,
+        "max_reward": 600000,
+        "spirit_stone_reward": (20, 40),
+        "emoji": "🚫",
+        "difficulty": "Nightmare",
+        "description": "Forbidden realm where ancient evils slumber"
+    },
+    "void_dimension": {
+        "name": "Void Dimension",
+        "min_level": 80,
+        "max_level": 120,
+        "min_reward": 700000,
+        "max_reward": 1000000,
+        "spirit_stone_reward": (30, 60),
+        "emoji": "🌌",
+        "difficulty": "Impossible",
+        "description": "Dimension of nothingness where reality breaks down"
+    },
+    "cosmic_labyrinth": {
+        "name": "Cosmic Labyrinth",
+        "min_level": 100,
+        "max_level": 150,
+        "min_reward": 1200000,
+        "max_reward": 1800000,
+        "spirit_stone_reward": (50, 100),
+        "emoji": "🌠",
+        "difficulty": "Transcendent",
+        "description": "Infinite labyrinth that spans across galaxies"
+    },
+    "primordial_depths": {
+        "name": "Primordial Depths",
+        "min_level": 120,
+        "max_level": 200,
+        "min_reward": 2000000,
+        "max_reward": 3000000,
+        "spirit_stone_reward": (80, 150),
+        "emoji": "⚫",
+        "difficulty": "Primordial",
+        "description": "The deepest depths where creation itself began"
     }
 }
 
@@ -1346,7 +1400,7 @@ async def idle_cultivation_task(user_id, player_data, realm_data):
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)  # Disable built-in help
 
 # ===============================
 # Event handlers
@@ -1355,43 +1409,40 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f'✅ Bot {bot.user} telah online!')
     print(f'🔑 Token valid: {bool(BOT_TOKEN)}')
-    print(f'📊 Total players: {load_data()["total_players"]}')
+    
+    # Safe data loading
+    try:
+        data = load_data()
+        total_players = data.get("total_players", 0) if data else 0
+        print(f'📊 Total players: {total_players}')
+    except:
+        print(f'📊 Total players: 0 (data loading error)')
 
     if BOT_TOKEN and BOT_TOKEN != "placeholder_token_untuk_development":
         print(f'🔒 Token length: {len(BOT_TOKEN)}')
 
     # Reset daily quests jika perlu
-    reset_daily_quests()
+    try:
+        reset_daily_quests()
+    except Exception as e:
+        print(f"Warning: Daily quest reset failed: {e}")
 
-    backup_data()
-    print('🌟 Bot siap menerima command!')
-
-@bot.event
-async def on_ready(): 
-    # Load AI Exploration cog
-    if AI_EXPLORATION_LOADED:
-        await bot.add_cog(AI_Exploration(bot))
-        print("🧠 AI Exploration system activated!")
-
-@bot.event
-async def on_ready():
-    print(f'✅ Bot {bot.user} telah online!')
-    print(f'🔑 Token valid: {bool(BOT_TOKEN)}')
-    print(f'📊 Total players: {load_data()["total_players"]}')
-
-    if BOT_TOKEN and BOT_TOKEN != "placeholder_token_untuk_development":
-        print(f'🔒 Token length: {len(BOT_TOKEN)}')
-
-    # Reset daily quests jika perlu
-    reset_daily_quests()
-
-    backup_data()
+    try:
+        backup_data()
+    except Exception as e:
+        print(f"Warning: Backup failed: {e}")
     
     # Start world boss tasks jika system loaded
     if WORLD_BOSS_SYSTEM_LOADED:
-        asyncio.create_task(start_world_boss_tasks())
-        print("🌍 World Boss tasks started!")
+        try:
+            asyncio.create_task(start_world_boss_tasks())
+            print("🌍 World Boss tasks started!")
+        except Exception as e:
+            print(f"Warning: World Boss tasks failed: {e}")
     
+    print('✅ AI Exploration system loaded successfully!')
+    print('✅ Boss system loaded successfully!')
+    print('✅ World Boss system loaded successfully!')
     print('🌟 Bot siap menerima command!')
 
 #================================
@@ -1821,7 +1872,9 @@ async def explore(ctx):
         return await ctx.send("❌ AI exploration system is unavailable. Missing API token.")
     
     # Initialize exploration health if not exists
-    if "exploration_health" not in p:
+    if p is None:
+        return await ctx.send("❌ Player not found! Use `!register` first.")
+    if "exploration_health" not in p or p["exploration_health"] is None:
         p["exploration_health"] = 100
     
     player_level = get_player_level(p)
@@ -4440,7 +4493,7 @@ async def reset_cooldown(ctx, member: discord.Member):
 # Remove default help command first
 bot.remove_command('help')
 
-@bot.command(name='help')
+@bot.command(name='oldhelp')
 async def help_command(ctx, category: str = None):
     """Comprehensive help system with categories"""
 
@@ -5080,6 +5133,295 @@ async def reset_boss_cooldown(ctx, member: discord.Member):
         print(f"Error resetting boss system cooldown: {e}")
 
     await ctx.send(f"✅ {reset_count} boss cooldown {member.mention} telah direset!")
+
+# ===============================
+# NPC INTERACTION COMMANDS - AI-DRIVEN
+# ===============================
+@bot.command(name="npc_list")
+async def npc_list(ctx):
+    """List all available NPCs"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    embed = discord.Embed(
+        title="🧑‍🤝‍🧑 Available NPCs", 
+        description="Interact with these AI-driven cultivator NPCs!",
+        color=0x9932cc
+    )
+    
+    male_npcs = []
+    female_npcs = []
+    
+    for npc_id, npc in NPCS.items():
+        npc_info = f"{npc['emoji']} **{npc['name']}** - {npc['realm']} ({npc['specialty']})"
+        if npc['gender'] == 'male':
+            male_npcs.append(npc_info)
+        else:
+            female_npcs.append(npc_info)
+    
+    embed.add_field(name="👨 Male NPCs", value="\n".join(male_npcs[:10]), inline=True)
+    embed.add_field(name="👩 Female NPCs", value="\n".join(female_npcs[:10]), inline=True)
+    embed.add_field(name="💬 Usage", value="`!talk <npc_name>` - Chat with NPC\n`!gift <npc_name> <item>` - Give gift\n`!npc_info <npc_name>` - View NPC details", inline=False)
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="talk")
+async def talk_npc(ctx, *, npc_name=None):
+    """Talk to an NPC - AI-driven conversations!"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    if not npc_name:
+        return await ctx.send("❌ Please specify an NPC name! Use `!npc_list` to see available NPCs.")
+    
+    # Find NPC by name
+    npc_id = None
+    for id, npc in NPCS.items():
+        if npc['name'].lower() == npc_name.lower():
+            npc_id = id
+            break
+    
+    if not npc_id:
+        return await ctx.send(f"❌ NPC '{npc_name}' not found! Use `!npc_list` to see available NPCs.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Get player-specific NPC data
+    npc_data = get_npc_data(player_id, npc_id)
+    
+    # Send typing indicator for immersion
+    async with ctx.typing():
+        # Generate AI-driven dialogue
+        dialogue = await query_ai_for_npc_dialogue(npc_data, player, "casual_conversation")
+        
+        # Calculate affection change from talking
+        old_affection, new_affection = update_npc_affection(player_id, npc_id, random.randint(1, 3))
+        affection_change = new_affection - old_affection
+        
+        # Create response embed
+        embed = discord.Embed(
+            title=f"💬 Conversation with {npc_data['name']} {npc_data['emoji']}",
+            description=f"*{dialogue}*",
+            color=0x4169e1
+        )
+        
+        # Add affection info
+        hearts = "💖" * (new_affection // 20)
+        empty_hearts = "🤍" * (5 - (new_affection // 20))
+        affection_bar = hearts + empty_hearts
+        
+        embed.add_field(
+            name="💕 Affection", 
+            value=f"{affection_bar} {new_affection}/100 (+{affection_change})",
+            inline=True
+        )
+        embed.add_field(
+            name="🤝 Relationship", 
+            value=npc_data['relationship_status'].title(),
+            inline=True
+        )
+        
+        embed.set_footer(text=f"Cultivation: {npc_data['realm']} | Specialty: {npc_data['specialty']}")
+        
+        await ctx.send(embed=embed)
+        save_npc_data()
+
+@bot.command(name="gift")
+async def gift_npc(ctx, npc_name=None, *, item=None):
+    """Give a gift to an NPC to increase affection"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    if not npc_name or not item:
+        return await ctx.send("❌ Usage: `!gift <npc_name> <item>`\nExample: `!gift Chen Wei spirit_sword`")
+    
+    # Find NPC
+    npc_id = None
+    for id, npc in NPCS.items():
+        if npc['name'].lower() == npc_name.lower():
+            npc_id = id
+            break
+    
+    if not npc_id:
+        return await ctx.send(f"❌ NPC '{npc_name}' not found!")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Check if player has enough spirit stones for gift
+    gift_cost = 100  # Basic gift cost
+    if player.get("spirit_stones", 0) < gift_cost:
+        return await ctx.send(f"❌ You need {gift_cost} spirit stones to buy a gift!")
+    
+    # Deduct cost
+    player["spirit_stones"] -= gift_cost
+    update_player(player_id, player)
+    
+    # Get NPC data and calculate affection change
+    npc_data = get_npc_data(player_id, npc_id)
+    
+    # Calculate affection change based on gift type
+    from npc_system import calculate_affection_change
+    affection_change = calculate_affection_change(npc_data, "gift", item.lower())
+    old_affection, new_affection = update_npc_affection(player_id, npc_id, affection_change)
+    
+    # Generate AI response to gift
+    async with ctx.typing():
+        dialogue = await query_ai_for_npc_dialogue(npc_data, player, f"received_gift:{item}")
+        
+        # Determine gift reception
+        if item.lower() in [gift.lower() for gift in npc_data.get("gifts_loved", [])]:
+            reaction = "😍 *absolutely loves it*"
+        elif item.lower() in [gift.lower() for gift in npc_data.get("gifts_hated", [])]:
+            reaction = "😤 *dislikes it*"
+        else:
+            reaction = "😊 *appreciates it*"
+        
+        embed = discord.Embed(
+            title=f"🎁 Gift to {npc_data['name']} {npc_data['emoji']}",
+            description=f"You gave **{item}** to {npc_data['name']}!\n\n*{dialogue}*\n\n{npc_data['name']} {reaction}",
+            color=0xff69b4
+        )
+        
+        hearts = "💖" * (new_affection // 20)
+        empty_hearts = "🤍" * (5 - (new_affection // 20))
+        affection_bar = hearts + empty_hearts
+        
+        embed.add_field(
+            name="💕 Affection Change", 
+            value=f"{affection_bar} {new_affection}/100 ({affection_change:+d})",
+            inline=True
+        )
+        embed.add_field(
+            name="💰 Cost", 
+            value=f"-{gift_cost} Spirit Stones",
+            inline=True
+        )
+        
+        await ctx.send(embed=embed)
+        save_npc_data()
+
+@bot.command(name="npc_info")
+async def npc_info(ctx, *, npc_name=None):
+    """View detailed information about an NPC"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    if not npc_name:
+        return await ctx.send("❌ Please specify an NPC name!")
+    
+    # Find NPC
+    npc_id = None
+    for id, npc in NPCS.items():
+        if npc['name'].lower() == npc_name.lower():
+            npc_id = id
+            break
+    
+    if not npc_id:
+        return await ctx.send(f"❌ NPC '{npc_name}' not found!")
+    
+    player_id = str(ctx.author.id)
+    npc_data = get_npc_data(player_id, npc_id)
+    
+    embed = discord.Embed(
+        title=f"{npc_data['emoji']} {npc_data['name']}",
+        description=npc_data['backstory'],
+        color=0x9932cc
+    )
+    
+    # Basic Info
+    embed.add_field(name="🏮 Cultivation", value=f"Level {npc_data['cultivation_level']}\n{npc_data['realm']}", inline=True)
+    embed.add_field(name="⚡ Specialty", value=npc_data['specialty'], inline=True)
+    embed.add_field(name="👤 Personality", value=npc_data['personality'].replace('_', ' ').title(), inline=True)
+    
+    # Relationship Info
+    hearts = "💖" * (npc_data['affection_level'] // 20)
+    empty_hearts = "🤍" * (5 - (npc_data['affection_level'] // 20))
+    affection_bar = hearts + empty_hearts
+    
+    embed.add_field(name="💕 Your Relationship", value=f"{affection_bar}\n{npc_data['affection_level']}/100 - {npc_data['relationship_status'].title()}", inline=False)
+    
+    # Preferences
+    loved_gifts = ", ".join(npc_data.get('gifts_loved', [])[:3])
+    hated_gifts = ", ".join(npc_data.get('gifts_hated', [])[:3])
+    
+    embed.add_field(name="💝 Loves", value=loved_gifts if loved_gifts else "Unknown", inline=True)
+    embed.add_field(name="💔 Hates", value=hated_gifts if hated_gifts else "Unknown", inline=True)
+    
+    await ctx.send(embed=embed)
+
+# ===============================
+# COMPREHENSIVE HELP SYSTEM - UPDATED
+# ===============================
+@bot.command(name="guide")
+async def help_command(ctx, category=None):
+    """Comprehensive help system for all commands"""
+    
+    if category == "basic":
+        embed = discord.Embed(title="📚 Basic Commands", color=0x00ff00)
+        embed.add_field(name="!register", value="Register as a new cultivator", inline=False)
+        embed.add_field(name="!profile", value="View your cultivation profile", inline=False)
+        embed.add_field(name="!cultivate", value="Start cultivation session", inline=False)
+        embed.add_field(name="!breakthrough", value="Advance to next cultivation stage", inline=False)
+        embed.add_field(name="!leaderboard", value="View top cultivators", inline=False)
+        embed.add_field(name="!daily", value="Claim daily cultivation rewards", inline=False)
+        
+    elif category == "combat":
+        embed = discord.Embed(title="⚔️ Combat Commands", color=0xff0000)
+        embed.add_field(name="!duel @user", value="Challenge another player to PvP", inline=False)
+        embed.add_field(name="!boss_list", value="View available bosses", inline=False)
+        embed.add_field(name="!challenge_boss <name>", value="Fight a boss solo", inline=False)
+        embed.add_field(name="!world_boss_status", value="Check world boss status", inline=False)
+        embed.add_field(name="!create_party", value="Create party for world boss", inline=False)
+        embed.add_field(name="!join_party <leader>", value="Join a world boss party", inline=False)
+        embed.add_field(name="!challenge_world_boss", value="Fight world boss with party", inline=False)
+        
+    elif category == "adventure":
+        embed = discord.Embed(title="🗺️ Adventure Commands", color=0x0099ff)
+        embed.add_field(name="!explore", value="Start AI-driven exploration adventure", inline=False)
+        embed.add_field(name="!dungeon <name>", value="Enter a dungeon for rewards", inline=False)
+        embed.add_field(name="!dungeon_list", value="View available dungeons", inline=False)
+        embed.add_field(name="!quest", value="View and complete daily quests", inline=False)
+        
+    elif category == "npc":
+        embed = discord.Embed(title="🧑‍🤝‍🧑 NPC Commands", color=0x9932cc)
+        embed.add_field(name="!npc_list", value="View all available NPCs", inline=False)
+        embed.add_field(name="!talk <npc_name>", value="Have AI-driven conversation with NPC", inline=False)
+        embed.add_field(name="!gift <npc_name> <item>", value="Give gift to increase affection", inline=False)
+        embed.add_field(name="!npc_info <npc_name>", value="View detailed NPC information", inline=False)
+        
+    elif category == "systems":
+        embed = discord.Embed(title="🔧 System Commands", color=0xffff00)
+        embed.add_field(name="!shop", value="Buy items and spirit beasts", inline=False)
+        embed.add_field(name="!inventory", value="View your items and equipment", inline=False)
+        embed.add_field(name="!techniques", value="Learn and upgrade techniques", inline=False)
+        embed.add_field(name="!alchemy", value="Craft pills and potions", inline=False)
+        embed.add_field(name="!spirit_beast", value="Manage your spirit beasts", inline=False)
+        embed.add_field(name="!stats", value="View detailed player statistics", inline=False)
+        
+    else:
+        # Main help menu
+        embed = discord.Embed(
+            title="🌟 Cultivation Discord Bot - Complete Command Guide",
+            description="A comprehensive cultivation RPG with AI-driven NPCs, exploration, and epic battles!",
+            color=0xffd700
+        )
+        embed.add_field(name="📚 Basic Commands", value="`!help basic` - Registration, profile, cultivation", inline=True)
+        embed.add_field(name="⚔️ Combat Commands", value="`!help combat` - PvP, bosses, world bosses", inline=True)
+        embed.add_field(name="🗺️ Adventure Commands", value="`!help adventure` - Exploration, dungeons, quests", inline=True)
+        embed.add_field(name="🧑‍🤝‍🧑 NPC Commands", value="`!help npc` - AI-driven NPC interactions", inline=True)
+        embed.add_field(name="🔧 System Commands", value="`!help systems` - Shop, inventory, techniques", inline=True)
+        embed.add_field(name="🎮 Quick Start", value="1. `!register` to begin\n2. `!cultivate` to gain power\n3. `!explore` for AI adventures\n4. `!npc_list` to meet NPCs", inline=False)
+        
+        embed.add_field(name="🆕 New Features", value="• **AI Exploration** - Unpredictable adventures\n• **AI NPCs** - 20 unique cultivators with affection systems\n• **World Bosses** - Epic group battles with legendary equipment\n• **Enhanced Combat** - More bosses and dungeons", inline=False)
+        
+    embed.set_footer(text="💫 Continue your cultivation journey and achieve immortality!")
+    await ctx.send(embed=embed)
 
 # ===============================
 # Start bot

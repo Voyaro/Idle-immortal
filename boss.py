@@ -73,16 +73,92 @@ BOSSES = {
         "health": 40000,
         "damage": (4000, 5000),
         "reward_exp": 20000000,  # 🚀 20 JUTA EXP! (10x boost)
-        "reward_qi": 20000,
-        "reward_stones": 15000,
-        "element": "dark",
+        "reward_qi": 15000,
+        "reward_stones": 12000,
+        "element": "void",
         "weakness": "light",
-        "description": "Titan dari dimensi void yang mengerikan",
+        "description": "Titan dari dimensi void yang menguasai kegelapan",
         "phases": 6,
         "special_attacks": [
-            {"name": "Void Blast", "damage_multiplier": 2.0, "description": "Ledakan energi void"},
-            {"name": "Black Hole", "damage_multiplier": 2.5, "description": "Menghisap kehidupan"},
-            {"name": "Cosmic Annihilation", "damage_multiplier": 3.0, "description": "Penghancuran kosmik"}
+            {"name": "Void Crush", "damage_multiplier": 2.5, "description": "Serangan void yang menghancurkan realitas"},
+            {"name": "Dark Matter", "damage_multiplier": 2.0, "description": "Materi gelap yang menyerap energi"},
+            {"name": "Reality Tear", "damage_multiplier": 3.0, "description": "Merobek dimensi untuk serangan dahsyat"}
+        ]
+    },
+    "eternal_dragon": {
+        "name": "Eternal Dragon",
+        "emoji": "🐲",
+        "level": 1,
+        "health": 60000,
+        "damage": (6000, 8000),
+        "reward_exp": 30000000,  # 30M EXP!
+        "reward_qi": 20000,
+        "reward_stones": 18000,
+        "element": "time",
+        "weakness": "space",
+        "description": "Naga abadi yang menguasai waktu dan takdir",
+        "phases": 7,
+        "special_attacks": [
+            {"name": "Time Stop", "damage_multiplier": 2.8, "description": "Menghentikan waktu untuk serangan mematikan"},
+            {"name": "Fate Slash", "damage_multiplier": 3.2, "description": "Memotong garis takdir musuh"},
+            {"name": "Temporal Burst", "damage_multiplier": 4.0, "description": "Ledakan energi temporal"}
+        ]
+    },
+    "chaos_emperor": {
+        "name": "Chaos Emperor",
+        "emoji": "👑",
+        "level": 1,
+        "health": 80000,
+        "damage": (8000, 12000),
+        "reward_exp": 50000000,  # 50M EXP!
+        "reward_qi": 30000,
+        "reward_stones": 25000,
+        "element": "chaos",
+        "weakness": "order",
+        "description": "Kaisar chaos yang menguasai kekacauan primordial",
+        "phases": 8,
+        "special_attacks": [
+            {"name": "Chaos Storm", "damage_multiplier": 3.5, "description": "Badai chaos yang mengacak realitas"},
+            {"name": "Disorder Wave", "damage_multiplier": 3.0, "description": "Gelombang yang menciptakan kekacauan"},
+            {"name": "Primordial Wrath", "damage_multiplier": 5.0, "description": "Murka primordial yang menghancurkan segalanya"}
+        ]
+    },
+    "cosmic_sovereign": {
+        "name": "Cosmic Sovereign",
+        "emoji": "🌠",
+        "level": 1,
+        "health": 100000,
+        "damage": (10000, 15000),
+        "reward_exp": 75000000,  # 75M EXP!
+        "reward_qi": 40000,
+        "reward_stones": 35000,
+        "element": "cosmic",
+        "weakness": "mortal",
+        "description": "Penguasa cosmic yang mengendalikan seluruh alam semesta",
+        "phases": 10,
+        "special_attacks": [
+            {"name": "Galaxy Crusher", "damage_multiplier": 4.0, "description": "Menghancurkan galaksi dengan satu pukulan"},
+            {"name": "Star Collapse", "damage_multiplier": 4.5, "description": "Meruntuhkan bintang-bintang"},
+            {"name": "Universe Domination", "damage_multiplier": 6.0, "description": "Dominasi universal yang absolut"}
+        ]
+    },
+    "infinity_sage": {
+        "name": "Infinity Sage",
+        "emoji": "♾️",
+        "level": 1,
+        "health": 150000,
+        "damage": (15000, 20000),
+        "reward_exp": 100000000,  # 100M EXP!
+        "reward_qi": 50000,
+        "reward_stones": 45000,
+        "element": "infinity",
+        "weakness": "finite",
+        "description": "Sage tak terbatas yang mencapai pencerahan ultimate",
+        "phases": 12,
+        "special_attacks": [
+            {"name": "Infinite Wisdom", "damage_multiplier": 5.0, "description": "Kebijaksanaan tak terbatas yang menghancurkan ignorance"},
+            {"name": "Eternal Truth", "damage_multiplier": 5.5, "description": "Kebenaran abadi yang absolute"},
+            {"name": "Transcendent Strike", "damage_multiplier": 8.0, "description": "Serangan yang melampaui segala batasan"}
         ]
     },
     "infinity_dragon": {

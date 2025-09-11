@@ -24,10 +24,10 @@ WORLD_BOSSES = {
         "spawn_interval": 3600,
         "last_spawn": 0,
         "reward_equipment": [
-            {"name": "Heavenly Sword", "type": "weapon", "stats": {"power": 50000}, "rarity": "legendary", "set": "Heavenly Dragon"},
-            {"name": "Heavenly Armor", "type": "armor", "stats": {"defense": 50000}, "rarity": "legendary", "set": "Heavenly Dragon"},
-            {"name": "Heavenly Crown", "type": "helmet", "stats": {"hp": 50000}, "rarity": "legendary", "set": "Heavenly Dragon"},
-            {"name": "Heavenly Ring", "type": "accessory", "stats": {"qi": 50000}, "rarity": "legendary", "set": "Heavenly Dragon"}
+            {"name": "Heavenly Sword", "type": "weapon", "power": 50000, "rarity": "legendary", "set": "Heavenly Dragon"},
+            {"name": "Heavenly Armor", "type": "armor", "power": 50000, "rarity": "legendary", "set": "Heavenly Dragon"},
+            {"name": "Heavenly Crown", "type": "helmet", "power": 50000, "rarity": "legendary", "set": "Heavenly Dragon"},
+            {"name": "Heavenly Ring", "type": "accessory", "power": 50000, "rarity": "legendary", "set": "Heavenly Dragon"}
         ],
         "set_bonus": 200000
     },
@@ -49,12 +49,112 @@ WORLD_BOSSES = {
         "spawn_interval": 7200,
         "last_spawn": 0,
         "reward_equipment": [
-            {"name": "Abyssal Dragon Sword", "type": "weapon", "stats": {"power": 160000}, "rarity": "mythic", "set": "Abyssal Dragon"},
-            {"name": "Abyssal Dragon Armor", "type": "armor", "stats": {"defense": 170000}, "rarity": "mythic", "set": "Abyssal Dragon"},
-            {"name": "Abyssal Dragon Crown", "type": "helmet", "stats": {"hp": 180000}, "rarity": "mythic", "set": "Abyssal Dragon"},
-            {"name": "Abyssal Dragon Ring", "type": "accessory", "stats": {"qi": 190000}, "rarity": "mythic", "set": "Abyssal Dragon"}
+            {"name": "Abyssal Dragon Sword", "type": "weapon", "power": 160000, "rarity": "mythic", "set": "Abyssal Dragon"},
+            {"name": "Abyssal Dragon Armor", "type": "armor", "power": 170000, "rarity": "mythic", "set": "Abyssal Dragon"},
+            {"name": "Abyssal Dragon Crown", "type": "helmet", "power": 180000, "rarity": "mythic", "set": "Abyssal Dragon"},
+            {"name": "Abyssal Dragon Ring", "type": "accessory", "power": 190000, "rarity": "mythic", "set": "Abyssal Dragon"}
         ],
         "set_bonus": 400000
+    },
+    "void_emperor": {
+        "name": "Void Emperor",
+        "emoji": "👤",
+        "level": 300,
+        "health": 120000,
+        "max_health": 120000,
+        "damage": (2000, 3000),
+        "reward_exp": 50000000,
+        "reward_qi": 15000,
+        "reward_stones": 12000,
+        "element": "void",
+        "weakness": "creation",
+        "description": "Kaisar dari dimensi void yang menguasai kehampaan",
+        "min_players": 3,
+        "max_players": 15,
+        "spawn_interval": 10800,
+        "last_spawn": 0,
+        "reward_equipment": [
+            {"name": "Void Emperor Blade", "type": "weapon", "power": 250000, "rarity": "legendary", "set": "Void Emperor"},
+            {"name": "Void Emperor Robe", "type": "armor", "power": 260000, "rarity": "legendary", "set": "Void Emperor"},
+            {"name": "Void Emperor Mask", "type": "helmet", "power": 270000, "rarity": "legendary", "set": "Void Emperor"},
+            {"name": "Void Emperor Orb", "type": "accessory", "power": 280000, "rarity": "legendary", "set": "Void Emperor"}
+        ],
+        "set_bonus": 600000
+    },
+    "stellar_phoenix": {
+        "name": "Stellar Phoenix",
+        "emoji": "🔥",
+        "level": 400,
+        "health": 180000,
+        "max_health": 180000,
+        "damage": (3000, 4500),
+        "reward_exp": 75000000,
+        "reward_qi": 20000,
+        "reward_stones": 18000,
+        "element": "stellar",
+        "weakness": "black_hole",
+        "description": "Phoenix bintang yang terlahir dari supernova",
+        "min_players": 4,
+        "max_players": 20,
+        "spawn_interval": 14400,
+        "last_spawn": 0,
+        "reward_equipment": [
+            {"name": "Stellar Phoenix Talon", "type": "weapon", "power": 350000, "rarity": "transcendent", "set": "Stellar Phoenix"},
+            {"name": "Stellar Phoenix Plume", "type": "armor", "power": 360000, "rarity": "transcendent", "set": "Stellar Phoenix"},
+            {"name": "Stellar Phoenix Crown", "type": "helmet", "power": 370000, "rarity": "transcendent", "set": "Stellar Phoenix"},
+            {"name": "Stellar Phoenix Core", "type": "accessory", "power": 380000, "rarity": "transcendent", "set": "Stellar Phoenix"}
+        ],
+        "set_bonus": 800000
+    },
+    "cosmic_leviathan": {
+        "name": "Cosmic Leviathan",
+        "emoji": "🐙",
+        "level": 500,
+        "health": 250000,
+        "max_health": 250000,
+        "damage": (4500, 6000),
+        "reward_exp": 100000000,
+        "reward_qi": 30000,
+        "reward_stones": 25000,
+        "element": "cosmic",
+        "weakness": "order",
+        "description": "Leviathan cosmic yang berenang di lautan ruang angkasa",
+        "min_players": 5,
+        "max_players": 25,
+        "spawn_interval": 18000,
+        "last_spawn": 0,
+        "reward_equipment": [
+            {"name": "Cosmic Leviathan Tentacle", "type": "weapon", "power": 450000, "rarity": "divine", "set": "Cosmic Leviathan"},
+            {"name": "Cosmic Leviathan Scale", "type": "armor", "power": 460000, "rarity": "divine", "set": "Cosmic Leviathan"},
+            {"name": "Cosmic Leviathan Eye", "type": "helmet", "power": 470000, "rarity": "divine", "set": "Cosmic Leviathan"},
+            {"name": "Cosmic Leviathan Heart", "type": "accessory", "power": 480000, "rarity": "divine", "set": "Cosmic Leviathan"}
+        ],
+        "set_bonus": 1000000
+    },
+    "primordial_titan": {
+        "name": "Primordial Titan",
+        "emoji": "🗿",
+        "level": 777,
+        "health": 500000,
+        "max_health": 500000,
+        "damage": (8000, 12000),
+        "reward_exp": 200000000,
+        "reward_qi": 50000,
+        "reward_stones": 40000,
+        "element": "primordial",
+        "weakness": "evolution",
+        "description": "Titan primordial yang ada sejak awal penciptaan",
+        "min_players": 10,
+        "max_players": 50,
+        "spawn_interval": 86400,  # 24 hours
+        "last_spawn": 0,
+        "reward_equipment": [
+            {"name": "Primordial Titan Fist", "type": "weapon", "power": 800000, "rarity": "primordial", "set": "Primordial Titan"},
+            {"name": "Primordial Titan Shell", "type": "armor", "power": 850000, "rarity": "primordial", "set": "Primordial Titan"},
+            {"name": "Primordial Titan Crown", "type": "helmet", "power": 900000, "rarity": "primordial", "set": "Primordial Titan"},
+            {"name": "Primordial Titan Soul", "type": "accessory", "power": 1000000, "rarity": "primordial", "set": "Primordial Titan"}
+        ],
+        "set_bonus": 2000000
     }
 }
 
@@ -484,6 +584,9 @@ async def finish_world_boss_battle(battle_data, ctx, victory):
                 damage_share = battle_data["damage_dealt"][player_id] / total_damage
 
                 p = get_player(player_id)
+                if p is None:
+                    continue
+                    
                 p["exp"] += int(boss_data["reward_exp"] * damage_share)
                 p["qi"] += int(boss_data["reward_qi"] * damage_share)
                 p["spirit_stones"] += int(boss_data["reward_stones"] * damage_share)
@@ -493,8 +596,12 @@ async def finish_world_boss_battle(battle_data, ctx, victory):
                     if random.random() < 0.05:  # 5% chance
                         equip = random.choice(boss_data["reward_equipment"])
                         if "equipment" not in p:
-                            p["equipment"] = []
-                        p["equipment"].append(equip)
+                            p["equipment"] = {}
+                        if "equipment" not in p or p["equipment"] is None:
+                            p["equipment"] = {}
+                        # Add equipment properly
+                        equip_id = equip["name"].lower().replace(" ", "_")
+                        p["equipment"][equip_id] = equip.get("power", 100)
 
                         # Cek apakah player punya full set
                         player_set_items = [e for e in p["equipment"] if e.get("set") == equip["set"]]
@@ -506,9 +613,10 @@ async def finish_world_boss_battle(battle_data, ctx, victory):
                         drop_winners.append((player_id, equip["name"]))
 
                 # Track world boss kills
-                if "world_boss_kills" not in p:
+                if "world_boss_kills" not in p or p["world_boss_kills"] is None:
                     p["world_boss_kills"] = {}
-                p["world_boss_kills"][boss_data["name"]] = p["world_boss_kills"].get(boss_data["name"], 0) + 1
+                boss_name = boss_data["name"]
+                p["world_boss_kills"][boss_name] = p["world_boss_kills"].get(boss_name, 0) + 1
 
                 update_player(player_id, p)
 
