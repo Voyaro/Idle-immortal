@@ -1760,14 +1760,42 @@ async def start_battle(attacker_id, defender_id, ctx):
     attacker = get_player(attacker_id)
     defender = get_player(defender_id)
 
+    # Apply NPC combat assistance if available
+    attacker_power = attacker["total_power"]
+    defender_power = defender["total_power"]
+    
+    attacker_assistant = None
+    defender_assistant = None
+    
+    if NPC_SYSTEM_LOADED:
+        # Check for combat assistants
+        attacker_assistant_id = get_player_combat_assistant(attacker_id)
+        defender_assistant_id = get_player_combat_assistant(defender_id)
+        
+        if attacker_assistant_id and can_use_npc_assistant(attacker_id, attacker_assistant_id):
+            from npc_system import get_npc_data
+            attacker_npc_data = get_npc_data(str(attacker_id), attacker_assistant_id)
+            attacker_bonuses = apply_npc_combat_assistance(attacker, attacker_npc_data['specialty'])
+            attacker_power = attacker_bonuses['enhanced_power']
+            attacker_assistant = attacker_npc_data['name']
+        
+        if defender_assistant_id and can_use_npc_assistant(defender_id, defender_assistant_id):
+            from npc_system import get_npc_data
+            defender_npc_data = get_npc_data(str(defender_id), defender_assistant_id)
+            defender_bonuses = apply_npc_combat_assistance(defender, defender_npc_data['specialty'])
+            defender_power = defender_bonuses['enhanced_power']
+            defender_assistant = defender_npc_data['name']
+
     # Setup battle data
     ACTIVE_BATTLES[battle_id] = {
         "attacker": attacker_id,
         "defender": defender_id,
         "attacker_hp": 100,
         "defender_hp": 100,
-        "attacker_power": attacker["total_power"],
-        "defender_power": defender["total_power"],
+        "attacker_power": attacker_power,
+        "defender_power": defender_power,
+        "attacker_assistant": attacker_assistant,
+        "defender_assistant": defender_assistant,
         "round": 0,
         "message": None,
         "active": True,
@@ -1780,8 +1808,17 @@ async def start_battle(attacker_id, defender_id, ctx):
         description=f"<@{attacker_id}> vs <@{defender_id}>",
         color=0xff0000
     )
-    embed.add_field(name="Attacker Power", value=attacker["total_power"], inline=True)
-    embed.add_field(name="Defender Power", value=defender["total_power"], inline=True)
+    
+    attacker_power_text = f"{attacker_power:,}"
+    if attacker_assistant:
+        attacker_power_text += f"\n🤝 **Assistant:** {attacker_assistant}"
+    
+    defender_power_text = f"{defender_power:,}"
+    if defender_assistant:
+        defender_power_text += f"\n🤝 **Assistant:** {defender_assistant}"
+    
+    embed.add_field(name="Attacker Power", value=attacker_power_text, inline=True)
+    embed.add_field(name="Defender Power", value=defender_power_text, inline=True)
     embed.add_field(name="HP", value="❤️ 100% | ❤️ 100%", inline=False)
     embed.set_footer(text="Battle dimulai dalam 3...")
 
@@ -4349,6 +4386,48 @@ async def tame(ctx, beast_name: str):
 
 
 # ===============================
+# Command: my_beasts (MISSING COMMAND)
+# ===============================
+@bot.command()
+async def my_beasts(ctx):
+    """View all your tamed spirit beasts"""
+    p = get_player(ctx.author.id)
+    if not p:
+        return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk memulai.")
+
+    if not p.get("spirit_beasts"):
+        return await ctx.send("❌ Anda belum menjinakkan spirit beast apapun! Gunakan `!spirit_beasts` untuk melihat yang tersedia.")
+
+    embed = discord.Embed(
+        title=f"🐉 {ctx.author.name}'s Spirit Beast Collection",
+        description="All your tamed spirit beasts:",
+        color=0x00ff00
+    )
+
+    current_beast = p.get("current_beast")
+    total_power_bonus = 0
+
+    for beast in p["spirit_beasts"]:
+        status = "✅ **ACTIVE**" if current_beast == beast["name"] else "💤 Inactive"
+        bonus_text = ", ".join([f"+{int(v*100)}% {k}" for k, v in beast["bonus"].items()])
+        total_power_bonus += beast["power"]
+
+        embed.add_field(
+            name=f"{beast['emoji']} {beast['name']} ({status})",
+            value=f"**Power:** +{beast['power']} | **Bonus:** {bonus_text}",
+            inline=False
+        )
+
+    embed.add_field(
+        name="📊 Collection Stats",
+        value=f"**Total Beasts:** {len(p['spirit_beasts'])}\n**Total Power Bonus:** +{total_power_bonus}\n**Active Beast:** {current_beast or 'None'}",
+        inline=False
+    )
+
+    embed.set_footer(text="Use !set_beast \"beast_name\" to change active beast")
+    await ctx.send(embed=embed)
+
+# ===============================
 # Command: set_beast
 # ===============================
 @bot.command()
@@ -5216,7 +5295,7 @@ async def help_command(ctx, category: str = None):
         
         embed.add_field(
             name="🌸 **NPCs & Relationships**", 
-            value="`!help npcs` - 20 unique NPCs, affection system, exclusive soulmate mechanics",
+            value="`!help npcs` - 50 unique NPCs, affection system, combat assistance at 60%+",
             inline=False
         )
         
@@ -5694,8 +5773,8 @@ async def help_command(ctx, category: str = None):
         )
         
         embed.add_field(
-            name="🌸 **NPC Relationships (6 commands)**",
-            value="`!talk`, `!gift`, `!npc_info`, `!npc_list`, `!npcs`, `!my_relationships`",
+            name="🌸 **NPC Relationships (10 commands)**",
+            value="`!talk`, `!gift`, `!npc_info`, `!npc_list`, `!npcs`, `!my_relationships`, `!set_assistant`, `!remove_assistant`, `!assistant_info`, `!available_assistants`",
             inline=False
         )
         
@@ -5988,6 +6067,96 @@ async def reset_boss_cooldown(ctx, member: discord.Member):
 # ===============================
 # NPC INTERACTION COMMANDS - AI-DRIVEN
 # ===============================
+
+@bot.command(name="npcs")
+async def npcs_command(ctx):
+    """Alias for npc_list - shows all NPCs"""
+    await npc_list(ctx)
+
+@bot.command(name="my_relationships")
+async def my_relationships(ctx):
+    """View all your NPC relationships"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    embed = discord.Embed(
+        title=f"💕 {ctx.author.name}'s NPC Relationships",
+        description="Your relationships with all NPCs you've interacted with:",
+        color=0xff69b4
+    )
+    
+    # Get all NPCs the player has interacted with
+    from npc_system import NPC_INTERACTIONS, get_npc_data
+    
+    if player_id not in NPC_INTERACTIONS or not NPC_INTERACTIONS[player_id]:
+        return await ctx.send("❌ You haven't interacted with any NPCs yet! Use `!npc_list` to see available NPCs.")
+    
+    relationships = []
+    combat_assistants = []
+    soulmates = []
+    
+    for npc_id in NPC_INTERACTIONS[player_id]:
+        npc_data = get_npc_data(player_id, npc_id)
+        affection = npc_data['affection_level']
+        
+        # Categorize relationships
+        if affection >= 100:
+            soulmates.append(npc_data)
+        elif affection >= 60:
+            combat_assistants.append(npc_data)
+        
+        hearts = "💖" * (affection // 20)
+        empty_hearts = "🤍" * (5 - (affection // 20))
+        affection_bar = hearts + empty_hearts
+        
+        relationships.append((affection, f"{npc_data['emoji']} **{npc_data['name']}** - {affection_bar} {affection}/100 ({npc_data['relationship_status']})"))
+    
+    # Sort by affection level (highest first)
+    relationships.sort(key=lambda x: x[0], reverse=True)
+    
+    # Show top relationships
+    if relationships:
+        relationship_text = "\n".join([rel[1] for rel in relationships[:15]])  # Show top 15
+        embed.add_field(
+            name="📊 All Relationships",
+            value=relationship_text,
+            inline=False
+        )
+    
+    # Show special categories
+    if soulmates:
+        embed.add_field(
+            name="💖 Soulmates (100%)",
+            value=f"{soulmates[0]['emoji']} **{soulmates[0]['name']}** - Exclusive bond!",
+            inline=True
+        )
+    
+    if combat_assistants:
+        assistant_list = "\n".join([f"{npc['emoji']} {npc['name']}" for npc in combat_assistants[:5]])
+        embed.add_field(
+            name="⚔️ Combat Assistants Available (60%+)",
+            value=assistant_list,
+            inline=True
+        )
+    
+    # Current assistant
+    current_assistant = get_player_combat_assistant(player_id)
+    if current_assistant and current_assistant in NPCS:
+        embed.add_field(
+            name="🤝 Current Combat Assistant",
+            value=f"{NPCS[current_assistant]['emoji']} **{NPCS[current_assistant]['name']}**",
+            inline=True
+        )
+    
+    stats_text = f"**Total NPCs Met:** {len(relationships)}\n**Combat Ready:** {len(combat_assistants)}\n**Soulmates:** {len(soulmates)}"
+    embed.add_field(name="📈 Relationship Stats", value=stats_text, inline=False)
+    
+    await ctx.send(embed=embed)
 @bot.command(name="npc_list")
 async def npc_list(ctx):
     """List all available NPCs"""
