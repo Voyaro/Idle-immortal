@@ -333,6 +333,494 @@ NPCS = {
         "gifts_loved": ["precious_jade", "imperial_items", "luxury_gifts"],
         "gifts_hated": ["common_items", "peasant_gifts"],
         "relationship_status": "royalty"
+    },
+
+    # ===============================
+    # 30 NEW NPCS - EXPANSION (10 Male + 20 Female)
+    # ===============================
+    
+    # Additional 10 Male NPCs
+    "yang_kai": {
+        "name": "Yang Kai",
+        "gender": "male",
+        "emoji": "🌋",
+        "cultivation_level": 58,
+        "realm": "Immortal Realm",
+        "personality": "volcanic_warrior",
+        "specialty": "earth_fire_fusion",
+        "backstory": "Warrior who merged volcanic fire with earth cultivation",
+        "dialogue_style": "explosive_determined",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["volcanic_stones", "earth_crystals", "fire_gems"],
+        "gifts_hated": ["water_items", "ice_crystals"],
+        "relationship_status": "acquaintance"
+    },
+    "shen_long": {
+        "name": "Shen Long",
+        "gender": "male",
+        "emoji": "🐲",
+        "cultivation_level": 85,
+        "realm": "God Realm",
+        "personality": "dragon_lord",
+        "specialty": "dragon_transformation",
+        "backstory": "Ancient dragon who took human form to understand mortals",
+        "dialogue_style": "majestic_ancient",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["dragon_scales", "ancient_treasures", "divine_items"],
+        "gifts_hated": ["cheap_items", "modern_objects"],
+        "relationship_status": "divine"
+    },
+    "fu_chen": {
+        "name": "Fu Chen",
+        "gender": "male",
+        "emoji": "📿",
+        "cultivation_level": 72,
+        "realm": "God Realm",
+        "personality": "buddhist_monk",
+        "specialty": "enlightenment_cultivation",
+        "backstory": "Buddhist monk who achieved enlightenment through compassion",
+        "dialogue_style": "serene_wise",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["prayer_beads", "enlightenment_texts", "lotus_items"],
+        "gifts_hated": ["violent_items", "evil_artifacts"],
+        "relationship_status": "mentor"
+    },
+    "wei_xiao": {
+        "name": "Wei Xiao",
+        "gender": "male",
+        "emoji": "🌊",
+        "cultivation_level": 44,
+        "realm": "Immortal Realm",
+        "personality": "ocean_wanderer",
+        "specialty": "water_cultivation",
+        "backstory": "Ocean cultivator who controls the seven seas",
+        "dialogue_style": "flowing_calm",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["sea_pearls", "water_crystals", "ocean_treasures"],
+        "gifts_hated": ["desert_items", "fire_items"],
+        "relationship_status": "friend"
+    },
+    "han_mo": {
+        "name": "Han Mo",
+        "gender": "male",
+        "emoji": "🖤",
+        "cultivation_level": 66,
+        "realm": "Immortal Realm",
+        "personality": "dark_scholar",
+        "specialty": "shadow_research",
+        "backstory": "Scholar who studies the balance between light and darkness",
+        "dialogue_style": "intellectual_dark",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["shadow_tomes", "dark_crystals", "research_notes"],
+        "gifts_hated": ["light_items", "holy_artifacts"],
+        "relationship_status": "mysterious"
+    },
+    "bai_yu": {
+        "name": "Bai Yu",
+        "gender": "male",
+        "emoji": "🤍",
+        "cultivation_level": 39,
+        "realm": "Mortal Realm",
+        "personality": "pure_heart",
+        "specialty": "purification_arts",
+        "backstory": "Young cultivator with the purest heart and strongest will",
+        "dialogue_style": "innocent_determined",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["pure_crystals", "white_jade", "blessing_items"],
+        "gifts_hated": ["corrupted_items", "dark_artifacts"],
+        "relationship_status": "friend"
+    },
+    "luo_feng": {
+        "name": "Luo Feng",
+        "gender": "male",
+        "emoji": "🌪️",
+        "cultivation_level": 53,
+        "realm": "Immortal Realm",
+        "personality": "storm_chaser",
+        "specialty": "storm_cultivation",
+        "backstory": "Daredevil who cultivates by riding the most dangerous storms",
+        "dialogue_style": "wild_adventurous",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["storm_cores", "lightning_rods", "wind_chimes"],
+        "gifts_hated": ["calm_items", "peaceful_gifts"],
+        "relationship_status": "acquaintance"
+    },
+    "jin_wu": {
+        "name": "Jin Wu",
+        "gender": "male",
+        "emoji": "👑",
+        "cultivation_level": 67,
+        "realm": "Immortal Realm",
+        "personality": "fallen_prince",
+        "specialty": "royal_techniques",
+        "backstory": "Former prince who lost his kingdom but gained cultivation power",
+        "dialogue_style": "noble_melancholic",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["royal_artifacts", "crown_jewels", "noble_items"],
+        "gifts_hated": ["peasant_items", "reminder_items"],
+        "relationship_status": "noble"
+    },
+    "tie_shan": {
+        "name": "Tie Shan",
+        "gender": "male",
+        "emoji": "⛰️",
+        "cultivation_level": 61,
+        "realm": "Immortal Realm",
+        "personality": "mountain_guardian",
+        "specialty": "mountain_cultivation",
+        "backstory": "Guardian spirit of the sacred mountain ranges",
+        "dialogue_style": "steady_powerful",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["mountain_stones", "earth_gems", "stability_items"],
+        "gifts_hated": ["erosion_items", "unstable_gifts"],
+        "relationship_status": "guardian"
+    },
+    "yu_long": {
+        "name": "Yu Long",
+        "gender": "male",
+        "emoji": "🌟",
+        "cultivation_level": 78,
+        "realm": "God Realm",
+        "personality": "star_emperor",
+        "specialty": "stellar_cultivation",
+        "backstory": "Emperor who commands the power of stars and constellations",
+        "dialogue_style": "stellar_commanding",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["star_fragments", "celestial_items", "constellation_maps"],
+        "gifts_hated": ["earthly_items", "mundane_gifts"],
+        "relationship_status": "divine"
+    },
+
+    # Additional 20 Female NPCs
+    "li_mei": {
+        "name": "Li Mei",
+        "gender": "female",
+        "emoji": "🦋",
+        "cultivation_level": 33,
+        "realm": "Mortal Realm",
+        "personality": "butterfly_dancer",
+        "specialty": "transformation_arts",
+        "backstory": "Dancer who learned transformation from observing butterflies",
+        "dialogue_style": "graceful_playful",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["silk_scarves", "butterfly_pins", "dance_items"],
+        "gifts_hated": ["heavy_items", "clumsy_gifts"],
+        "relationship_status": "friend"
+    },
+    "xu_ying": {
+        "name": "Xu Ying",
+        "gender": "female",
+        "emoji": "👤",
+        "cultivation_level": 59,
+        "realm": "Immortal Realm",
+        "personality": "shadow_mistress",
+        "specialty": "shadow_manipulation",
+        "backstory": "Mistress of shadows who can become one with darkness",
+        "dialogue_style": "whispered_seductive",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["shadow_silk", "dark_roses", "mystery_boxes"],
+        "gifts_hated": ["bright_lights", "revealing_items"],
+        "relationship_status": "mysterious"
+    },
+    "chen_xue": {
+        "name": "Chen Xue",
+        "gender": "female",
+        "emoji": "🏔️",
+        "cultivation_level": 56,
+        "realm": "Immortal Realm",
+        "personality": "glacier_princess",
+        "specialty": "eternal_ice",
+        "backstory": "Princess born from eternal glaciers with ice-cold heart",
+        "dialogue_style": "crystal_clear",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["eternal_ice", "crystal_jewelry", "winter_flowers"],
+        "gifts_hated": ["melting_items", "warm_gifts"],
+        "relationship_status": "cold"
+    },
+    "hong_lian": {
+        "name": "Hong Lian",
+        "gender": "female",
+        "emoji": "🔥",
+        "cultivation_level": 49,
+        "realm": "Immortal Realm",
+        "personality": "fire_phoenix",
+        "specialty": "phoenix_rebirth",
+        "backstory": "Phoenix cultivator who can be reborn from her own ashes",
+        "dialogue_style": "fiery_passionate",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["phoenix_feathers", "rebirth_stones", "flame_jewelry"],
+        "gifts_hated": ["death_items", "extinguishing_gifts"],
+        "relationship_status": "passionate"
+    },
+    "mu_qing": {
+        "name": "Mu Qing",
+        "gender": "female",
+        "emoji": "🌳",
+        "cultivation_level": 41,
+        "realm": "Immortal Realm",
+        "personality": "forest_guardian",
+        "specialty": "nature_communion",
+        "backstory": "Guardian who can communicate with all forest creatures",
+        "dialogue_style": "natural_harmonious",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["ancient_seeds", "forest_gems", "nature_crowns"],
+        "gifts_hated": ["metal_items", "artificial_goods"],
+        "relationship_status": "guardian"
+    },
+    "yue_ling": {
+        "name": "Yue Ling",
+        "gender": "female",
+        "emoji": "🌕",
+        "cultivation_level": 64,
+        "realm": "Immortal Realm",
+        "personality": "moon_empress",
+        "specialty": "lunar_cultivation",
+        "backstory": "Empress who draws power from all phases of the moon",
+        "dialogue_style": "lunar_majestic",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["moon_pearls", "lunar_crowns", "night_jewels"],
+        "gifts_hated": ["sun_items", "day_gifts"],
+        "relationship_status": "noble"
+    },
+    "shui_ling": {
+        "name": "Shui Ling",
+        "gender": "female",
+        "emoji": "💎",
+        "cultivation_level": 37,
+        "realm": "Mortal Realm",
+        "personality": "water_spirit",
+        "specialty": "water_dancing",
+        "backstory": "Spirit born from the purest mountain spring water",
+        "dialogue_style": "flowing_musical",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["water_gems", "spring_flowers", "pure_items"],
+        "gifts_hated": ["pollution_items", "dirty_gifts"],
+        "relationship_status": "spirit"
+    },
+    "yan_fei": {
+        "name": "Yan Fei",
+        "gender": "female",
+        "emoji": "🎨",
+        "cultivation_level": 43,
+        "realm": "Immortal Realm",
+        "personality": "artistic_genius",
+        "specialty": "reality_painting",
+        "backstory": "Artist who can paint scenes that become reality",
+        "dialogue_style": "creative_inspired",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["art_supplies", "rare_pigments", "inspiration_items"],
+        "gifts_hated": ["crude_items", "artless_gifts"],
+        "relationship_status": "artist"
+    },
+    "lin_wan": {
+        "name": "Lin Wan",
+        "gender": "female",
+        "emoji": "🌸",
+        "cultivation_level": 46,
+        "realm": "Immortal Realm",
+        "personality": "cherry_blossom",
+        "specialty": "seasonal_cultivation",
+        "backstory": "Cultivator who embodies the beauty and transience of spring",
+        "dialogue_style": "poetic_seasonal",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["spring_items", "cherry_blossoms", "seasonal_gifts"],
+        "gifts_hated": ["winter_items", "permanent_gifts"],
+        "relationship_status": "seasonal"
+    },
+    "ji_yun": {
+        "name": "Ji Yun",
+        "gender": "female",
+        "emoji": "⚗️",
+        "cultivation_level": 51,
+        "realm": "Immortal Realm",
+        "personality": "mad_alchemist",
+        "specialty": "experimental_alchemy",
+        "backstory": "Brilliant but eccentric alchemist who creates impossible potions",
+        "dialogue_style": "excited_scientific",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["rare_ingredients", "experiment_tools", "chaos_items"],
+        "gifts_hated": ["stable_items", "predictable_gifts"],
+        "relationship_status": "mad_scientist"
+    },
+    "wan_yu": {
+        "name": "Wan Yu",
+        "gender": "female",
+        "emoji": "🌈",
+        "cultivation_level": 38,
+        "realm": "Mortal Realm",
+        "personality": "rainbow_maiden",
+        "specialty": "color_cultivation",
+        "backstory": "Maiden who can control and weaponize the colors of rainbows",
+        "dialogue_style": "colorful_cheerful",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["rainbow_gems", "colorful_items", "prism_stones"],
+        "gifts_hated": ["grey_items", "colorless_gifts"],
+        "relationship_status": "cheerful"
+    },
+    "leng_yue": {
+        "name": "Leng Yue",
+        "gender": "female",
+        "emoji": "🗡️",
+        "cultivation_level": 68,
+        "realm": "Immortal Realm",
+        "personality": "sword_saint",
+        "specialty": "ultimate_swordsmanship",
+        "backstory": "Legendary sword saint who never drew her blade in vain",
+        "dialogue_style": "honor_bound",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["legendary_blades", "honor_tokens", "warrior_items"],
+        "gifts_hated": ["dishonor_items", "coward_gifts"],
+        "relationship_status": "warrior"
+    },
+    "xing_chen": {
+        "name": "Xing Chen",
+        "gender": "female",
+        "emoji": "✨",
+        "cultivation_level": 76,
+        "realm": "God Realm",
+        "personality": "star_weaver",
+        "specialty": "constellation_creation",
+        "backstory": "Divine being who weaves new constellations in the night sky",
+        "dialogue_style": "cosmic_creative",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["star_dust", "cosmic_threads", "celestial_tools"],
+        "gifts_hated": ["earth_bound", "limited_gifts"],
+        "relationship_status": "divine"
+    },
+    "meng_die": {
+        "name": "Meng Die",
+        "gender": "female",
+        "emoji": "💭",
+        "cultivation_level": 54,
+        "realm": "Immortal Realm",
+        "personality": "dream_weaver",
+        "specialty": "dream_cultivation",
+        "backstory": "Cultivator who can enter and manipulate the dreams of others",
+        "dialogue_style": "dreamy_ethereal",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["dream_catchers", "sleep_herbs", "illusion_gems"],
+        "gifts_hated": ["nightmare_items", "wake_up_gifts"],
+        "relationship_status": "dreamy"
+    },
+    "qiu_shui": {
+        "name": "Qiu Shui",
+        "gender": "female",
+        "emoji": "🍂",
+        "cultivation_level": 45,
+        "realm": "Immortal Realm",
+        "personality": "autumn_spirit",
+        "specialty": "harvest_cultivation",
+        "backstory": "Spirit of autumn who brings the harvest and changing seasons",
+        "dialogue_style": "mature_seasonal",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["autumn_leaves", "harvest_items", "golden_gifts"],
+        "gifts_hated": ["spring_items", "young_gifts"],
+        "relationship_status": "seasonal"
+    },
+    "ling_er": {
+        "name": "Ling Er",
+        "gender": "female",
+        "emoji": "🧚",
+        "cultivation_level": 29,
+        "realm": "Mortal Realm",
+        "personality": "fairy_child",
+        "specialty": "fairy_magic",
+        "backstory": "Young fairy who escaped from the fairy realm to learn human ways",
+        "dialogue_style": "childlike_magical",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["fairy_items", "sparkly_gifts", "magical_toys"],
+        "gifts_hated": ["adult_items", "serious_gifts"],
+        "relationship_status": "childlike"
+    },
+    "bai_feng": {
+        "name": "Bai Feng",
+        "gender": "female",
+        "emoji": "🕊️",
+        "cultivation_level": 62,
+        "realm": "Immortal Realm",
+        "personality": "peaceful_dove",
+        "specialty": "peace_cultivation",
+        "backstory": "Dove spirit who seeks to bring peace to all conflicts",
+        "dialogue_style": "gentle_peaceful",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["peace_offerings", "white_items", "harmony_gifts"],
+        "gifts_hated": ["war_items", "conflict_gifts"],
+        "relationship_status": "peaceful"
+    },
+    "hei_mei": {
+        "name": "Hei Mei",
+        "gender": "female",
+        "emoji": "🖤",
+        "cultivation_level": 57,
+        "realm": "Immortal Realm",
+        "personality": "dark_rose",
+        "specialty": "thorn_cultivation",
+        "backstory": "Beautiful but dangerous cultivator with thorns that protect her",
+        "dialogue_style": "beautiful_dangerous",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["black_roses", "thorn_jewelry", "danger_items"],
+        "gifts_hated": ["safe_items", "gentle_gifts"],
+        "relationship_status": "dangerous"
+    },
+    "cang_yue": {
+        "name": "Cang Yue",
+        "gender": "female",
+        "emoji": "🌊",
+        "cultivation_level": 71,
+        "realm": "God Realm",
+        "personality": "ocean_goddess",
+        "specialty": "tidal_cultivation",
+        "backstory": "Goddess who controls the tides and depths of all oceans",
+        "dialogue_style": "deep_mysterious",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["ocean_treasures", "deep_pearls", "tidal_items"],
+        "gifts_hated": ["desert_items", "dry_gifts"],
+        "relationship_status": "divine"
+    },
+    "zi_yun": {
+        "name": "Zi Yun",
+        "gender": "female",
+        "emoji": "☁️",
+        "cultivation_level": 48,
+        "realm": "Immortal Realm",
+        "personality": "cloud_dancer",
+        "specialty": "cloud_formation",
+        "backstory": "Cultivator who dances among clouds and shapes weather patterns",
+        "dialogue_style": "airy_graceful",
+        "affection_level": 0,
+        "max_affection": 100,
+        "gifts_loved": ["cloud_silk", "weather_items", "sky_gems"],
+        "gifts_hated": ["ground_items", "heavy_gifts"],
+        "relationship_status": "graceful"
     }
 }
 
@@ -469,11 +957,34 @@ def get_npc_data(player_id, npc_id):
     return NPC_INTERACTIONS[player_id][npc_id]
 
 def update_npc_affection(player_id, npc_id, change):
-    """Update NPC affection and relationship status"""
+    """Update NPC affection and relationship status with exclusive relationship limits"""
     npc_data = get_npc_data(player_id, npc_id)
     
     old_affection = npc_data["affection_level"]
-    npc_data["affection_level"] = max(0, min(100, old_affection + change))
+    potential_new_affection = max(0, min(100, old_affection + change))
+    
+    # Check exclusive relationship limits
+    try:
+        from main import check_exclusive_relationship_limit
+        allowed, blocking_npc = check_exclusive_relationship_limit(player_id, npc_id, potential_new_affection)
+        
+        if not allowed and blocking_npc:
+            # Block the increase, cap at 80% if trying to go higher
+            if potential_new_affection > 80:
+                npc_data["affection_level"] = 80
+                # Set appropriate relationship status for 80%
+                for threshold, status in reversed(list(AFFECTION_THRESHOLDS.items())):
+                    if 80 >= threshold:
+                        npc_data["relationship_status"] = status
+                        break
+                return old_affection, 80, f"🔒 **Exclusive Relationship Limit**: {blocking_npc} is your soulmate (100% affection). Others cannot exceed 80% affection."
+            else:
+                npc_data["affection_level"] = potential_new_affection
+        else:
+            npc_data["affection_level"] = potential_new_affection
+    except:
+        # If there's an error with the exclusive check, just apply normal affection
+        npc_data["affection_level"] = potential_new_affection
     
     # Update relationship status based on affection
     new_affection = npc_data["affection_level"]
@@ -482,7 +993,24 @@ def update_npc_affection(player_id, npc_id, change):
             npc_data["relationship_status"] = status
             break
     
-    return old_affection, new_affection
+    # Handle special message for reaching 100% (soulmate status)
+    exclusive_message = ""
+    if new_affection >= 100 and old_affection < 100:
+        # Count how many other NPCs were reduced to 80%
+        capped_npcs = []
+        for other_npc_id in NPCS.keys():
+            if other_npc_id != npc_id:
+                other_npc_data = get_npc_data(player_id, other_npc_id)
+                if other_npc_data["affection_level"] == 80:  # Newly capped
+                    capped_npcs.append(other_npc_data["name"])
+        
+        if capped_npcs:
+            if len(capped_npcs) == 1:
+                exclusive_message = f"💔 **Exclusive Bond**: {capped_npcs[0]}'s affection was capped at 80% due to your exclusive relationship with {npc_data['name']}."
+            else:
+                exclusive_message = f"💔 **Exclusive Bond**: {len(capped_npcs)} other NPCs had their affection capped at 80% due to your exclusive relationship with {npc_data['name']}."
+    
+    return old_affection, new_affection, exclusive_message if exclusive_message else ""
 
 def save_npc_data():
     """Save NPC interaction data to file"""

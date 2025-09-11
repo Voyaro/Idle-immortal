@@ -223,24 +223,226 @@ GUILD_COSTS = {
 # ===============================
 # Cultivation Sects & Random Techniques
 # ===============================
+# ===============================
+# COMPREHENSIVE SECT SYSTEM - 3 REALMS
+# ===============================
+
 CULTIVATION_SECTS = {
-    "sword": {"name": "Sword Sect", "emoji": "⚔️", "specialty": "Sword Techniques", "bonus": {"attack": 0.1}},
-    "elemental": {"name": "Elemental Sect", "emoji": "🔥", "specialty": "Element Control", "bonus": {"all": 0.05}},
-    "body": {"name": "Body Sect", "emoji": "💪", "specialty": "Physical Cultivation", "bonus": {"defense": 0.1}},
-    "soul": {"name": "Soul Sect", "emoji": "👻", "specialty": "Soul Attacks", "bonus": {"attack": 0.05, "support": 0.05}},
-    "alchemy": {"name": "Alchemy Sect", "emoji": "🧪", "specialty": "Pill Refining", "bonus": {"healing": 0.1}},
-    "array": {"name": "Array Sect", "emoji": "🔷", "specialty": "Formation Arrays", "bonus": {"defense": 0.05, "support": 0.05}},
-    "beast": {"name": "Beast Taming Sect", "emoji": "🐉", "specialty": "Spirit Beasts", "bonus": {"movement": 0.1}},
-    "dark": {"name": "Dark Moon Sect", "emoji": "🌙", "specialty": "Shadow Techniques", "bonus": {"attack": 0.07, "movement": 0.03}}
+    # MORTAL REALM SECTS
+    "azure_sword": {
+        "name": "Azure Sword Sect", 
+        "emoji": "⚔️", 
+        "realm": "Mortal Realm",
+        "specialty": "Sword Mastery", 
+        "bonus": {"attack": 0.15, "critical_chance": 0.10},
+        "description": "Masters of the Azure Sword techniques, focusing on precise and deadly strikes.",
+        "entrance_requirement": "Mortal Realm Stage 3",
+        "techniques": ["Azure Slash", "Sword Rain", "Blade Whirlwind", "Azure Strike"]
+    },
+    "flame_lotus": {
+        "name": "Flame Lotus Sect", 
+        "emoji": "🔥", 
+        "realm": "Mortal Realm",
+        "specialty": "Fire Cultivation", 
+        "bonus": {"attack": 0.12, "fire_resistance": 0.20},
+        "description": "Cultivators who harness the power of flame and lotus energy.",
+        "entrance_requirement": "Mortal Realm Stage 5", 
+        "techniques": ["Lotus Fire Burst", "Flame Shield", "Phoenix Dance", "Burning Soul"]
+    },
+    "iron_body": {
+        "name": "Iron Body Sect", 
+        "emoji": "💪", 
+        "realm": "Mortal Realm",
+        "specialty": "Physical Cultivation", 
+        "bonus": {"defense": 0.20, "health": 0.15},
+        "description": "Focuses on strengthening the physical body to unbreakable levels.",
+        "entrance_requirement": "Mortal Realm Stage 2",
+        "techniques": ["Iron Skin", "Titan Strength", "Unbreakable Will", "Steel Fist"]
+    },
+    "spirit_herb": {
+        "name": "Spirit Herb Sect", 
+        "emoji": "🌿", 
+        "realm": "Mortal Realm",
+        "specialty": "Alchemy & Healing", 
+        "bonus": {"healing": 0.25, "pill_efficacy": 0.30},
+        "description": "Masters of spiritual herbs and alchemical arts.",
+        "entrance_requirement": "Mortal Realm Stage 4",
+        "techniques": ["Healing Mist", "Poison Resistance", "Herb Knowledge", "Life Drain"]
+    },
+    "shadow_moon": {
+        "name": "Shadow Moon Sect", 
+        "emoji": "🌙", 
+        "realm": "Mortal Realm",
+        "specialty": "Stealth & Assassination", 
+        "bonus": {"movement": 0.18, "stealth": 0.25},
+        "description": "Silent assassins who strike from the shadows under moonlight.",
+        "entrance_requirement": "Mortal Realm Stage 6",
+        "techniques": ["Shadow Step", "Moon Blade", "Invisibility", "Silent Kill"]
+    },
+
+    # IMMORTAL REALM SECTS  
+    "celestial_sword": {
+        "name": "Celestial Sword Palace", 
+        "emoji": "🌟", 
+        "realm": "Immortal Realm",
+        "specialty": "Divine Sword Arts", 
+        "bonus": {"attack": 0.25, "divine_power": 0.20},
+        "description": "Elite immortal sword cultivators wielding celestial blades.",
+        "entrance_requirement": "Immortal Realm Stage 1",
+        "techniques": ["Celestial Slash", "Star Sword Rain", "Divine Blade", "Heavenly Cut"]
+    },
+    "void_abyss": {
+        "name": "Void Abyss Sect", 
+        "emoji": "🌌", 
+        "realm": "Immortal Realm",
+        "specialty": "Void Manipulation", 
+        "bonus": {"void_power": 0.30, "space_control": 0.25},
+        "description": "Masters of void energy and spatial manipulation.",
+        "entrance_requirement": "Immortal Realm Stage 3",
+        "techniques": ["Void Tear", "Space Lock", "Dimensional Step", "Abyss Call"]
+    },
+    "phoenix_flame": {
+        "name": "Eternal Phoenix Sect", 
+        "emoji": "🔥", 
+        "realm": "Immortal Realm",
+        "specialty": "Phoenix Fire Arts", 
+        "bonus": {"fire_mastery": 0.35, "regeneration": 0.20},
+        "description": "Immortal fire cultivators who embody the phoenix spirit.",
+        "entrance_requirement": "Immortal Realm Stage 2",
+        "techniques": ["Phoenix Rebirth", "Eternal Flame", "Fire Storm", "Phoenix Wings"]
+    },
+    "thunder_emperor": {
+        "name": "Thunder Emperor Sect", 
+        "emoji": "⚡", 
+        "realm": "Immortal Realm",
+        "specialty": "Lightning Mastery", 
+        "bonus": {"lightning_power": 0.40, "speed": 0.25},
+        "description": "Controllers of thunder and lightning, blessed by the Thunder Emperor.",
+        "entrance_requirement": "Immortal Realm Stage 4",
+        "techniques": ["Thunder Strike", "Lightning Body", "Storm Call", "Emperor's Wrath"]
+    },
+    "jade_palace": {
+        "name": "Jade Immortal Palace", 
+        "emoji": "💎", 
+        "realm": "Immortal Realm",
+        "specialty": "Jade Cultivation", 
+        "bonus": {"defense": 0.30, "jade_power": 0.25},
+        "description": "Noble immortals who cultivate with pure jade energy.",
+        "entrance_requirement": "Immortal Realm Stage 5",
+        "techniques": ["Jade Shield", "Crystal Armor", "Jade Beam", "Immortal Protection"]
+    },
+
+    # GOD REALM SECTS
+    "primordial_dao": {
+        "name": "Primordial Dao Temple", 
+        "emoji": "☯️", 
+        "realm": "God Realm",
+        "specialty": "Dao Mastery", 
+        "bonus": {"dao_power": 0.50, "cosmic_insight": 0.40},
+        "description": "Ancient gods who comprehend the fundamental laws of existence.",
+        "entrance_requirement": "God Realm Stage 1",
+        "techniques": ["Dao Strike", "Law Manipulation", "Reality Bend", "Cosmic Truth"]
+    },
+    "universe_creator": {
+        "name": "Universe Creator Sect", 
+        "emoji": "🌍", 
+        "realm": "God Realm",
+        "specialty": "Creation Powers", 
+        "bonus": {"creation_power": 0.60, "universe_control": 0.45},
+        "description": "Gods who possess the power to create and destroy universes.",
+        "entrance_requirement": "God Realm Stage 3",
+        "techniques": ["Universe Genesis", "World Destroyer", "Star Creation", "Galaxy Forge"]
+    },
+    "time_space": {
+        "name": "Time-Space Dominion", 
+        "emoji": "⏰", 
+        "realm": "God Realm",
+        "specialty": "Time & Space Control", 
+        "bonus": {"time_mastery": 0.55, "space_mastery": 0.50},
+        "description": "Divine beings who control the flow of time and fabric of space.",
+        "entrance_requirement": "God Realm Stage 2",
+        "techniques": ["Time Stop", "Space Warp", "Temporal Slash", "Dimensional Prison"]
+    },
+    "chaos_order": {
+        "name": "Chaos-Order Balance", 
+        "emoji": "⚖️", 
+        "realm": "God Realm",
+        "specialty": "Balance Mastery", 
+        "bonus": {"chaos_power": 0.35, "order_power": 0.35, "balance": 0.40},
+        "description": "Gods who maintain the eternal balance between chaos and order.",
+        "entrance_requirement": "God Realm Stage 4",
+        "techniques": ["Chaos Storm", "Order Lock", "Balance Strike", "Duality Mastery"]
+    },
+    "infinite_void": {
+        "name": "Infinite Void Sect", 
+        "emoji": "🌌", 
+        "realm": "God Realm",
+        "specialty": "Void Transcendence", 
+        "bonus": {"void_transcendence": 0.70, "infinite_power": 0.60},
+        "description": "The ultimate sect for gods who transcend existence itself.",
+        "entrance_requirement": "God Realm Stage 5",
+        "techniques": ["Void Transcendence", "Infinite Strike", "Existence Erase", "Beyond Reality"]
+    }
 }
 
+# Expanded Technique System
 TECHNIQUE_TYPES = {
     "attack": {"name": "Attack Technique", "emoji": "⚡", "power_bonus": (0.15, 0.25)},
     "defense": {"name": "Defense Technique", "emoji": "🛡️", "power_bonus": (0.10, 0.20)},
     "support": {"name": "Support Technique", "emoji": "💫", "power_bonus": (0.08, 0.18)},
     "healing": {"name": "Healing Technique", "emoji": "❤️", "power_bonus": (0.05, 0.15)},
-    "movement": {"name": "Movement Technique", "emoji": "💨", "power_bonus": (0.07, 0.17)}
+    "movement": {"name": "Movement Technique", "emoji": "💨", "power_bonus": (0.07, 0.17)},
+    "special": {"name": "Special Technique", "emoji": "✨", "power_bonus": (0.20, 0.35)},
+    "ultimate": {"name": "Ultimate Technique", "emoji": "💥", "power_bonus": (0.40, 0.60)}
 }
+
+# Sect Helper Functions
+def get_player_sect(player_id):
+    """Get player's current sect"""
+    p = get_player(player_id)
+    return p.get("sect", None)
+
+def can_join_sect(player_data, sect_id):
+    """Check if player meets sect requirements"""
+    sect = CULTIVATION_SECTS[sect_id]
+    player_realm = player_data["realm"]
+    player_stage = player_data["stage"]
+    
+    # Check realm requirement
+    required_realm = sect["realm"]
+    if player_realm != required_realm:
+        return False, f"Must be in {required_realm}"
+    
+    # Check stage requirement
+    requirement = sect["entrance_requirement"]
+    if "Stage" in requirement:
+        required_stage = int(requirement.split("Stage ")[1])
+        if player_stage < required_stage:
+            return False, f"Must reach {requirement}"
+    
+    return True, ""
+
+def get_sect_techniques(sect_id):
+    """Get all techniques available to a sect"""
+    if sect_id in CULTIVATION_SECTS:
+        return CULTIVATION_SECTS[sect_id]["techniques"]
+    return []
+
+def apply_sect_bonuses(player_data, sect_id):
+    """Apply sect bonuses to player stats"""
+    if sect_id not in CULTIVATION_SECTS:
+        return player_data["total_power"]
+    
+    sect = CULTIVATION_SECTS[sect_id]
+    bonuses = sect["bonus"]
+    base_power = player_data["total_power"]
+    
+    # Apply all sect bonuses
+    total_bonus = 0
+    for bonus_type, bonus_value in bonuses.items():
+        total_bonus += bonus_value
+    
+    return int(base_power * (1 + total_bonus))
 
 ELEMENT_TYPES = {
     "fire": "🔥", "water": "💧", "earth": "🌍", "wind": "💨", 
@@ -248,81 +450,570 @@ ELEMENT_TYPES = {
 }
 
 # ===============================
+# EXCITING NEW GAME SYSTEMS
+# ===============================
+
+# ARTIFACT SYSTEM - Powerful special items
+ARTIFACTS = {
+    # Mortal Realm Artifacts
+    "jade_phoenix_pendant": {
+        "name": "Jade Phoenix Pendant",
+        "rarity": "legendary",
+        "emoji": "🟢",
+        "realm": "Mortal Realm",
+        "power_bonus": 1000,
+        "special_effect": "Phoenix Rebirth - 10% chance to survive fatal attacks",
+        "description": "A jade pendant containing the essence of a phoenix spirit",
+        "activation_cost": 50,
+        "cooldown": 3600  # 1 hour
+    },
+    "lightning_essence_orb": {
+        "name": "Lightning Essence Orb",
+        "rarity": "epic",
+        "emoji": "⚡",
+        "realm": "Mortal Realm", 
+        "power_bonus": 800,
+        "special_effect": "Lightning Strike - Deal 50% extra damage in next battle",
+        "description": "Crystallized lightning essence that crackles with power",
+        "activation_cost": 30,
+        "cooldown": 1800  # 30 minutes
+    },
+    "earth_spirit_crown": {
+        "name": "Earth Spirit Crown",
+        "rarity": "rare",
+        "emoji": "👑",
+        "realm": "Mortal Realm",
+        "power_bonus": 600,
+        "special_effect": "Stone Skin - Reduce damage taken by 25% for 1 hour",
+        "description": "Crown blessed by earth spirits for protection",
+        "activation_cost": 40,
+        "cooldown": 2400  # 40 minutes
+    },
+
+    # Immortal Realm Artifacts
+    "celestial_star_map": {
+        "name": "Celestial Star Map",
+        "rarity": "mythic",
+        "emoji": "🗺️",
+        "realm": "Immortal Realm",
+        "power_bonus": 2500,
+        "special_effect": "Star Navigation - Increase exploration success by 75%",
+        "description": "Ancient map showing the positions of celestial bodies",
+        "activation_cost": 100,
+        "cooldown": 7200  # 2 hours
+    },
+    "void_shatter_gauntlets": {
+        "name": "Void Shatter Gauntlets",
+        "rarity": "legendary",
+        "emoji": "🥊",
+        "realm": "Immortal Realm",
+        "power_bonus": 2000,
+        "special_effect": "Void Strike - Ignore all defenses in next attack",
+        "description": "Gauntlets that can tear through the fabric of space",
+        "activation_cost": 80,
+        "cooldown": 5400  # 1.5 hours
+    },
+    "immortal_healing_lotus": {
+        "name": "Immortal Healing Lotus",
+        "rarity": "epic",
+        "emoji": "🪷",
+        "realm": "Immortal Realm",
+        "power_bonus": 1500,
+        "special_effect": "Lotus Regeneration - Fully heal and remove all debuffs",
+        "description": "Sacred lotus that blooms only in immortal gardens",
+        "activation_cost": 60,
+        "cooldown": 3600  # 1 hour
+    },
+
+    # God Realm Artifacts
+    "creation_genesis_stone": {
+        "name": "Creation Genesis Stone",
+        "rarity": "transcendent",
+        "emoji": "💎",
+        "realm": "God Realm",
+        "power_bonus": 5000,
+        "special_effect": "Genesis Creation - Create a temporary pocket dimension",
+        "description": "The original stone used to create the first universe",
+        "activation_cost": 200,
+        "cooldown": 14400  # 4 hours
+    },
+    "time_control_hourglass": {
+        "name": "Time Control Hourglass",
+        "rarity": "mythic",
+        "emoji": "⏳",
+        "realm": "God Realm",
+        "power_bonus": 4000,
+        "special_effect": "Time Manipulation - Reset all cooldowns instantly",
+        "description": "Hourglass containing the sands of time itself",
+        "activation_cost": 150,
+        "cooldown": 10800  # 3 hours
+    },
+    "infinity_chaos_orb": {
+        "name": "Infinity Chaos Orb",
+        "rarity": "legendary",
+        "emoji": "🌌",
+        "realm": "God Realm",
+        "power_bonus": 3500,
+        "special_effect": "Chaos Burst - Random powerful effect activated",
+        "description": "Orb containing the raw chaos of infinite possibilities",
+        "activation_cost": 120,
+        "cooldown": 7200  # 2 hours
+    }
+}
+
+# CULTIVATION FORMATIONS - Group cultivation system
+FORMATIONS = {
+    "seven_star_formation": {
+        "name": "Seven Star Formation",
+        "emoji": "✨",
+        "min_participants": 3,
+        "max_participants": 7,
+        "duration": 3600,  # 1 hour
+        "power_multiplier": 1.5,
+        "qi_bonus": 2.0,
+        "cost_per_person": 100,
+        "description": "Ancient formation that channels star power for cultivation"
+    },
+    "dragon_ascension_circle": {
+        "name": "Dragon Ascension Circle",
+        "emoji": "🐲",
+        "min_participants": 5,
+        "max_participants": 10,
+        "duration": 7200,  # 2 hours
+        "power_multiplier": 2.0,
+        "qi_bonus": 3.0,
+        "cost_per_person": 250,
+        "description": "Formation that mimics the ascension path of ancient dragons"
+    },
+    "phoenix_rebirth_array": {
+        "name": "Phoenix Rebirth Array",
+        "emoji": "🔥",
+        "min_participants": 2,
+        "max_participants": 5,
+        "duration": 5400,  # 1.5 hours
+        "power_multiplier": 1.8,
+        "qi_bonus": 2.5,
+        "cost_per_person": 180,
+        "description": "Formation focused on rebirth and transformation energies"
+    }
+}
+
+# ENLIGHTENMENT EVENTS - Random spiritual awakenings
+ENLIGHTENMENT_EVENTS = {
+    "dao_comprehension": {
+        "name": "Dao Comprehension",
+        "emoji": "☯️",
+        "rarity": "rare",
+        "power_boost": (500, 1500),
+        "qi_boost": (200, 800),
+        "chance": 0.05,  # 5% chance
+        "description": "You suddenly comprehend a fragment of the universal Dao",
+        "message": "💫 **Enlightenment!** The mysteries of the Dao become clearer to you!"
+    },
+    "elemental_awakening": {
+        "name": "Elemental Awakening",
+        "emoji": "🌟",
+        "rarity": "uncommon",
+        "power_boost": (300, 800),
+        "qi_boost": (100, 400),
+        "chance": 0.08,  # 8% chance
+        "description": "Your understanding of elemental forces deepens dramatically",
+        "message": "⚡ **Elemental Awakening!** You feel one with the elements!"
+    },
+    "cosmic_revelation": {
+        "name": "Cosmic Revelation",
+        "emoji": "🌌",
+        "rarity": "legendary",
+        "power_boost": (1000, 3000),
+        "qi_boost": (500, 1500),
+        "chance": 0.02,  # 2% chance
+        "description": "The secrets of the cosmos are revealed to your inner eye",
+        "message": "🌟 **COSMIC REVELATION!** The universe speaks directly to your soul!"
+    },
+    "inner_demon_defeat": {
+        "name": "Inner Demon Defeat",
+        "emoji": "😈",
+        "rarity": "epic",
+        "power_boost": (800, 2000),
+        "qi_boost": (300, 1000),
+        "chance": 0.03,  # 3% chance
+        "description": "You overcome a major inner demon and achieve spiritual clarity",
+        "message": "👹 **Inner Demon Defeated!** Your mind is clearer than ever before!"
+    }
+}
+
+# TREASURE HUNT LOCATIONS - Exploration system
+TREASURE_LOCATIONS = {
+    "ancient_ruins": {
+        "name": "Ancient Ruins",
+        "emoji": "🏛️",
+        "difficulty": "medium",
+        "exploration_time": 1800,  # 30 minutes
+        "cost": 50,
+        "success_chance": 0.6,
+        "rewards": {
+            "spirit_stones": (100, 500),
+            "artifacts": ["lightning_essence_orb", "earth_spirit_crown"],
+            "power_gain": (200, 600)
+        },
+        "description": "Mysterious ruins left by ancient cultivators"
+    },
+    "mystic_cave": {
+        "name": "Mystic Cave",
+        "emoji": "🕳️",
+        "difficulty": "easy",
+        "exploration_time": 900,  # 15 minutes
+        "cost": 25,
+        "success_chance": 0.8,
+        "rewards": {
+            "spirit_stones": (50, 200),
+            "qi_gain": (100, 300),
+            "power_gain": (100, 300)
+        },
+        "description": "A cave filled with natural qi formations"
+    },
+    "celestial_peak": {
+        "name": "Celestial Peak",
+        "emoji": "⛰️",
+        "difficulty": "hard",
+        "exploration_time": 3600,  # 1 hour
+        "cost": 150,
+        "success_chance": 0.4,
+        "rewards": {
+            "spirit_stones": (300, 1000),
+            "artifacts": ["celestial_star_map", "void_shatter_gauntlets"],
+            "power_gain": (500, 1200),
+            "enlightenment_chance": 0.1
+        },
+        "description": "Sacred peak where immortals once meditated"
+    },
+    "void_dimension": {
+        "name": "Void Dimension",
+        "emoji": "🌌",
+        "difficulty": "extreme",
+        "exploration_time": 7200,  # 2 hours
+        "cost": 500,
+        "success_chance": 0.2,
+        "rewards": {
+            "spirit_stones": (1000, 3000),
+            "artifacts": ["creation_genesis_stone", "time_control_hourglass"],
+            "power_gain": (1000, 2500),
+            "enlightenment_chance": 0.25
+        },
+        "description": "Dangerous dimension where reality bends and breaks"
+    }
+}
+
+# Global tracking for formations and treasure hunts
+active_formations = {}
+active_explorations = {}
+player_artifacts = {}  # player_id: [artifact_ids]
+artifact_cooldowns = {}  # player_id: {artifact_id: timestamp}
+
+# ===============================
+# NPC Combat Assistance System
+# ===============================
+
+NPC_COMBAT_BONUSES = {
+    # Combat assistance bonuses based on NPC specialty
+    "sword_master": {"damage": 0.25, "defense": 0.10, "special": "Critical Strike (30% chance for 2x damage)"},
+    "alchemist": {"healing": 0.20, "damage": 0.05, "special": "Auto-heal 10% HP every 3 rounds"},
+    "demon_slayer": {"damage": 0.30, "defense": 0.05, "special": "Demon Bane (50% more damage vs dark enemies)"},
+    "formation_expert": {"defense": 0.25, "damage": 0.10, "special": "Barrier Formation (blocks 1 fatal blow)"},
+    "beast_tamer": {"damage": 0.15, "defense": 0.15, "special": "Spirit Beast summon (extra 100 damage per turn)"},
+    "lightning_cultivator": {"damage": 0.35, "special": "Lightning Storm (AOE attack in group battles)"},
+    "assassin": {"damage": 0.20, "special": "Shadow Strike (bypass 50% enemy defense)"},
+    "illusionist": {"defense": 0.20, "special": "Illusion Shield (50% chance to dodge attacks)"},
+    "fire_cultivator": {"damage": 0.30, "special": "Burning Soul (additional fire damage over time)"},
+    "dao_sage": {"damage": 0.15, "defense": 0.15, "special": "Dao Enlightenment (all bonuses +10%)"},
+    "ice_empress": {"damage": 0.25, "defense": 0.15, "special": "Frozen Domain (slow enemy attacks)"},
+    "healer": {"healing": 0.30, "defense": 0.10, "special": "Divine Healing (restore 20% HP instantly)"},
+    "moon_goddess": {"damage": 0.20, "defense": 0.20, "special": "Moonlight Blessing (regenerate 5% HP per turn)"},
+    "sword_maiden": {"damage": 0.25, "defense": 0.15, "special": "Sword Dance (multiple strikes)"},
+    "flower_spirit": {"healing": 0.25, "defense": 0.10, "special": "Petal Shield (absorb damage)"},
+    "wind_cultivator": {"damage": 0.20, "defense": 0.10, "special": "Wind Acceleration (+50% speed)"},
+    "mystic_seer": {"damage": 0.15, "defense": 0.25, "special": "Future Sight (predict enemy attacks)"},
+    "sound_cultivator": {"damage": 0.25, "special": "Sonic Wave (ignore defense)"},
+    "genius_alchemist": {"healing": 0.35, "damage": 0.10, "special": "Perfect Pill (full heal once per battle)"},
+    "jade_empress": {"damage": 0.30, "defense": 0.30, "special": "Jade Immortality (immune to status effects)"}
+}
+
+def get_player_combat_assistant(player_id):
+    """Get player's selected combat assistant NPC"""
+    p = get_player(player_id)
+    return p.get("combat_assistant", None)
+
+def can_use_npc_assistant(player_id, npc_id):
+    """Check if player can use this NPC as combat assistant (60%+ affection)"""
+    try:
+        from npc_system import get_npc_data
+        npc_data = get_npc_data(player_id, npc_id)
+        return npc_data["affection_level"] >= 60
+    except:
+        return False
+
+def check_exclusive_relationship_limit(player_id, target_npc_id, new_affection):
+    """Check if exclusive relationship rules allow this affection increase"""
+    try:
+        from npc_system import get_npc_data, NPCS
+        
+        # If trying to go above 80%, check for existing 100% relationships
+        if new_affection > 80:
+            for npc_id in NPCS.keys():
+                if npc_id != target_npc_id:
+                    npc_data = get_npc_data(player_id, npc_id)
+                    if npc_data["affection_level"] >= 100:
+                        # Someone else is already at 100%, block this increase
+                        return False, npc_data["name"]
+        
+        # If trying to reach 100%, block all other NPCs at 80%
+        if new_affection >= 100:
+            for npc_id in NPCS.keys():
+                if npc_id != target_npc_id:
+                    npc_data = get_npc_data(player_id, npc_id)
+                    if npc_data["affection_level"] > 80:
+                        # Force other NPCs down to 80% maximum
+                        npc_data["affection_level"] = 80
+                        # Update their relationship status
+                        for threshold, status in reversed(list(AFFECTION_THRESHOLDS.items())):
+                            if 80 >= threshold:
+                                npc_data["relationship_status"] = status
+                                break
+        
+        return True, None
+        
+    except:
+        return True, None  # Allow increase if there's an error
+
+# Import affection thresholds here for use in the function above
+try:
+    from npc_system import AFFECTION_THRESHOLDS
+except:
+    AFFECTION_THRESHOLDS = {
+        0: "stranger",
+        10: "acquaintance", 
+        25: "friend",
+        50: "close_friend",
+        75: "beloved",
+        90: "soulmate"
+    }
+
+def get_npc_combat_bonus(npc_specialty, bonus_type):
+    """Get NPC combat bonus by specialty and type"""
+    if npc_specialty in NPC_COMBAT_BONUSES:
+        return NPC_COMBAT_BONUSES[npc_specialty].get(bonus_type, 0)
+    return 0
+
+def apply_npc_combat_assistance(player_data, npc_specialty):
+    """Apply NPC combat bonuses to player stats"""
+    bonuses = NPC_COMBAT_BONUSES.get(npc_specialty, {})
+    
+    # Apply damage bonus
+    damage_bonus = bonuses.get("damage", 0)
+    enhanced_power = int(player_data["total_power"] * (1 + damage_bonus))
+    
+    # Apply defense bonus (reduces incoming damage)
+    defense_bonus = bonuses.get("defense", 0)
+    
+    # Apply healing bonus (increases healing effects)
+    healing_bonus = bonuses.get("healing", 0)
+    
+    return {
+        "enhanced_power": enhanced_power,
+        "defense_bonus": defense_bonus,
+        "healing_bonus": healing_bonus,
+        "special_ability": bonuses.get("special", "")
+    }
+
+# ===============================
 # Equipment System - DIPERLUAS
 # ===============================
 EQUIPMENT_SHOP = {
-    # Tier 1 - Basic (Wood/Cloth)
+    # MORTAL REALM EQUIPMENT - EXPANDED
+    
+    # Tier 1 - Basic (Wood/Cloth/Copper)
     "wooden_sword": {"name": "Wooden Sword", "power": 8, "cost": 50, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Basic", "set": "wooden"},
     "cloth_armor": {"name": "Cloth Armor", "power": 5, "cost": 40, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Basic", "set": "cloth"},
+    "cloth_hat": {"name": "Cloth Hat", "power": 4, "cost": 35, "type": "helmet", "emoji": "🎩", "realm": "Mortal Realm", "tier": "Basic", "set": "cloth"},
     "copper_ring": {"name": "Copper Ring", "power": 3, "cost": 30, "type": "accessory", "emoji": "💍", "realm": "Mortal Realm", "tier": "Basic", "set": "copper"},
 
     # Tier 2 - Common (Iron/Leather)  
     "iron_sword": {"name": "Iron Sword", "power": 15, "cost": 120, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Common", "set": "iron"},
     "leather_armor": {"name": "Leather Armor", "power": 12, "cost": 100, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Common", "set": "leather"},
+    "leather_helmet": {"name": "Leather Helmet", "power": 10, "cost": 90, "type": "helmet", "emoji": "⛑️", "realm": "Mortal Realm", "tier": "Common", "set": "leather"},
     "iron_ring": {"name": "Iron Ring", "power": 8, "cost": 80, "type": "accessory", "emoji": "💍", "realm": "Mortal Realm", "tier": "Common", "set": "iron"},
 
     # Tier 3 - Rare (Steel)
     "steel_sword": {"name": "Steel Sword", "power": 25, "cost": 250, "type": "weapon", "emoji": "⚔️", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
     "steel_armor": {"name": "Steel Armor", "power": 20, "cost": 200, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
+    "steel_helm": {"name": "Steel Helm", "power": 18, "cost": 180, "type": "helmet", "emoji": "🪖", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
     "steel_amulet": {"name": "Steel Amulet", "power": 15, "cost": 180, "type": "accessory", "emoji": "🔮", "realm": "Mortal Realm", "tier": "Rare", "set": "steel"},
 
     # Tier 4 - Epic (Spirit)
     "spirit_sword": {"name": "Spirit Sword", "power": 40, "cost": 500, "type": "weapon", "emoji": "🗡️", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
     "spirit_armor": {"name": "Spirit Armor", "power": 35, "cost": 450, "type": "armor", "emoji": "🛡️", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
+    "spirit_crown": {"name": "Spirit Crown", "power": 32, "cost": 420, "type": "helmet", "emoji": "👑", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
     "spirit_pendant": {"name": "Spirit Pendant", "power": 30, "cost": 400, "type": "accessory", "emoji": "✨", "realm": "Mortal Realm", "tier": "Epic", "set": "spirit"},
 
-    # IMMORTAL REALM EQUIPMENT  
-    "celestial_blade": {"name": "Celestial Blade", "power": 75, "cost": 2000, "type": "weapon", "emoji": "🌟", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
-    "celestial_robes": {"name": "Celestial Robes", "power": 60, "cost": 1800, "type": "armor", "emoji": "👘", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
-    "celestial_crown": {"name": "Celestial Crown", "power": 50, "cost": 1500, "type": "accessory", "emoji": "👑", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    # Tier 5 - Legendary (Crystal)
+    "crystal_blade": {"name": "Crystal Blade", "power": 65, "cost": 800, "type": "weapon", "emoji": "💎", "realm": "Mortal Realm", "tier": "Legendary", "set": "crystal"},
+    "crystal_mail": {"name": "Crystal Mail", "power": 55, "cost": 700, "type": "armor", "emoji": "💠", "realm": "Mortal Realm", "tier": "Legendary", "set": "crystal"},
+    "crystal_circlet": {"name": "Crystal Circlet", "power": 50, "cost": 650, "type": "helmet", "emoji": "💎", "realm": "Mortal Realm", "tier": "Legendary", "set": "crystal"},
+    "crystal_orb": {"name": "Crystal Orb", "power": 45, "cost": 600, "type": "accessory", "emoji": "🔮", "realm": "Mortal Realm", "tier": "Legendary", "set": "crystal"},
 
-    "void_slasher": {"name": "Void Slasher", "power": 120, "cost": 4000, "type": "weapon", "emoji": "🌌", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
-    "void_mantle": {"name": "Void Mantle", "power": 100, "cost": 3500, "type": "armor", "emoji": "🌃", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
-    "void_orb": {"name": "Void Orb", "power": 80, "cost": 3000, "type": "accessory", "emoji": "🔮", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    # Tier 6 - Mythic (Jade) 
+    "jade_saber": {"name": "Jade Saber", "power": 90, "cost": 1200, "type": "weapon", "emoji": "🗡️", "realm": "Mortal Realm", "tier": "Mythic", "set": "jade"},
+    "jade_robes": {"name": "Jade Robes", "power": 80, "cost": 1100, "type": "armor", "emoji": "👘", "realm": "Mortal Realm", "tier": "Mythic", "set": "jade"},
+    "jade_diadem": {"name": "Jade Diadem", "power": 75, "cost": 1000, "type": "helmet", "emoji": "👑", "realm": "Mortal Realm", "tier": "Mythic", "set": "jade"},
+    "jade_bracelet": {"name": "Jade Bracelet", "power": 70, "cost": 950, "type": "accessory", "emoji": "📿", "realm": "Mortal Realm", "tier": "Mythic", "set": "jade"},
 
-    "profound_saber": {"name": "Profound Saber", "power": 180, "cost": 7000, "type": "weapon", "emoji": "🗡️", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
-    "profound_vestments": {"name": "Profound Vestments", "power": 150, "cost": 6000, "type": "armor", "emoji": "🥻", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
-    "profound_talisman": {"name": "Profound Talisman", "power": 120, "cost": 5000, "type": "accessory", "emoji": "📿", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    # Tier 7 - Phoenix (Phoenix)
+    "phoenix_talon": {"name": "Phoenix Talon", "power": 120, "cost": 1800, "type": "weapon", "emoji": "🔥", "realm": "Mortal Realm", "tier": "Phoenix", "set": "phoenix"},
+    "phoenix_feather_armor": {"name": "Phoenix Feather Armor", "power": 110, "cost": 1700, "type": "armor", "emoji": "🪶", "realm": "Mortal Realm", "tier": "Phoenix", "set": "phoenix"},
+    "phoenix_crest": {"name": "Phoenix Crest", "power": 100, "cost": 1600, "type": "helmet", "emoji": "🔥", "realm": "Mortal Realm", "tier": "Phoenix", "set": "phoenix"},
+    "phoenix_heart": {"name": "Phoenix Heart", "power": 95, "cost": 1500, "type": "accessory", "emoji": "❤️‍🔥", "realm": "Mortal Realm", "tier": "Phoenix", "set": "phoenix"},
 
-    "immortal_dao_sword": {"name": "Immortal Dao Sword", "power": 280, "cost": 12000, "type": "weapon", "emoji": "⚡", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
-    "immortal_phoenix_armor": {"name": "Immortal Phoenix Armor", "power": 240, "cost": 10000, "type": "armor", "emoji": "🔥", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
-    "immortal_lotus_seal": {"name": "Immortal Lotus Seal", "power": 200, "cost": 8000, "type": "accessory", "emoji": "🪷", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+    # Tier 8 - Dragon (Dragon)
+    "dragon_fang": {"name": "Dragon Fang", "power": 160, "cost": 2500, "type": "weapon", "emoji": "🐲", "realm": "Mortal Realm", "tier": "Dragon", "set": "dragon"},
+    "dragon_scale_armor": {"name": "Dragon Scale Armor", "power": 140, "cost": 2300, "type": "armor", "emoji": "🐉", "realm": "Mortal Realm", "tier": "Dragon", "set": "dragon"},
+    "dragon_horn_helm": {"name": "Dragon Horn Helm", "power": 130, "cost": 2200, "type": "helmet", "emoji": "🐲", "realm": "Mortal Realm", "tier": "Dragon", "set": "dragon"},
+    "dragon_pearl": {"name": "Dragon Pearl", "power": 120, "cost": 2000, "type": "accessory", "emoji": "🔮", "realm": "Mortal Realm", "tier": "Dragon", "set": "dragon"},
 
-    # GOD REALM EQUIPMENT
-    "divine_judgment": {"name": "Divine Judgment", "power": 400, "cost": 20000, "type": "weapon", "emoji": "⚖️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
-    "divine_sanctuary": {"name": "Divine Sanctuary", "power": 350, "cost": 18000, "type": "armor", "emoji": "🏛️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
-    "divine_halo": {"name": "Divine Halo", "power": 300, "cost": 15000, "type": "accessory", "emoji": "😇", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    # IMMORTAL REALM EQUIPMENT - EXPANDED
+    
+    # Tier 1 - Celestial 
+    "celestial_blade": {"name": "Celestial Blade", "power": 200, "cost": 3000, "type": "weapon", "emoji": "🌟", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    "celestial_robes": {"name": "Celestial Robes", "power": 180, "cost": 2800, "type": "armor", "emoji": "👘", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    "celestial_crown": {"name": "Celestial Crown", "power": 170, "cost": 2600, "type": "helmet", "emoji": "👑", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
+    "celestial_ring": {"name": "Celestial Ring", "power": 160, "cost": 2500, "type": "accessory", "emoji": "💍", "realm": "Immortal Realm", "tier": "Celestial", "set": "celestial"},
 
-    "sacred_annihilator": {"name": "Sacred Annihilator", "power": 600, "cost": 35000, "type": "weapon", "emoji": "💥", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
-    "sacred_fortress": {"name": "Sacred Fortress", "power": 500, "cost": 30000, "type": "armor", "emoji": "🏰", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
-    "sacred_eye": {"name": "Sacred Eye", "power": 450, "cost": 25000, "type": "accessory", "emoji": "👁️", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    # Tier 2 - Void
+    "void_slasher": {"name": "Void Slasher", "power": 300, "cost": 5000, "type": "weapon", "emoji": "🌌", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    "void_mantle": {"name": "Void Mantle", "power": 280, "cost": 4800, "type": "armor", "emoji": "🌃", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    "void_mask": {"name": "Void Mask", "power": 270, "cost": 4600, "type": "helmet", "emoji": "🎭", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
+    "void_orb": {"name": "Void Orb", "power": 260, "cost": 4500, "type": "accessory", "emoji": "🔮", "realm": "Immortal Realm", "tier": "Void", "set": "void"},
 
-    "primordial_chaos": {"name": "Primordial Chaos", "power": 850, "cost": 60000, "type": "weapon", "emoji": "🌀", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
-    "primordial_genesis": {"name": "Primordial Genesis", "power": 750, "cost": 50000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
-    "primordial_core": {"name": "Primordial Core", "power": 650, "cost": 45000, "type": "accessory", "emoji": "⭐", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    # Tier 3 - Profound
+    "profound_saber": {"name": "Profound Saber", "power": 450, "cost": 8000, "type": "weapon", "emoji": "🗡️", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    "profound_vestments": {"name": "Profound Vestments", "power": 420, "cost": 7500, "type": "armor", "emoji": "🥻", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    "profound_helm": {"name": "Profound Helm", "power": 400, "cost": 7200, "type": "helmet", "emoji": "⛑️", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
+    "profound_talisman": {"name": "Profound Talisman", "power": 380, "cost": 7000, "type": "accessory", "emoji": "📿", "realm": "Immortal Realm", "tier": "Profound", "set": "profound"},
 
-    "universe_creator": {"name": "Universe Creator", "power": 1200, "cost": 100000, "type": "weapon", "emoji": "🌍", "realm": "God Realm", "tier": "Universe", "set": "universe"},
-    "universe_mantle": {"name": "Universe Mantle", "power": 1000, "cost": 80000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Universe", "set": "universe"},
-    "universe_heart": {"name": "Universe Heart", "power": 900, "cost": 70000, "type": "accessory", "emoji": "💫", "realm": "God Realm", "tier": "Universe", "set": "universe"}
+    # Tier 4 - Stellar
+    "stellar_destroyer": {"name": "Stellar Destroyer", "power": 650, "cost": 12000, "type": "weapon", "emoji": "💫", "realm": "Immortal Realm", "tier": "Stellar", "set": "stellar"},
+    "stellar_guardianship": {"name": "Stellar Guardianship", "power": 600, "cost": 11000, "type": "armor", "emoji": "🌌", "realm": "Immortal Realm", "tier": "Stellar", "set": "stellar"},
+    "stellar_circlet": {"name": "Stellar Circlet", "power": 580, "cost": 10500, "type": "helmet", "emoji": "⭐", "realm": "Immortal Realm", "tier": "Stellar", "set": "stellar"},
+    "stellar_prism": {"name": "Stellar Prism", "power": 550, "cost": 10000, "type": "accessory", "emoji": "🔷", "realm": "Immortal Realm", "tier": "Stellar", "set": "stellar"},
+
+    # Tier 5 - Cosmic
+    "cosmic_obliterator": {"name": "Cosmic Obliterator", "power": 900, "cost": 18000, "type": "weapon", "emoji": "🌠", "realm": "Immortal Realm", "tier": "Cosmic", "set": "cosmic"},
+    "cosmic_aegis": {"name": "Cosmic Aegis", "power": 850, "cost": 17000, "type": "armor", "emoji": "🛡️", "realm": "Immortal Realm", "tier": "Cosmic", "set": "cosmic"},
+    "cosmic_diadem": {"name": "Cosmic Diadem", "power": 820, "cost": 16500, "type": "helmet", "emoji": "💎", "realm": "Immortal Realm", "tier": "Cosmic", "set": "cosmic"},
+    "cosmic_nucleus": {"name": "Cosmic Nucleus", "power": 800, "cost": 16000, "type": "accessory", "emoji": "🌌", "realm": "Immortal Realm", "tier": "Cosmic", "set": "cosmic"},
+
+    # Tier 6 - Eternal
+    "eternal_judgment": {"name": "Eternal Judgment", "power": 1300, "cost": 25000, "type": "weapon", "emoji": "⚖️", "realm": "Immortal Realm", "tier": "Eternal", "set": "eternal"},
+    "eternal_bastion": {"name": "Eternal Bastion", "power": 1200, "cost": 23000, "type": "armor", "emoji": "🏰", "realm": "Immortal Realm", "tier": "Eternal", "set": "eternal"},
+    "eternal_crown": {"name": "Eternal Crown", "power": 1150, "cost": 22000, "type": "helmet", "emoji": "👑", "realm": "Immortal Realm", "tier": "Eternal", "set": "eternal"},
+    "eternal_heart": {"name": "Eternal Heart", "power": 1100, "cost": 21000, "type": "accessory", "emoji": "💖", "realm": "Immortal Realm", "tier": "Eternal", "set": "eternal"},
+
+    # Tier 7 - Transcendent
+    "transcendent_apocalypse": {"name": "Transcendent Apocalypse", "power": 1800, "cost": 35000, "type": "weapon", "emoji": "💥", "realm": "Immortal Realm", "tier": "Transcendent", "set": "transcendent"},
+    "transcendent_sanctuary": {"name": "Transcendent Sanctuary", "power": 1700, "cost": 33000, "type": "armor", "emoji": "🏛️", "realm": "Immortal Realm", "tier": "Transcendent", "set": "transcendent"},
+    "transcendent_aureole": {"name": "Transcendent Aureole", "power": 1650, "cost": 32000, "type": "helmet", "emoji": "😇", "realm": "Immortal Realm", "tier": "Transcendent", "set": "transcendent"},
+    "transcendent_essence": {"name": "Transcendent Essence", "power": 1600, "cost": 31000, "type": "accessory", "emoji": "✨", "realm": "Immortal Realm", "tier": "Transcendent", "set": "transcendent"},
+
+    # Tier 8 - Immortal (Ultimate Immortal Tier)
+    "immortal_dao_sword": {"name": "Immortal Dao Sword", "power": 2500, "cost": 50000, "type": "weapon", "emoji": "⚡", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+    "immortal_phoenix_armor": {"name": "Immortal Phoenix Armor", "power": 2300, "cost": 45000, "type": "armor", "emoji": "🔥", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+    "immortal_dragon_helm": {"name": "Immortal Dragon Helm", "power": 2200, "cost": 43000, "type": "helmet", "emoji": "🐲", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+    "immortal_lotus_seal": {"name": "Immortal Lotus Seal", "power": 2100, "cost": 40000, "type": "accessory", "emoji": "🪷", "realm": "Immortal Realm", "tier": "Immortal", "set": "immortal"},
+
+    # GOD REALM EQUIPMENT - EXPANDED
+    
+    # Tier 1 - Divine
+    "divine_judgment": {"name": "Divine Judgment", "power": 3000, "cost": 60000, "type": "weapon", "emoji": "⚖️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    "divine_sanctuary": {"name": "Divine Sanctuary", "power": 2800, "cost": 55000, "type": "armor", "emoji": "🏛️", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    "divine_aureole": {"name": "Divine Aureole", "power": 2700, "cost": 53000, "type": "helmet", "emoji": "😇", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+    "divine_halo": {"name": "Divine Halo", "power": 2600, "cost": 50000, "type": "accessory", "emoji": "✨", "realm": "God Realm", "tier": "Divine", "set": "divine"},
+
+    # Tier 2 - Sacred
+    "sacred_annihilator": {"name": "Sacred Annihilator", "power": 4500, "cost": 90000, "type": "weapon", "emoji": "💥", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    "sacred_fortress": {"name": "Sacred Fortress", "power": 4200, "cost": 85000, "type": "armor", "emoji": "🏰", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    "sacred_crown": {"name": "Sacred Crown", "power": 4000, "cost": 80000, "type": "helmet", "emoji": "👑", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+    "sacred_eye": {"name": "Sacred Eye", "power": 3800, "cost": 75000, "type": "accessory", "emoji": "👁️", "realm": "God Realm", "tier": "Sacred", "set": "sacred"},
+
+    # Tier 3 - Omnipotent
+    "omnipotent_obliterator": {"name": "Omnipotent Obliterator", "power": 6500, "cost": 130000, "type": "weapon", "emoji": "🌠", "realm": "God Realm", "tier": "Omnipotent", "set": "omnipotent"},
+    "omnipotent_aegis": {"name": "Omnipotent Aegis", "power": 6000, "cost": 120000, "type": "armor", "emoji": "🛡️", "realm": "God Realm", "tier": "Omnipotent", "set": "omnipotent"},
+    "omnipotent_circlet": {"name": "Omnipotent Circlet", "power": 5800, "cost": 115000, "type": "helmet", "emoji": "💎", "realm": "God Realm", "tier": "Omnipotent", "set": "omnipotent"},
+    "omnipotent_essence": {"name": "Omnipotent Essence", "power": 5500, "cost": 110000, "type": "accessory", "emoji": "🌟", "realm": "God Realm", "tier": "Omnipotent", "set": "omnipotent"},
+
+    # Tier 4 - Infinite
+    "infinite_destroyer": {"name": "Infinite Destroyer", "power": 9000, "cost": 180000, "type": "weapon", "emoji": "♾️", "realm": "God Realm", "tier": "Infinite", "set": "infinite"},
+    "infinite_guardian": {"name": "Infinite Guardian", "power": 8500, "cost": 170000, "type": "armor", "emoji": "🔒", "realm": "God Realm", "tier": "Infinite", "set": "infinite"},
+    "infinite_diadem": {"name": "Infinite Diadem", "power": 8200, "cost": 165000, "type": "helmet", "emoji": "♾️", "realm": "God Realm", "tier": "Infinite", "set": "infinite"},
+    "infinite_core": {"name": "Infinite Core", "power": 8000, "cost": 160000, "type": "accessory", "emoji": "🌌", "realm": "God Realm", "tier": "Infinite", "set": "infinite"},
+
+    # Tier 5 - Absolute
+    "absolute_devastator": {"name": "Absolute Devastator", "power": 12000, "cost": 240000, "type": "weapon", "emoji": "💀", "realm": "God Realm", "tier": "Absolute", "set": "absolute"},
+    "absolute_bastion": {"name": "Absolute Bastion", "power": 11500, "cost": 230000, "type": "armor", "emoji": "🏯", "realm": "God Realm", "tier": "Absolute", "set": "absolute"},
+    "absolute_crown": {"name": "Absolute Crown", "power": 11200, "cost": 225000, "type": "helmet", "emoji": "👑", "realm": "God Realm", "tier": "Absolute", "set": "absolute"},
+    "absolute_nucleus": {"name": "Absolute Nucleus", "power": 11000, "cost": 220000, "type": "accessory", "emoji": "⚡", "realm": "God Realm", "tier": "Absolute", "set": "absolute"},
+
+    # Tier 6 - Primordial
+    "primordial_chaos": {"name": "Primordial Chaos", "power": 16000, "cost": 320000, "type": "weapon", "emoji": "🌀", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    "primordial_genesis": {"name": "Primordial Genesis", "power": 15000, "cost": 300000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    "primordial_helm": {"name": "Primordial Helm", "power": 14500, "cost": 290000, "type": "helmet", "emoji": "⭐", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+    "primordial_core": {"name": "Primordial Core", "power": 14000, "cost": 280000, "type": "accessory", "emoji": "🔮", "realm": "God Realm", "tier": "Primordial", "set": "primordial"},
+
+    # Tier 7 - Creation
+    "creation_architect": {"name": "Creation Architect", "power": 22000, "cost": 440000, "type": "weapon", "emoji": "🏗️", "realm": "God Realm", "tier": "Creation", "set": "creation"},
+    "creation_sanctuary": {"name": "Creation Sanctuary", "power": 20000, "cost": 400000, "type": "armor", "emoji": "🏛️", "realm": "God Realm", "tier": "Creation", "set": "creation"},
+    "creation_aureole": {"name": "Creation Aureole", "power": 19500, "cost": 390000, "type": "helmet", "emoji": "🌟", "realm": "God Realm", "tier": "Creation", "set": "creation"},
+    "creation_nexus": {"name": "Creation Nexus", "power": 19000, "cost": 380000, "type": "accessory", "emoji": "🌌", "realm": "God Realm", "tier": "Creation", "set": "creation"},
+
+    # Tier 8 - Universe (Ultimate God Tier)
+    "universe_creator": {"name": "Universe Creator", "power": 30000, "cost": 600000, "type": "weapon", "emoji": "🌍", "realm": "God Realm", "tier": "Universe", "set": "universe"},
+    "universe_mantle": {"name": "Universe Mantle", "power": 28000, "cost": 560000, "type": "armor", "emoji": "🌌", "realm": "God Realm", "tier": "Universe", "set": "universe"},
+    "universe_crown": {"name": "Universe Crown", "power": 27000, "cost": 540000, "type": "helmet", "emoji": "👑", "realm": "God Realm", "tier": "Universe", "set": "universe"},
+    "universe_heart": {"name": "Universe Heart", "power": 26000, "cost": 520000, "type": "accessory", "emoji": "💫", "realm": "God Realm", "tier": "Universe", "set": "universe"}
 }
 
-# Set bonuses for wearing multiple pieces of same set
+# Set bonuses for wearing multiple pieces of same set (now includes 4-piece sets with helmets)
 SET_BONUSES = {
-    "wooden": {"2_piece": 0.10, "3_piece": 0.25},
-    "cloth": {"2_piece": 0.10, "3_piece": 0.25}, 
-    "copper": {"2_piece": 0.10, "3_piece": 0.25},
-    "iron": {"2_piece": 0.15, "3_piece": 0.35},
-    "leather": {"2_piece": 0.15, "3_piece": 0.35},
-    "steel": {"2_piece": 0.20, "3_piece": 0.45},
-    "spirit": {"2_piece": 0.25, "3_piece": 0.55},
-    "celestial": {"2_piece": 0.30, "3_piece": 0.65},
-    "void": {"2_piece": 0.35, "3_piece": 0.75},
-    "profound": {"2_piece": 0.40, "3_piece": 0.85},
-    "immortal": {"2_piece": 0.50, "3_piece": 1.00},
-    "divine": {"2_piece": 0.60, "3_piece": 1.20},
-    "sacred": {"2_piece": 0.75, "3_piece": 1.50},
-    "primordial": {"2_piece": 1.00, "3_piece": 2.00},
-    "universe": {"2_piece": 1.50, "3_piece": 3.00}
+    # MORTAL REALM SETS
+    "wooden": {"2_piece": 0.10, "3_piece": 0.25, "4_piece": 0.50},
+    "cloth": {"2_piece": 0.10, "3_piece": 0.25, "4_piece": 0.50}, 
+    "copper": {"2_piece": 0.10, "3_piece": 0.25, "4_piece": 0.50},
+    "iron": {"2_piece": 0.15, "3_piece": 0.35, "4_piece": 0.70},
+    "leather": {"2_piece": 0.15, "3_piece": 0.35, "4_piece": 0.70},
+    "steel": {"2_piece": 0.20, "3_piece": 0.45, "4_piece": 0.90},
+    "spirit": {"2_piece": 0.25, "3_piece": 0.55, "4_piece": 1.10},
+    "crystal": {"2_piece": 0.30, "3_piece": 0.65, "4_piece": 1.30},
+    "jade": {"2_piece": 0.35, "3_piece": 0.75, "4_piece": 1.50},
+    "phoenix": {"2_piece": 0.40, "3_piece": 0.85, "4_piece": 1.70},
+    "dragon": {"2_piece": 0.50, "3_piece": 1.00, "4_piece": 2.00},
+    
+    # IMMORTAL REALM SETS
+    "celestial": {"2_piece": 0.60, "3_piece": 1.20, "4_piece": 2.40},
+    "void": {"2_piece": 0.70, "3_piece": 1.40, "4_piece": 2.80},
+    "profound": {"2_piece": 0.80, "3_piece": 1.60, "4_piece": 3.20},
+    "stellar": {"2_piece": 0.90, "3_piece": 1.80, "4_piece": 3.60},
+    "cosmic": {"2_piece": 1.00, "3_piece": 2.00, "4_piece": 4.00},
+    "eternal": {"2_piece": 1.20, "3_piece": 2.40, "4_piece": 4.80},
+    "transcendent": {"2_piece": 1.40, "3_piece": 2.80, "4_piece": 5.60},
+    "immortal": {"2_piece": 1.60, "3_piece": 3.20, "4_piece": 6.40},
+    
+    # GOD REALM SETS
+    "divine": {"2_piece": 2.00, "3_piece": 4.00, "4_piece": 8.00},
+    "sacred": {"2_piece": 2.50, "3_piece": 5.00, "4_piece": 10.00},
+    "omnipotent": {"2_piece": 3.00, "3_piece": 6.00, "4_piece": 12.00},
+    "infinite": {"2_piece": 3.50, "3_piece": 7.00, "4_piece": 14.00},
+    "absolute": {"2_piece": 4.00, "3_piece": 8.00, "4_piece": 16.00},
+    "primordial": {"2_piece": 5.00, "3_piece": 10.00, "4_piece": 20.00},
+    "creation": {"2_piece": 6.00, "3_piece": 12.00, "4_piece": 24.00},
+    "universe": {"2_piece": 8.00, "3_piece": 16.00, "4_piece": 32.00}
 }
 
 # ===============================
@@ -4488,52 +5179,72 @@ async def reset_cooldown(ctx, member: discord.Member):
     await ctx.send(f"✅ Cooldown {member.mention} telah direset!")
 
 # ===============================
-# Command: help (COMPREHENSIVE) - UPDATED dengan fitur baru
+# COMPREHENSIVE HELP SYSTEM - FULLY UPDATED
 # ===============================
 # Remove default help command first
 bot.remove_command('help')
 
-@bot.command(name='oldhelp')
+@bot.command(name='help')
 async def help_command(ctx, category: str = None):
-    """Comprehensive help system with categories"""
+    """Show comprehensive help for the Cultivation RPG Bot"""
 
     if category is None:
         # Main help menu
         embed = discord.Embed(
-            title="🏮 Idle Immortal Bot - Command Guide",
-            description="A comprehensive cultivation RPG bot dengan idle mechanics, real-time battles, dan progression systems!",
+            title="🌟 Cultivation RPG Bot - Complete Guide",
+            description="🎊 **MASSIVE UPDATE!** Master the way of cultivation with 50 NPCs, 15 sects, artifacts, formations, and treasure hunts!\n\n🚀 **From mortal to god - build your empire of power!**",
             color=0x7289da
         )
-
+        
         embed.add_field(
-            name="📚 Command Categories",
-            value="Gunakan `!help <category>` untuk command detail:\n\n"
-                  "🎮 **registration** - Registrasi dan character creation\n"
-                  "🧘 **cultivation** - Core cultivation & progression\n"
-                  "🏛️ **races** - Race system dan bonuses\n"
-                  "⚔️ **combat** - PvP battles dan dungeons\n"
-                  "🛒 **economy** - Shop, equipment, dan trading\n"
-                  "🐉 **beasts** - Spirit beast system\n"
-                  "🧪 **alchemy** - Pill crafting system\n"
-                  "🏆 **achievements** - Achievement system\n"
-                  "🏰 **guild** - Guild system dan teamwork\n"
-                  "📋 **daily** - Daily quests dan events\n"
-                  "📊 **info** - Stats, progress, dan information\n"
-                  "🏆 **ranking** - Leaderboards dan competition\n"
-                  "🔧 **system** - Bot utilities dan admin\n",
+            name="🎯 **Core Cultivation**",
+            value="`!help core` - Registration, cultivation, breakthrough, profiles",
             inline=False
         )
-
+        
         embed.add_field(
-            name="🚀 Quick Start",
-            value="`!register` - Registrasi character baru\n"
-                  "`!tutorial` - Panduan lengkap pemula\n"
-                  "`!raceinfo` - Info tentang race yang tersedia\n"
-                  "`!status` - Lihat status cultivation",
+            name="⚔️ **Combat & PvP**",
+            value="`!help combat` - Battle, PvP, world bosses, NPC combat assistants",
             inline=False
         )
-
-        embed.set_footer(text="🌟 Start your journey to immortality today! Use !help <category> untuk specific commands.")
+        
+        embed.add_field(
+            name="🛡️ **Equipment & Items**",
+            value="`!help equipment` - 96 items across all realms, weapons, armor, helmets",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🌸 **NPCs & Relationships**",
+            value="`!help npcs` - 50 unique NPCs, affection system, exclusive soulmate mechanics",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🏛️ **Sects & Techniques**",
+            value="`!help sects` - 15 sects with unique techniques, realm-based progression",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🏺 **Advanced Systems**",
+            value="`!help advanced` - Artifacts, formations, treasure hunts, enlightenment events",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="📚 **All Commands**",
+            value="`!help commands` - Complete command reference (50+ commands!)",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🌟 **Quick Start Guide**",
+            value="1️⃣ `!register` - Begin your journey\n2️⃣ `!cultivate` - Build power\n3️⃣ `!shop` - Get equipment\n4️⃣ `!npc_list` - Meet NPCs\n5️⃣ `!sect_list` - Join a sect\n6️⃣ `!treasure_hunt` - Find artifacts!",
+            inline=False
+        )
+        
+        embed.set_footer(text="🎮 Use !help <category> to see detailed information | 🎊 Featuring 50 NPCs, 15 sects, 96 items, and epic adventures!")
 
     elif category.lower() == "registration":
         embed = discord.Embed(
@@ -4844,27 +5555,167 @@ async def help_command(ctx, category: str = None):
 
         embed.set_footer(text="⚙️ System commands help maintain the bot!")
 
-    else:
+    elif category.lower() == "core":
         embed = discord.Embed(
-            title="❌ Unknown Category",
-            description=f"Category '{category}' not found!",
-            color=0xff0000
+            title="🎯 Core Cultivation Commands",
+            description="Essential commands for your cultivation journey from Mortal to God Realm",
+            color=0x00ff00
+        )
+        
+        embed.add_field(
+            name="🌱 **Getting Started**",
+            value="`!register` - Start your cultivation journey\n`!profile` - View your cultivation status and power\n`!leaderboard` - See top cultivators across all realms",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="⚡ **Cultivation & Advancement**",
+            value="`!cultivate` - Improve your power and qi (chance for enlightenment!)\n`!breakthrough` - Advance to next cultivation stage\n`!daily` - Claim daily rewards and bonuses",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="💰 **Economy & Resources**",
+            value="`!work` - Earn spirit stones through various jobs\n`!shop [realm]` - Browse equipment by realm\n`!inventory` - View your items and equipment",
+            inline=False
         )
 
+    elif category.lower() == "combat":
+        embed = discord.Embed(
+            title="⚔️ Combat & PvP Commands", 
+            description="Advanced battle systems with NPC assistance and epic boss fights",
+            color=0xff0000
+        )
+        
         embed.add_field(
-            name="Available Categories:",
-            value="• `cultivation` - Core cultivation commands\n"
-                  "• `combat` - PvP and dungeons\n"
-                  "• `economy` - Shop and inventory\n"
-                  "• `guild` - Guild system and teamwork\n"
-                  "• `beasts` - Spirit beast system\n"
-                  "• `alchemy` - Pill crafting system\n"
-                  "• `achievements` - Achievement system\n"
-                  "• `daily` - Daily quests and events\n"
-                  "• `info` - Statistics and information\n"
-                  "• `ranking` - Leaderboards and competition\n"
-                  "• `system` - Bot utilities",
+            name="🥊 **Player vs Player**",
+            value="`!duel @user` - Challenge another cultivator to battle\n`!accept` - Accept a duel invitation\n`!decline` - Decline a duel invitation",
             inline=False
+        )
+        
+        embed.add_field(
+            name="🐉 **Epic Boss Battles**",
+            value="`!boss` - Fight the current world boss for massive rewards\n`!boss_info` - View boss details, health, and loot table",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🤝 **NPC Combat Assistance**",
+            value="`!set_assistant <npc>` - Set NPC as combat assistant (60% affection required)\n`!assistant_info` - View current assistant and their bonuses\n`!available_assistants` - See all eligible NPC assistants\n`!remove_assistant` - Remove current combat assistant",
+            inline=False
+        )
+
+    elif category.lower() == "npcs":
+        embed = discord.Embed(
+            title="🌸 NPCs & Relationship System",
+            description="50 unique NPCs with complex personalities and exclusive soulmate mechanics",
+            color=0xff69b4
+        )
+        
+        embed.add_field(
+            name="💕 **Building Relationships**",
+            value="`!talk <npc>` - Have AI-driven conversations with NPCs\n`!gift <npc> <item>` - Give gifts to increase affection\n`!npc_info <npc>` - View detailed NPC information and preferences",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="👥 **NPC Discovery & Management**",
+            value="`!npc_list [realm]` - Browse NPCs by cultivation realm\n`!npcs` - View all 50 available NPCs\n`!my_relationships` - See all your affection levels and statuses",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="💖 **Exclusive Soulmate System**",
+            value="**🔒 EXCLUSIVE RELATIONSHIPS**: Only ONE NPC can reach 100% affection (soulmate status)\n**⚖️ Affection Cap**: When you have a soulmate, all others are capped at 80%\n**💔 Strategic Choice**: Choose your soulmate wisely - it affects all other relationships!",
+            inline=False
+        )
+
+    elif category.lower() == "sects":
+        embed = discord.Embed(
+            title="🏛️ Sects & Technique System",
+            description="15 comprehensive sects across 3 realms with unique techniques and progression",
+            color=0x9400d3
+        )
+        
+        embed.add_field(
+            name="🌟 **Sect Management**",
+            value="`!sect_list [realm]` - Browse sects by realm (5 per realm)\n`!join_sect <name>` - Join a cultivation sect\n`!my_sect` - View your sect status, techniques, and bonuses",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="📚 **Technique Mastery**",
+            value="`!learn_technique <name>` - Master sect techniques with spirit stones\n`!sect_info <name>` - View detailed sect information and requirements\n`!leave_sect` - Leave current sect (⚠️ loses all techniques!)",
+            inline=False
+        )
+
+    elif category.lower() == "advanced":
+        embed = discord.Embed(
+            title="🏺 Advanced Game Systems",
+            description="4 exciting endgame systems for solo and group activities",
+            color=0xffd700
+        )
+        
+        embed.add_field(
+            name="🏺 **Artifact System**",
+            value="`!artifacts` - View your artifact collection and available artifacts\n`!activate_artifact <name>` - Use special artifact powers with cooldowns\n**9 Legendary Artifacts**: Powerful items with unique abilities across all realms",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🗺️ **Treasure Hunt Expeditions**",
+            value="`!treasure_hunt [location]` - Explore 4 dangerous locations\n`!check_hunt` - Monitor expedition progress and collect rewards\n**Risk vs Reward**: Higher difficulty = better artifacts and enlightenment chances",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="✨ **Cultivation Formations**",
+            value="`!formations` - View formation types and requirements\n`!create_formation <name>` - Start group cultivation sessions\n`!join_formation <name>` - Join active formations\n`!active_formations` - See all recruiting and active formations",
+            inline=False
+        )
+
+    elif category.lower() == "commands":
+        embed = discord.Embed(
+            title="📚 Complete Command Reference",
+            description="All 50+ commands organized by category for easy reference",
+            color=0x7289da
+        )
+        
+        embed.add_field(
+            name="🎯 **Core Cultivation (12 commands)**",
+            value="`!register`, `!profile`, `!cultivate`, `!breakthrough`, `!daily`, `!work`, `!shop`, `!buy`, `!sell`, `!inventory`, `!stats`, `!leaderboard`",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="⚔️ **Combat Systems (8 commands)**", 
+            value="`!duel`, `!accept`, `!decline`, `!boss`, `!boss_info`, `!set_assistant`, `!assistant_info`, `!available_assistants`, `!remove_assistant`",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🌸 **NPC Relationships (6 commands)**",
+            value="`!talk`, `!gift`, `!npc_info`, `!npc_list`, `!npcs`, `!my_relationships`",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🏛️ **Sect Management (6 commands)**",
+            value="`!sect_list`, `!join_sect`, `!leave_sect`, `!my_sect`, `!learn_technique`, `!sect_info`",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🏺 **Advanced Systems (10 commands)**",
+            value="`!artifacts`, `!activate_artifact`, `!treasure_hunt`, `!check_hunt`, `!formations`, `!create_formation`, `!join_formation`, `!active_formations`",
+            inline=False
+        )
+
+    else:
+        embed = discord.Embed(
+            title="❌ Unknown Help Category",
+            description="**Available categories:**\n`core`, `combat`, `npcs`, `sects`, `advanced`, `commands`\n\nUse `!help` to see the main help menu.",
+            color=0xff0000
         )
 
     await ctx.send(embed=embed)
@@ -5198,7 +6049,9 @@ async def talk_npc(ctx, *, npc_name=None):
         dialogue = await query_ai_for_npc_dialogue(npc_data, player, "casual_conversation")
         
         # Calculate affection change from talking
-        old_affection, new_affection = update_npc_affection(player_id, npc_id, random.randint(1, 3))
+        result = update_npc_affection(player_id, npc_id, random.randint(1, 3))
+        old_affection, new_affection = result[0], result[1]
+        exclusive_message = result[2] if len(result) > 2 else ""
         affection_change = new_affection - old_affection
         
         # Create response embed
@@ -5227,6 +6080,11 @@ async def talk_npc(ctx, *, npc_name=None):
         embed.set_footer(text=f"Cultivation: {npc_data['realm']} | Specialty: {npc_data['specialty']}")
         
         await ctx.send(embed=embed)
+        
+        # Send exclusive relationship message if any
+        if exclusive_message:
+            await ctx.send(exclusive_message)
+        
         save_npc_data()
 
 @bot.command(name="gift")
@@ -5268,7 +6126,9 @@ async def gift_npc(ctx, npc_name=None, *, item=None):
     # Calculate affection change based on gift type
     from npc_system import calculate_affection_change
     affection_change = calculate_affection_change(npc_data, "gift", item.lower())
-    old_affection, new_affection = update_npc_affection(player_id, npc_id, affection_change)
+    result = update_npc_affection(player_id, npc_id, affection_change)
+    old_affection, new_affection = result[0], result[1]
+    exclusive_message = result[2] if len(result) > 2 else ""
     
     # Generate AI response to gift
     async with ctx.typing():
@@ -5304,6 +6164,11 @@ async def gift_npc(ctx, npc_name=None, *, item=None):
         )
         
         await ctx.send(embed=embed)
+        
+        # Send exclusive relationship message if any
+        if exclusive_message:
+            await ctx.send(exclusive_message)
+        
         save_npc_data()
 
 @bot.command(name="npc_info")
@@ -5353,7 +6218,1217 @@ async def npc_info(ctx, *, npc_name=None):
     embed.add_field(name="💝 Loves", value=loved_gifts if loved_gifts else "Unknown", inline=True)
     embed.add_field(name="💔 Hates", value=hated_gifts if hated_gifts else "Unknown", inline=True)
     
+    # Show combat assistance eligibility
+    if npc_data['affection_level'] >= 60:
+        embed.add_field(
+            name="⚔️ Combat Assistance", 
+            value="✅ **Available** - This NPC can assist you in battles!\nUse `!set_assistant " + npc_data['name'] + "` to make them your combat partner.",
+            inline=False
+        )
+    else:
+        needed_affection = 60 - npc_data['affection_level'] 
+        embed.add_field(
+            name="⚔️ Combat Assistance", 
+            value=f"🔒 **Locked** - Need {needed_affection} more affection points to unlock combat assistance.",
+            inline=False
+        )
+    
     await ctx.send(embed=embed)
+
+# ===============================
+# NPC Combat Assistant Commands  
+# ===============================
+
+@bot.command(name="set_assistant")
+async def set_combat_assistant(ctx, *, npc_name=None):
+    """Set an NPC as your combat assistant (requires 60%+ affection)"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    if not npc_name:
+        return await ctx.send("❌ Please specify an NPC name! Use `!available_assistants` to see eligible NPCs.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Find NPC by name
+    npc_id = None
+    for id, npc in NPCS.items():
+        if npc['name'].lower() == npc_name.lower():
+            npc_id = id
+            break
+    
+    if not npc_id:
+        return await ctx.send(f"❌ NPC '{npc_name}' not found! Use `!npc_list` to see available NPCs.")
+    
+    # Check affection requirement
+    if not can_use_npc_assistant(player_id, npc_id):
+        npc_data = get_npc_data(player_id, npc_id)
+        needed_affection = 60 - npc_data['affection_level']
+        return await ctx.send(f"❌ You need {needed_affection} more affection points with {npc_data['name']} to use them as a combat assistant!")
+    
+    # Set the combat assistant
+    player["combat_assistant"] = npc_id
+    update_player(player_id, player)
+    
+    npc_data = get_npc_data(player_id, npc_id)
+    bonuses = apply_npc_combat_assistance(player, npc_data['specialty'])
+    
+    embed = discord.Embed(
+        title="⚔️ Combat Assistant Set!",
+        description=f"**{npc_data['name']} {npc_data['emoji']}** is now your combat assistant!",
+        color=0x00ff00
+    )
+    
+    embed.add_field(
+        name="💪 Combat Bonuses",
+        value=f"**Enhanced Power:** {bonuses['enhanced_power']:,} (+{int((bonuses['enhanced_power']/player['total_power'] - 1) * 100)}%)\n**Defense Bonus:** {int(bonuses['defense_bonus']*100)}%\n**Healing Bonus:** {int(bonuses['healing_bonus']*100)}%",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="✨ Special Ability",
+        value=bonuses['special_ability'],
+        inline=False
+    )
+    
+    embed.add_field(
+        name="🔔 Combat Usage",
+        value="Your assistant will automatically help in:\n• PvP Battles (`!pvp`)\n• Boss Fights (`!boss_challenge`)\n• World Boss Raids (`!wb_challenge`)",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="remove_assistant")
+async def remove_combat_assistant(ctx):
+    """Remove your current combat assistant"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    if "combat_assistant" not in player or not player["combat_assistant"]:
+        return await ctx.send("❌ You don't have a combat assistant set!")
+    
+    assistant_id = player["combat_assistant"]
+    assistant_name = NPCS[assistant_id]['name'] if assistant_id in NPCS else "Unknown"
+    
+    player["combat_assistant"] = None
+    update_player(player_id, player)
+    
+    embed = discord.Embed(
+        title="💔 Combat Assistant Removed",
+        description=f"**{assistant_name}** is no longer your combat assistant.",
+        color=0xff6b6b
+    )
+    embed.add_field(
+        name="🔄 Set New Assistant",
+        value="Use `!available_assistants` to see eligible NPCs\nUse `!set_assistant <npc_name>` to set a new one",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="assistant_info")
+async def combat_assistant_info(ctx):
+    """View your current combat assistant details"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    assistant_id = get_player_combat_assistant(player_id)
+    if not assistant_id or assistant_id not in NPCS:
+        return await ctx.send("❌ You don't have a combat assistant set! Use `!available_assistants` to see eligible NPCs.")
+    
+    npc_data = get_npc_data(player_id, assistant_id)
+    bonuses = apply_npc_combat_assistance(player, npc_data['specialty'])
+    
+    embed = discord.Embed(
+        title=f"⚔️ Combat Assistant: {npc_data['name']} {npc_data['emoji']}",
+        description=f"**{npc_data['personality']}** {npc_data['gender']} from {npc_data['realm']}",
+        color=0x4169e1
+    )
+    
+    # Affection display
+    hearts = "💖" * (npc_data['affection_level'] // 20)
+    empty_hearts = "🤍" * (5 - (npc_data['affection_level'] // 20))
+    affection_bar = hearts + empty_hearts
+    
+    embed.add_field(
+        name="💕 Relationship Status",
+        value=f"{affection_bar} {npc_data['affection_level']}/100\n**Status:** {npc_data['relationship_status'].title()}",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="💪 Combat Bonuses",
+        value=f"**Power:** {player['total_power']:,} → {bonuses['enhanced_power']:,}\n**Defense Bonus:** {int(bonuses['defense_bonus']*100)}%\n**Healing Bonus:** {int(bonuses['healing_bonus']*100)}%",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="✨ Special Ability",
+        value=bonuses['special_ability'],
+        inline=False
+    )
+    
+    embed.add_field(
+        name="🏮 Specialty",
+        value=npc_data['specialty'],
+        inline=True
+    )
+    
+    embed.add_field(
+        name="🔄 Management",
+        value="`!remove_assistant` - Remove assistant\n`!available_assistants` - See other options",
+        inline=True
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="available_assistants")
+async def available_assistants(ctx):
+    """View NPCs available for combat assistance (60%+ affection)"""
+    if not NPC_SYSTEM_LOADED:
+        return await ctx.send("❌ NPC system is not available!")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    available_npcs = []
+    locked_npcs = []
+    
+    for npc_id, npc in NPCS.items():
+        npc_data = get_npc_data(player_id, npc_id)
+        if npc_data['affection_level'] >= 60:
+            bonuses = NPC_COMBAT_BONUSES.get(npc_data['specialty'], {})
+            damage_bonus = int(bonuses.get('damage', 0) * 100)
+            defense_bonus = int(bonuses.get('defense', 0) * 100)
+            healing_bonus = int(bonuses.get('healing', 0) * 100)
+            
+            bonus_text = []
+            if damage_bonus > 0:
+                bonus_text.append(f"⚔️ +{damage_bonus}% DMG")
+            if defense_bonus > 0:
+                bonus_text.append(f"🛡️ +{defense_bonus}% DEF")
+            if healing_bonus > 0:
+                bonus_text.append(f"❤️ +{healing_bonus}% HEAL")
+            
+            available_npcs.append(f"{npc['emoji']} **{npc['name']}** ({npc_data['affection_level']}/100)\n{' | '.join(bonus_text)}")
+        else:
+            locked_npcs.append(f"{npc['emoji']} {npc['name']} - Need {60 - npc_data['affection_level']} more affection")
+    
+    embed = discord.Embed(
+        title="⚔️ Combat Assistant Availability",
+        description="NPCs with 60%+ affection can assist you in battles!",
+        color=0x9932cc
+    )
+    
+    current_assistant = get_player_combat_assistant(player_id)
+    if current_assistant and current_assistant in NPCS:
+        embed.add_field(
+            name="👑 Current Assistant",
+            value=f"{NPCS[current_assistant]['emoji']} **{NPCS[current_assistant]['name']}**",
+            inline=False
+        )
+    
+    if available_npcs:
+        embed.add_field(
+            name="✅ Available for Combat (60%+ Affection)",
+            value="\n\n".join(available_npcs[:8]),  # Limit to prevent embed overflow
+            inline=False
+        )
+    
+    if locked_npcs[:5]:  # Show first 5 locked NPCs
+        embed.add_field(
+            name="🔒 Need More Affection",
+            value="\n".join(locked_npcs[:5]),
+            inline=False
+        )
+    
+    embed.add_field(
+        name="📖 Usage",
+        value="`!set_assistant <npc_name>` - Set combat assistant\n`!assistant_info` - View current assistant\n`!talk <npc_name>` / `!gift <npc_name> <item>` - Build affection",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+# ===============================
+# COMPREHENSIVE SECT SYSTEM COMMANDS
+# ===============================
+
+@bot.command(name="sect_list")
+async def sect_list(ctx, realm=None):
+    """View all available sects, optionally filtered by realm"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    embed = discord.Embed(
+        title="🏛️ Cultivation Sects",
+        description="Join a sect to learn unique techniques and gain powerful bonuses!",
+        color=0x9400d3
+    )
+    
+    # Filter sects by realm if specified
+    if realm:
+        if realm.lower() == "mortal":
+            target_realm = "Mortal Realm"
+        elif realm.lower() == "immortal":
+            target_realm = "Immortal Realm"
+        elif realm.lower() == "god":
+            target_realm = "God Realm"
+        else:
+            return await ctx.send("❌ Invalid realm! Use: `mortal`, `immortal`, or `god`")
+        
+        filtered_sects = {k: v for k, v in CULTIVATION_SECTS.items() if v["realm"] == target_realm}
+        embed.title = f"🏛️ {target_realm} Sects"
+    else:
+        filtered_sects = CULTIVATION_SECTS
+    
+    # Group sects by realm
+    realms = {"Mortal Realm": [], "Immortal Realm": [], "God Realm": []}
+    
+    for sect_id, sect in filtered_sects.items():
+        can_join, requirement = can_join_sect(player, sect_id)
+        status = "✅" if can_join else "🔒"
+        
+        sect_info = f"{sect['emoji']} **{sect['name']}**\n{sect['specialty']}\n*{sect['entrance_requirement']}*"
+        realms[sect['realm']].append(sect_info)
+    
+    for realm_name, sect_list in realms.items():
+        if sect_list:
+            embed.add_field(
+                name=f"🌟 {realm_name}",
+                value="\n\n".join(sect_list[:3]),  # Limit to prevent overflow
+                inline=True
+            )
+    
+    embed.add_field(
+        name="📖 Commands",
+        value="`!join_sect <sect_name>` - Join a sect\n`!sect_info <sect_name>` - View sect details\n`!my_sect` - View your current sect",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="join_sect")
+async def join_sect(ctx, *, sect_name=None):
+    """Join a cultivation sect"""
+    if not sect_name:
+        return await ctx.send("❌ Please specify a sect name! Use `!sect_list` to see available sects.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Find sect by name
+    sect_id = None
+    for id, sect in CULTIVATION_SECTS.items():
+        if sect['name'].lower() == sect_name.lower():
+            sect_id = id
+            break
+    
+    if not sect_id:
+        return await ctx.send(f"❌ Sect '{sect_name}' not found! Use `!sect_list` to see available sects.")
+    
+    sect = CULTIVATION_SECTS[sect_id]
+    
+    # Check if already in a sect
+    current_sect = get_player_sect(player_id)
+    if current_sect:
+        current_sect_name = CULTIVATION_SECTS[current_sect]['name']
+        return await ctx.send(f"❌ You're already a member of {current_sect_name}! Use `!leave_sect` first.")
+    
+    # Check requirements
+    can_join, requirement = can_join_sect(player, sect_id)
+    if not can_join:
+        return await ctx.send(f"❌ You cannot join {sect['name']}! Requirement: {requirement}")
+    
+    # Join the sect
+    player["sect"] = sect_id
+    player["sect_techniques"] = []  # Initialize techniques list
+    update_player(player_id, player)
+    
+    # Create welcome embed
+    embed = discord.Embed(
+        title=f"🎉 Welcome to {sect['name']}! {sect['emoji']}",
+        description=f"You have successfully joined the {sect['name']}!\n\n*{sect['description']}*",
+        color=0x00ff00
+    )
+    
+    # Show bonuses
+    bonus_text = []
+    for bonus_type, bonus_value in sect['bonus'].items():
+        bonus_text.append(f"**{bonus_type.replace('_', ' ').title()}:** +{int(bonus_value*100)}%")
+    
+    embed.add_field(
+        name="💪 Sect Bonuses",
+        value="\n".join(bonus_text),
+        inline=True
+    )
+    
+    # Show available techniques
+    techniques = sect['techniques']
+    embed.add_field(
+        name="📚 Available Techniques",
+        value="\n".join([f"• {tech}" for tech in techniques[:4]]),
+        inline=True
+    )
+    
+    embed.add_field(
+        name="🎓 Next Steps",
+        value="`!learn_technique <technique_name>` - Learn sect techniques\n`!my_sect` - View your sect status",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="leave_sect")
+async def leave_sect(ctx):
+    """Leave your current sect"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    current_sect = get_player_sect(player_id)
+    if not current_sect:
+        return await ctx.send("❌ You're not a member of any sect!")
+    
+    sect_name = CULTIVATION_SECTS[current_sect]['name']
+    
+    # Remove sect and techniques
+    player["sect"] = None
+    player["sect_techniques"] = []
+    update_player(player_id, player)
+    
+    embed = discord.Embed(
+        title="💔 Left Sect",
+        description=f"You have left the {sect_name}.\n\n⚠️ **Warning:** All sect techniques have been lost!",
+        color=0xff6b6b
+    )
+    
+    embed.add_field(
+        name="🔄 Join New Sect",
+        value="`!sect_list` - View available sects\n`!join_sect <sect_name>` - Join a new sect",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="my_sect")
+async def my_sect(ctx):
+    """View your current sect status and techniques"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    current_sect = get_player_sect(player_id)
+    if not current_sect:
+        return await ctx.send("❌ You're not a member of any sect! Use `!sect_list` to see available sects.")
+    
+    sect = CULTIVATION_SECTS[current_sect]
+    learned_techniques = player.get("sect_techniques", [])
+    
+    embed = discord.Embed(
+        title=f"{sect['emoji']} {sect['name']}",
+        description=f"**Specialty:** {sect['specialty']}\n*{sect['description']}*",
+        color=0x4169e1
+    )
+    
+    # Show bonuses
+    bonus_text = []
+    for bonus_type, bonus_value in sect['bonus'].items():
+        bonus_text.append(f"**{bonus_type.replace('_', ' ').title()}:** +{int(bonus_value*100)}%")
+    
+    embed.add_field(
+        name="💪 Your Bonuses",
+        value="\n".join(bonus_text),
+        inline=True
+    )
+    
+    # Show power with bonuses
+    base_power = player["total_power"]
+    sect_power = apply_sect_bonuses(player, current_sect)
+    embed.add_field(
+        name="⚡ Power Boost",
+        value=f"**Base:** {base_power:,}\n**With Sect:** {sect_power:,}\n**Bonus:** +{sect_power-base_power:,}",
+        inline=True
+    )
+    
+    # Show learned techniques
+    if learned_techniques:
+        embed.add_field(
+            name="📚 Learned Techniques",
+            value="\n".join([f"✅ {tech}" for tech in learned_techniques]),
+            inline=False
+        )
+    
+    # Show available techniques
+    available_techniques = [tech for tech in sect['techniques'] if tech not in learned_techniques]
+    if available_techniques:
+        embed.add_field(
+            name="📖 Available to Learn",
+            value="\n".join([f"📝 {tech}" for tech in available_techniques]),
+            inline=False
+        )
+    
+    embed.add_field(
+        name="🎓 Commands",
+        value="`!learn_technique <technique_name>` - Learn new technique\n`!sect_techniques` - View all sect techniques",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="learn_technique")
+async def learn_technique(ctx, *, technique_name=None):
+    """Learn a technique from your sect"""
+    if not technique_name:
+        return await ctx.send("❌ Please specify a technique name! Use `!my_sect` to see available techniques.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    current_sect = get_player_sect(player_id)
+    if not current_sect:
+        return await ctx.send("❌ You're not a member of any sect! Use `!join_sect` first.")
+    
+    sect = CULTIVATION_SECTS[current_sect]
+    available_techniques = sect['techniques']
+    learned_techniques = player.get("sect_techniques", [])
+    
+    # Check if technique exists in sect
+    if technique_name not in available_techniques:
+        return await ctx.send(f"❌ '{technique_name}' is not available in {sect['name']}!")
+    
+    # Check if already learned
+    if technique_name in learned_techniques:
+        return await ctx.send(f"❌ You have already learned '{technique_name}'!")
+    
+    # Calculate cost based on technique power
+    technique_cost = 500 * (len(learned_techniques) + 1)  # Increases with each technique
+    
+    if player["spirit_stones"] < technique_cost:
+        return await ctx.send(f"❌ You need {technique_cost} spirit stones to learn '{technique_name}'! You have {player['spirit_stones']}.")
+    
+    # Learn the technique
+    player["spirit_stones"] -= technique_cost
+    if "sect_techniques" not in player:
+        player["sect_techniques"] = []
+    player["sect_techniques"].append(technique_name)
+    
+    # Add small power bonus for learning technique
+    power_bonus = random.randint(100, 300)
+    player["total_power"] += power_bonus
+    
+    update_player(player_id, player)
+    
+    embed = discord.Embed(
+        title="🎓 Technique Learned!",
+        description=f"You have successfully learned **{technique_name}**!",
+        color=0x00ff00
+    )
+    
+    embed.add_field(
+        name="💰 Cost",
+        value=f"-{technique_cost} Spirit Stones",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="⚡ Power Gained",
+        value=f"+{power_bonus} Power",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="📚 Progress",
+        value=f"Learned {len(player['sect_techniques'])}/{len(available_techniques)} sect techniques",
+        inline=False
+    )
+    
+    # Check if all techniques learned
+    if len(player["sect_techniques"]) == len(available_techniques):
+        embed.add_field(
+            name="🏆 Master Achievement",
+            value=f"**Congratulations!** You have mastered all techniques of {sect['name']}!",
+            inline=False
+        )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="sect_info")
+async def sect_info(ctx, *, sect_name=None):
+    """View detailed information about a specific sect"""
+    if not sect_name:
+        return await ctx.send("❌ Please specify a sect name! Use `!sect_list` to see available sects.")
+    
+    # Find sect by name
+    sect_id = None
+    for id, sect in CULTIVATION_SECTS.items():
+        if sect['name'].lower() == sect_name.lower():
+            sect_id = id
+            break
+    
+    if not sect_id:
+        return await ctx.send(f"❌ Sect '{sect_name}' not found! Use `!sect_list` to see available sects.")
+    
+    sect = CULTIVATION_SECTS[sect_id]
+    
+    embed = discord.Embed(
+        title=f"{sect['emoji']} {sect['name']}",
+        description=sect['description'],
+        color=0x9400d3
+    )
+    
+    embed.add_field(
+        name="🌍 Realm",
+        value=sect['realm'],
+        inline=True
+    )
+    
+    embed.add_field(
+        name="🎯 Specialty",
+        value=sect['specialty'],
+        inline=True
+    )
+    
+    embed.add_field(
+        name="📋 Requirements",
+        value=sect['entrance_requirement'],
+        inline=True
+    )
+    
+    # Show bonuses
+    bonus_text = []
+    for bonus_type, bonus_value in sect['bonus'].items():
+        bonus_text.append(f"**{bonus_type.replace('_', ' ').title()}:** +{int(bonus_value*100)}%")
+    
+    embed.add_field(
+        name="💪 Bonuses",
+        value="\n".join(bonus_text),
+        inline=False
+    )
+    
+    # Show techniques
+    techniques = sect['techniques']
+    embed.add_field(
+        name="📚 Techniques",
+        value="\n".join([f"• {tech}" for tech in techniques]),
+        inline=False
+    )
+    
+    embed.add_field(
+        name="🚪 Join",
+        value=f"`!join_sect {sect['name']}`",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+# ===============================
+# NEW GAME SYSTEMS COMMANDS
+# ===============================
+
+@bot.command(name="artifacts")
+async def artifacts(ctx):
+    """View all available artifacts and your collection"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    player_artifacts_list = player_artifacts.get(player_id, [])
+    
+    embed = discord.Embed(
+        title="🏺 Artifact Collection",
+        description="Powerful items that grant special abilities and massive power boosts!",
+        color=0xffd700
+    )
+    
+    # Group artifacts by realm
+    realms = {"Mortal Realm": [], "Immortal Realm": [], "God Realm": []}
+    
+    for artifact_id, artifact in ARTIFACTS.items():
+        owned = "✅" if artifact_id in player_artifacts_list else "🔒"
+        rarity_color = {"rare": "🟦", "epic": "🟪", "legendary": "🟨", "mythic": "🟧", "transcendent": "🔴"}
+        rarity_emoji = rarity_color.get(artifact["rarity"], "⚪")
+        
+        artifact_info = f"{owned} {artifact['emoji']} **{artifact['name']}** {rarity_emoji}\n*{artifact['description']}*\n**Power:** +{artifact['power_bonus']}\n**Effect:** {artifact['special_effect']}"
+        realms[artifact["realm"]].append(artifact_info)
+    
+    for realm_name, artifact_list in realms.items():
+        if artifact_list:
+            embed.add_field(
+                name=f"🌟 {realm_name}",
+                value="\n\n".join(artifact_list[:2]),  # Limit to prevent overflow
+                inline=False
+            )
+    
+    embed.add_field(
+        name="📖 Commands",
+        value="`!activate_artifact <name>` - Use artifact power\n`!treasure_hunt` - Explore to find artifacts",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="activate_artifact")
+async def activate_artifact(ctx, *, artifact_name=None):
+    """Activate an artifact's special power"""
+    if not artifact_name:
+        return await ctx.send("❌ Please specify an artifact name! Use `!artifacts` to see your collection.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Find artifact
+    artifact_id = None
+    for id, artifact in ARTIFACTS.items():
+        if artifact['name'].lower() == artifact_name.lower():
+            artifact_id = id
+            break
+    
+    if not artifact_id:
+        return await ctx.send(f"❌ Artifact '{artifact_name}' not found!")
+    
+    # Check if player owns it
+    player_artifacts_list = player_artifacts.get(player_id, [])
+    if artifact_id not in player_artifacts_list:
+        return await ctx.send(f"❌ You don't own the {ARTIFACTS[artifact_id]['name']}!")
+    
+    # Check cooldown
+    now = time.time()
+    if player_id in artifact_cooldowns and artifact_id in artifact_cooldowns[player_id]:
+        cooldown_end = artifact_cooldowns[player_id][artifact_id]
+        if now < cooldown_end:
+            remaining = int(cooldown_end - now)
+            return await ctx.send(f"❌ Artifact is on cooldown! {remaining} seconds remaining.")
+    
+    artifact = ARTIFACTS[artifact_id]
+    
+    # Check activation cost
+    if player["spirit_stones"] < artifact["activation_cost"]:
+        return await ctx.send(f"❌ You need {artifact['activation_cost']} spirit stones to activate this artifact!")
+    
+    # Activate artifact
+    player["spirit_stones"] -= artifact["activation_cost"]
+    
+    # Set cooldown
+    if player_id not in artifact_cooldowns:
+        artifact_cooldowns[player_id] = {}
+    artifact_cooldowns[player_id][artifact_id] = now + artifact["cooldown"]
+    
+    update_player(player_id, player)
+    
+    embed = discord.Embed(
+        title=f"✨ {artifact['name']} Activated!",
+        description=f"**{artifact['special_effect']}**\n\n*{artifact['description']}*",
+        color=0xff6b6b
+    )
+    
+    embed.add_field(
+        name="💰 Cost",
+        value=f"-{artifact['activation_cost']} Spirit Stones",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="⏰ Cooldown",
+        value=f"{artifact['cooldown']//60} minutes",
+        inline=True
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="treasure_hunt")
+async def treasure_hunt(ctx, *, location_name=None):
+    """Explore dangerous locations to find treasures and artifacts"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    if not location_name:
+        # Show available locations
+        embed = discord.Embed(
+            title="🗺️ Treasure Hunt Locations",
+            description="Explore dangerous locations to find rare artifacts and treasures!",
+            color=0x8b4513
+        )
+        
+        for loc_id, location in TREASURE_LOCATIONS.items():
+            difficulty_emoji = {"easy": "🟢", "medium": "🟡", "hard": "🔴", "extreme": "⚫"}
+            diff_color = difficulty_emoji.get(location["difficulty"], "⚪")
+            
+            embed.add_field(
+                name=f"{location['emoji']} {location['name']} {diff_color}",
+                value=f"**Difficulty:** {location['difficulty'].title()}\n**Time:** {location['exploration_time']//60} min\n**Cost:** {location['cost']} Spirit Stones\n**Success:** {int(location['success_chance']*100)}%\n*{location['description']}*",
+                inline=True
+            )
+        
+        embed.add_field(
+            name="🚀 Start Hunt",
+            value="`!treasure_hunt <location_name>`",
+            inline=False
+        )
+        
+        return await ctx.send(embed=embed)
+    
+    # Find location
+    location_id = None
+    for id, location in TREASURE_LOCATIONS.items():
+        if location['name'].lower() == location_name.lower():
+            location_id = id
+            break
+    
+    if not location_id:
+        return await ctx.send(f"❌ Location '{location_name}' not found! Use `!treasure_hunt` to see available locations.")
+    
+    location = TREASURE_LOCATIONS[location_id]
+    
+    # Check if already exploring
+    if player_id in active_explorations:
+        return await ctx.send("❌ You're already on a treasure hunt! Wait for it to complete.")
+    
+    # Check cost
+    if player["spirit_stones"] < location["cost"]:
+        return await ctx.send(f"❌ You need {location['cost']} spirit stones to explore {location['name']}!")
+    
+    # Start exploration
+    player["spirit_stones"] -= location["cost"]
+    update_player(player_id, player)
+    
+    active_explorations[player_id] = {
+        "location": location_id,
+        "start_time": time.time(),
+        "duration": location["exploration_time"]
+    }
+    
+    embed = discord.Embed(
+        title=f"🚀 Treasure Hunt Started!",
+        description=f"You begin exploring **{location['name']}**...\n\n*{location['description']}*",
+        color=0x00ff00
+    )
+    
+    embed.add_field(
+        name="⏰ Duration",
+        value=f"{location['exploration_time']//60} minutes",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="🎯 Success Chance",
+        value=f"{int(location['success_chance']*100)}%",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="📅 Status",
+        value=f"Use `!check_hunt` to see progress",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="check_hunt")
+async def check_hunt(ctx):
+    """Check the status of your current treasure hunt"""
+    player_id = str(ctx.author.id)
+    
+    if player_id not in active_explorations:
+        return await ctx.send("❌ You're not currently on a treasure hunt! Use `!treasure_hunt` to start one.")
+    
+    exploration = active_explorations[player_id]
+    location = TREASURE_LOCATIONS[exploration["location"]]
+    
+    elapsed = time.time() - exploration["start_time"]
+    remaining = exploration["duration"] - elapsed
+    
+    if remaining <= 0:
+        # Exploration complete - determine results
+        success = random.random() < location["success_chance"]
+        
+        # Remove from active explorations
+        del active_explorations[player_id]
+        
+        player = get_player(player_id)
+        
+        if success:
+            # Success! Give rewards
+            rewards = location["rewards"]
+            
+            # Spirit stones
+            if "spirit_stones" in rewards:
+                stones_gained = random.randint(*rewards["spirit_stones"])
+                player["spirit_stones"] += stones_gained
+            
+            # Power gain
+            if "power_gain" in rewards:
+                power_gained = random.randint(*rewards["power_gain"])
+                player["total_power"] += power_gained
+            
+            # Qi gain
+            if "qi_gain" in rewards:
+                qi_gained = random.randint(*rewards["qi_gain"])
+                player["qi"] += qi_gained
+            
+            # Artifact chance
+            artifact_found = None
+            if "artifacts" in rewards and random.random() < 0.3:  # 30% chance
+                artifact_found = random.choice(rewards["artifacts"])
+                if player_id not in player_artifacts:
+                    player_artifacts[player_id] = []
+                if artifact_found not in player_artifacts[player_id]:
+                    player_artifacts[player_id].append(artifact_found)
+            
+            # Enlightenment chance
+            enlightenment = None
+            if "enlightenment_chance" in rewards and random.random() < rewards["enlightenment_chance"]:
+                enlightenment_event = random.choice(list(ENLIGHTENMENT_EVENTS.values()))
+                power_boost = random.randint(*enlightenment_event["power_boost"])
+                qi_boost = random.randint(*enlightenment_event["qi_boost"])
+                player["total_power"] += power_boost
+                player["qi"] += qi_boost
+                enlightenment = enlightenment_event
+            
+            update_player(player_id, player)
+            
+            embed = discord.Embed(
+                title="🎉 Treasure Hunt Successful!",
+                description=f"Your exploration of **{location['name']}** was successful!",
+                color=0x00ff00
+            )
+            
+            reward_text = []
+            if "spirit_stones" in rewards:
+                reward_text.append(f"💰 +{stones_gained} Spirit Stones")
+            if "power_gain" in rewards:
+                reward_text.append(f"⚡ +{power_gained} Power")
+            if "qi_gain" in rewards:
+                reward_text.append(f"🌀 +{qi_gained} Qi")
+            
+            if artifact_found:
+                artifact = ARTIFACTS[artifact_found]
+                reward_text.append(f"🏺 **{artifact['name']}** found!")
+            
+            if enlightenment:
+                reward_text.append(f"{enlightenment['emoji']} **{enlightenment['name']}**!")
+            
+            embed.add_field(
+                name="🎁 Rewards",
+                value="\n".join(reward_text) if reward_text else "No rewards this time",
+                inline=False
+            )
+            
+            if enlightenment:
+                embed.add_field(
+                    name="💫 Enlightenment",
+                    value=enlightenment["message"],
+                    inline=False
+                )
+            
+        else:
+            # Failure
+            embed = discord.Embed(
+                title="💥 Treasure Hunt Failed!",
+                description=f"Your exploration of **{location['name']}** was unsuccessful. You return empty-handed but wiser.",
+                color=0xff0000
+            )
+            
+            embed.add_field(
+                name="🎓 Experience",
+                value="You gained valuable experience from this dangerous adventure!",
+                inline=False
+            )
+        
+        await ctx.send(embed=embed)
+        
+    else:
+        # Still in progress
+        progress = (elapsed / exploration["duration"]) * 100
+        remaining_minutes = int(remaining // 60)
+        remaining_seconds = int(remaining % 60)
+        
+        embed = discord.Embed(
+            title=f"🔍 Treasure Hunt in Progress...",
+            description=f"Exploring **{location['name']}**\n\n*{location['description']}*",
+            color=0xffff00
+        )
+        
+        embed.add_field(
+            name="📊 Progress",
+            value=f"{progress:.1f}% Complete",
+            inline=True
+        )
+        
+        embed.add_field(
+            name="⏰ Time Remaining",
+            value=f"{remaining_minutes}m {remaining_seconds}s",
+            inline=True
+        )
+        
+        await ctx.send(embed=embed)
+
+@bot.command(name="formations")
+async def formations(ctx):
+    """View available cultivation formations"""
+    embed = discord.Embed(
+        title="✨ Cultivation Formations",
+        description="Join with other cultivators to enhance your cultivation power!",
+        color=0x9932cc
+    )
+    
+    for form_id, formation in FORMATIONS.items():
+        embed.add_field(
+            name=f"{formation['emoji']} {formation['name']}",
+            value=f"**Participants:** {formation['min_participants']}-{formation['max_participants']}\n**Duration:** {formation['duration']//60} minutes\n**Power Multiplier:** {formation['power_multiplier']}x\n**Qi Bonus:** {formation['qi_bonus']}x\n**Cost:** {formation['cost_per_person']} Spirit Stones\n*{formation['description']}*",
+            inline=True
+        )
+    
+    embed.add_field(
+        name="🚀 Commands",
+        value="`!join_formation <name>` - Join a formation\n`!create_formation <name>` - Create new formation\n`!active_formations` - View active formations",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="create_formation")
+async def create_formation(ctx, *, formation_name=None):
+    """Create a new cultivation formation"""
+    if not formation_name:
+        return await ctx.send("❌ Please specify a formation name! Use `!formations` to see available types.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Find formation type
+    formation_id = None
+    for id, formation in FORMATIONS.items():
+        if formation['name'].lower() == formation_name.lower():
+            formation_id = id
+            break
+    
+    if not formation_id:
+        return await ctx.send(f"❌ Formation '{formation_name}' not found! Use `!formations` to see available types.")
+    
+    formation = FORMATIONS[formation_id]
+    
+    # Check if player already in a formation
+    for active_form in active_formations.values():
+        if player_id in active_form["participants"]:
+            return await ctx.send("❌ You're already in a formation! Leave it first or wait for it to complete.")
+    
+    # Check cost
+    if player["spirit_stones"] < formation["cost_per_person"]:
+        return await ctx.send(f"❌ You need {formation['cost_per_person']} spirit stones to create this formation!")
+    
+    # Create formation
+    formation_instance_id = f"{formation_id}_{int(time.time())}"
+    player["spirit_stones"] -= formation["cost_per_person"]
+    update_player(player_id, player)
+    
+    active_formations[formation_instance_id] = {
+        "type": formation_id,
+        "creator": player_id,
+        "participants": [player_id],
+        "start_time": time.time(),
+        "duration": formation["duration"],
+        "status": "recruiting"
+    }
+    
+    embed = discord.Embed(
+        title=f"✨ {formation['name']} Created!",
+        description=f"You have created a new cultivation formation!\n\n*{formation['description']}*",
+        color=0x9932cc
+    )
+    
+    embed.add_field(
+        name="👥 Participants",
+        value=f"1/{formation['max_participants']} (Need {formation['min_participants']} minimum)",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="⏰ Duration",
+        value=f"{formation['duration']//60} minutes",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="🚀 Bonuses",
+        value=f"**Power:** {formation['power_multiplier']}x\n**Qi:** {formation['qi_bonus']}x",
+        inline=False
+    )
+    
+    embed.add_field(
+        name="📢 Recruiting",
+        value="Other players can join using `!join_formation` command!",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="join_formation")
+async def join_formation(ctx, *, formation_name=None):
+    """Join an active cultivation formation"""
+    if not formation_name:
+        return await ctx.send("❌ Please specify a formation name! Use `!active_formations` to see available formations.")
+    
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first! Use `!register`")
+    
+    # Check if player already in a formation
+    for active_form in active_formations.values():
+        if player_id in active_form["participants"]:
+            return await ctx.send("❌ You're already in a formation! Wait for it to complete.")
+    
+    # Find active formation
+    target_formation = None
+    target_id = None
+    for form_id, active_form in active_formations.items():
+        formation_type = FORMATIONS[active_form["type"]]
+        if formation_type['name'].lower() == formation_name.lower() and active_form["status"] == "recruiting":
+            target_formation = active_form
+            target_id = form_id
+            break
+    
+    if not target_formation:
+        return await ctx.send(f"❌ No recruiting formation '{formation_name}' found! Use `!active_formations` to see available formations.")
+    
+    formation = FORMATIONS[target_formation["type"]]
+    
+    # Check if formation is full
+    if len(target_formation["participants"]) >= formation["max_participants"]:
+        return await ctx.send(f"❌ The {formation['name']} is full!")
+    
+    # Check cost
+    if player["spirit_stones"] < formation["cost_per_person"]:
+        return await ctx.send(f"❌ You need {formation['cost_per_person']} spirit stones to join this formation!")
+    
+    # Join formation
+    player["spirit_stones"] -= formation["cost_per_person"]
+    update_player(player_id, player)
+    
+    target_formation["participants"].append(player_id)
+    
+    # Check if formation can start
+    if len(target_formation["participants"]) >= formation["min_participants"]:
+        target_formation["status"] = "active"
+        target_formation["start_time"] = time.time()
+        
+        # Notify all participants
+        for participant_id in target_formation["participants"]:
+            try:
+                user = await bot.fetch_user(int(participant_id))
+                await user.send(f"🌟 **{formation['name']} Started!** Your formation cultivation has begun!")
+            except:
+                pass
+    
+    embed = discord.Embed(
+        title=f"✨ Joined {formation['name']}!",
+        description=f"You have joined the cultivation formation!\n\n*{formation['description']}*",
+        color=0x00ff00
+    )
+    
+    embed.add_field(
+        name="👥 Participants",
+        value=f"{len(target_formation['participants'])}/{formation['max_participants']}",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="📊 Status", 
+        value=target_formation["status"].title(),
+        inline=True
+    )
+    
+    if target_formation["status"] == "active":
+        embed.add_field(
+            name="🎉 Formation Active!",
+            value=f"Cultivation bonuses are now active for {formation['duration']//60} minutes!",
+            inline=False
+        )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="active_formations")
+async def active_formations_cmd(ctx):
+    """View all active cultivation formations"""
+    if not active_formations:
+        return await ctx.send("❌ No active formations found! Use `!create_formation` to start one.")
+    
+    embed = discord.Embed(
+        title="✨ Active Formations",
+        description="Join these formations to enhance your cultivation!",
+        color=0x9932cc
+    )
+    
+    for form_id, active_form in active_formations.items():
+        formation = FORMATIONS[active_form["type"]]
+        
+        status_emoji = {"recruiting": "🔄", "active": "✅", "completed": "✅"}
+        status = status_emoji.get(active_form["status"], "❓")
+        
+        participants_count = len(active_form["participants"])
+        
+        # Calculate remaining time
+        if active_form["status"] == "active":
+            elapsed = time.time() - active_form["start_time"]
+            remaining = formation["duration"] - elapsed
+            time_text = f"{int(remaining//60)}m {int(remaining%60)}s remaining" if remaining > 0 else "Completing..."
+        else:
+            time_text = "Recruiting participants"
+        
+        embed.add_field(
+            name=f"{formation['emoji']} {formation['name']} {status}",
+            value=f"**Participants:** {participants_count}/{formation['max_participants']}\n**Status:** {active_form['status'].title()}\n**Time:** {time_text}\n**Bonuses:** {formation['power_multiplier']}x Power, {formation['qi_bonus']}x Qi",
+            inline=True
+        )
+    
+    embed.add_field(
+        name="🚀 Commands",
+        value="`!join_formation <name>` - Join a recruiting formation\n`!create_formation <name>` - Create new formation",
+        inline=False
+    )
+    
+    await ctx.send(embed=embed)
+
+# Helper function to integrate enlightenment events into cultivation
+def trigger_enlightenment_event(player_id):
+    """Randomly trigger enlightenment events during cultivation"""
+    for event_id, event in ENLIGHTENMENT_EVENTS.items():
+        if random.random() < event["chance"]:
+            player = get_player(player_id)
+            if player:
+                power_boost = random.randint(*event["power_boost"])
+                qi_boost = random.randint(*event["qi_boost"])
+                player["total_power"] += power_boost
+                player["qi"] += qi_boost
+                update_player(player_id, player)
+                return event, power_boost, qi_boost
+    return None, 0, 0
 
 # ===============================
 # COMPREHENSIVE HELP SYSTEM - UPDATED
