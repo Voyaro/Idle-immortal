@@ -9,14 +9,23 @@ import shutil
 import time
 import math
 from keep_alive import keep_alive
+from explore import start_exploration
+import discord
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.message_content = True  # wajib untuk bisa baca chat
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+@bot.command()
+async def explore(ctx):
+    player = get_player(ctx.author.id)
+    if not player:
+        return await ctx.send("❌ Kamu belum register. Gunakan `!register` dulu.")
+
+    await start_exploration(ctx, player, max_steps=10)
 try:
-    from ai_exploration import AIExploration
-    AI_EXPLORATION_LOADED = True
-    print("✅ AI Exploration system loaded successfully!")
-except ImportError as e:
-    print(f"❌ Failed to load AI exploration system: {e}")
-    AI_EXPLORATION_LOADED = False
-try:
+    # Import functions saja, bukan *
     from boss import (
         list_bosses, 
         challenge_boss, 
@@ -30,26 +39,6 @@ try:
 except ImportError as e:
     print(f"❌ Failed to load boss system: {e}")
     BOSS_SYSTEM_LOADED = False
-try:
-    from world_boss_system import (
-        WORLD_BOSSES,
-        ACTIVE_WORLD_BOSSES,
-        WORLD_BOSS_PARTIES,
-        PLAYER_PARTIES,
-        create_party,
-        invite_party,
-        join_party,
-        leave_party,
-        party_info,
-        challenge_world_boss,
-        world_boss_status,
-        start_world_boss_tasks
-    )
-    WORLD_BOSS_SYSTEM_LOADED = True
-    print("✅ World Boss system loaded successfully!")
-except ImportError as e:
-    print(f"❌ Failed to load world boss system: {e}")
-    WORLD_BOSS_SYSTEM_LOADED = False
 
 # ===============================
 # TOKEN (ambil dari Secrets Replit)
@@ -323,8 +312,8 @@ DUNGEONS = {
         "name": "Spirit Forest",
         "min_level": 1,
         "max_level": 10,
-        "min_reward": 8000,  # 10x from 800
-        "max_reward": 15000,  # 10x from 1500
+        "min_reward": 20,
+        "max_reward": 50,
         "spirit_stone_reward": (1, 3),
         "emoji": "🌳",
         "difficulty": "Easy",
@@ -334,8 +323,8 @@ DUNGEONS = {
         "name": "Ancient Cave", 
         "min_level": 5,
         "max_level": 20,
-        "min_reward": 25000,  # 10x from 2500
-        "max_reward": 40000,  # 10x from 4000
+        "min_reward": 40,
+        "max_reward": 100,
         "spirit_stone_reward": (2, 5),
         "emoji": "🕳️",
         "difficulty": "Medium",
@@ -345,8 +334,8 @@ DUNGEONS = {
         "name": "Celestial Mountain",
         "min_level": 15,
         "max_level": 30,
-        "min_reward": 80000,  # 10x from 8000
-        "max_reward": 120000,  # 10x from 12000
+        "min_reward": 80,
+        "max_reward": 200,
         "spirit_stone_reward": (3, 8),
         "emoji": "⛰️",
         "difficulty": "Hard",
@@ -356,8 +345,8 @@ DUNGEONS = {
         "name": "Demon Abyss",
         "min_level": 25,
         "max_level": 50,
-        "min_reward": 150000,  # 10x from 15000
-        "max_reward": 200000,  # 10x from 20000
+        "min_reward": 150,
+        "max_reward": 400,
         "spirit_stone_reward": (5, 15),
         "emoji": "🔥",
         "difficulty": "Very Hard",
@@ -367,8 +356,8 @@ DUNGEONS = {
         "name": "Heavenly Palace",
         "min_level": 40,
         "max_level": 80,
-        "min_reward": 250000,  # 10x from 25000
-        "max_reward": 300000,  # 10x from 30000
+        "min_reward": 300,
+        "max_reward": 800,
         "spirit_stone_reward": (10, 25),
         "emoji": "🏯",
         "difficulty": "Extreme",
@@ -1367,34 +1356,38 @@ async def on_ready():
     print('🌟 Bot siap menerima command!')
 
 @bot.event
-async def on_ready(): 
-    # Load AI Exploration cog
-    if AI_EXPLORATION_LOADED:
-        await bot.add_cog(AI_Exploration(bot))
-        print("🧠 AI Exploration system activated!")
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    print(f"📨 Received: {message.content} from {message.author}")
+
+    # Cek jika user sudah terdaftar
+    if not get_player(message.author.id):
+        # Jika belum terdaftar dan bukan command registrasi, minta registrasi
+        # HANYA di channel yang ditentukan
+        if not message.content.startswith('!register') and message.channel.id == 1413513753726681220:
+            await message.channel.send(
+                f"👋 Welcome {message.author.mention}! You need to register first.\n"
+                f"Use `!register` to start your cultivation journey!"
+            )
+            return
+
+    await bot.process_commands(message)
 
 @bot.event
-async def on_ready():
-    print(f'✅ Bot {bot.user} telah online!')
-    print(f'🔑 Token valid: {bool(BOT_TOKEN)}')
-    print(f'📊 Total players: {load_data()["total_players"]}')
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(f"⏳ Cooldown! Coba lagi dalam {error.retry_after:.1f} detik")
+    elif isinstance(error, commands.CommandNotFound):
+        await ctx.send("❌ Command tidak dikenali! Gunakan `!help` untuk melihat command yang tersedia.")
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("❌ Argument tidak lengkap! Gunakan `!help [command]` untuk info lengkap.")
+    else:
+        print(f"Error: {error}")
+        await ctx.send("❌ Terjadi error! Silakan coba lagi atau hubungi admin.")
 
-    if BOT_TOKEN and BOT_TOKEN != "placeholder_token_untuk_development":
-        print(f'🔒 Token length: {len(BOT_TOKEN)}')
-
-    # Reset daily quests jika perlu
-    reset_daily_quests()
-
-    backup_data()
-    
-    # Start world boss tasks jika system loaded
-    if WORLD_BOSS_SYSTEM_LOADED:
-        asyncio.create_task(start_world_boss_tasks())
-        print("🌍 World Boss tasks started!")
-    
-    print('🌟 Bot siap menerima command!')
-
-#================================
+# ===============================
 # TEST COMMAND: ping
 # ===============================
 @bot.command()
@@ -1685,186 +1678,6 @@ async def tutorial(ctx):
     await ctx.send(embed=embed)
 
 # ===============================
-# AI EXPLORATION COMMANDS - DITAMBAHKAN
-# ===============================
-@bot.command()
-@commands.cooldown(1, 300, commands.BucketType.user)  # 5 menit cooldown
-async def explore(ctx):
-    """Mulai petualangan cultivation yang interaktif!"""
-    user_id = ctx.author.id
-    p = get_player(user_id)
-    
-    if user_id in ACTIVE_EXPLORATIONS:
-        return await ctx.send("⏳ Anda sedang dalam petualangan! Selesaikan dulu dengan `!stop_explore`.")
-    
-    # Exploration scenarios berdasarkan cultivation level
-    player_level = get_player_level(p)
-    
-    if player_level <= 10:
-        scenarios = [
-            {
-                "title": "🌳 Hutan Spiritual Pemula",
-                "description": "Kamu menemukan hutan dengan energi qi yang lemah tetapi cocok untuk pemula.",
-                "choices": [
-                    {"emoji": "🪷", "text": "Kumpulkan spirit herbs", "rewards": {"exp": 50000, "qi": 200, "spirit_stones": 10}},
-                    {"emoji": "🧘‍♂️", "text": "Meditasi di sini", "rewards": {"exp": 80000, "qi": 150, "spirit_stones": 5}},
-                    {"emoji": "🔍", "text": "Cari treasures", "rewards": {"exp": 30000, "qi": 100, "spirit_stones": 15}}
-                ]
-            },
-            {
-                "title": "🕳️ Gua Kecil Misterius",
-                "description": "Sebuah gua kecil dengan energi qi yang terasa menarik.",
-                "choices": [
-                    {"emoji": "🔮", "text": "Masuk gua", "rewards": {"exp": 70000, "qi": 250, "spirit_stones": 12}},
-                    {"emoji": "🛡️", "text": "Siapkan pertahanan dulu", "rewards": {"exp": 40000, "qi": 180, "spirit_stones": 8}},
-                    {"emoji": "🏃‍♂️", "text": "Mundur dengan hati-hati", "rewards": {"exp": 20000, "qi": 120, "spirit_stones": 5}}
-                ]
-            }
-        ]
-    elif player_level <= 30:
-        scenarios = [
-            {
-                "title": "⛰️ Puncak Gunung Berawan",
-                "description": "Kamu mencapai puncak gunung dengan energi cultivation yang kuat.",
-                "choices": [
-                    {"emoji": "⚡", "text": "Serap energi lightning", "rewards": {"exp": 150000, "qi": 500, "spirit_stones": 25}},
-                    {"emoji": "🌪️", "text": "Berlatih teknik angin", "rewards": {"exp": 120000, "qi": 400, "spirit_stones": 20}},
-                    {"emoji": "🧘‍♂️", "text": "Meditasi dengan clouds", "rewards": {"exp": 180000, "qi": 350, "spirit_stones": 15}}
-                ]
-            },
-            {
-                "title": "🌊 Danau Spiritual",
-                "description": "Danau jernih dengan energi water yang menyegarkan jiwa.",
-                "choices": [
-                    {"emoji": "🏊‍♂️", "text": "Berenang di danau", "rewards": {"exp": 140000, "qi": 450, "spirit_stones": 22}},
-                    {"emoji": "🐟", "text": "Tangkap spirit fish", "rewards": {"exp": 100000, "qi": 300, "spirit_stones": 30}},
-                    {"emoji": "💧", "text": "Minum air spiritual", "rewards": {"exp": 160000, "qi": 400, "spirit_stones": 18}}
-                ]
-            }
-        ]
-    else:
-        scenarios = [
-            {
-                "title": "🌌 Dimensi Void", 
-                "description": "Kamu terlempar ke dimensi void yang penuh dengan energi cosmik.",
-                "choices": [
-                    {"emoji": "🌟", "text": "Serap cosmic energy", "rewards": {"exp": 500000, "qi": 2000, "spirit_stones": 100}},
-                    {"emoji": "🕳️", "text": "Jelajahi void rifts", "rewards": {"exp": 450000, "qi": 1500, "spirit_stones": 120}},
-                    {"emoji": "🧘‍♂️", "text": "Transcend reality", "rewards": {"exp": 600000, "qi": 1800, "spirit_stones": 80}}
-                ]
-            },
-            {
-                "title": "🏯 Ancient Immortal Palace",
-                "description": "Istana kuno milik immortal yang dipenuhi treasures dan bahaya.",
-                "choices": [
-                    {"emoji": "💎", "text": "Ambil immortal treasures", "rewards": {"exp": 400000, "qi": 1200, "spirit_stones": 150}},
-                    {"emoji": "📚", "text": "Pelajari ancient texts", "rewards": {"exp": 550000, "qi": 1000, "spirit_stones": 80}},
-                    {"emoji": "⚔️", "text": "Tantang palace guardian", "rewards": {"exp": 700000, "qi": 2500, "spirit_stones": 200}}
-                ]
-            }
-        ]
-    
-    # Pilih scenario secara random
-    scenario = random.choice(scenarios)
-    
-    # Kirim embed dengan pilihan
-    embed = discord.Embed(
-        title=f"🌌 {scenario['title']}",
-        description=scenario['description'],
-        color=0x00ff00
-    )
-    
-    choice_text = ""
-    for i, choice in enumerate(scenario['choices'], 1):
-        choice_text += f"{i}️⃣ {choice['emoji']} {choice['text']}\n"
-    
-    embed.add_field(name="Pilihan Aksi:", value=choice_text, inline=False)
-    embed.set_footer(text="Bereaksi dengan angka untuk memilih (1️⃣2️⃣3️⃣) atau ❌ untuk berhenti")
-    
-    message = await ctx.send(embed=embed)
-    
-    # Tambahkan reactions
-    emojis = ['1️⃣', '2️⃣', '3️⃣', '❌']
-    for emoji in emojis:
-        await message.add_reaction(emoji)
-    
-    # Simpan data exploration
-    ACTIVE_EXPLORATIONS[user_id] = {
-        "message": message,
-        "scenario": scenario,
-        "active": True,
-        "start_time": time.time()
-    }
-    
-    # Handle user reaction choices
-    def check(reaction, user):
-        return (user == ctx.author and 
-                str(reaction.emoji) in ['1️⃣', '2️⃣', '3️⃣', '❌'] and 
-                reaction.message.id == message.id)
-    
-    try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=300.0, check=check)
-        
-        if str(reaction.emoji) == '❌':
-            # Cancel exploration
-            del ACTIVE_EXPLORATIONS[user_id]
-            await ctx.send("❌ Petualangan dihentikan!")
-            return
-        
-        # Process choice
-        choice_map = {'1️⃣': 0, '2️⃣': 1, '3️⃣': 2}
-        choice_index = choice_map.get(str(reaction.emoji))
-        
-        if choice_index is not None:
-            selected_choice = scenario['choices'][choice_index]
-            rewards = selected_choice['rewards']
-            
-            # Apply rewards
-            p["exp"] = min(p["exp"] + rewards["exp"], get_exp_cap(p))
-            p["qi"] += rewards["qi"]
-            p["spirit_stones"] += rewards["spirit_stones"]
-            
-            update_player(user_id, p)
-            
-            # Show reward message
-            embed = discord.Embed(
-                title=f"✨ {selected_choice['emoji']} {selected_choice['text']}",
-                description=f"{ctx.author.mention} menyelesaikan petualangan dengan sukses!",
-                color=0x00ff00
-            )
-            embed.add_field(name="EXP Gained", value=f"+{rewards['exp']:,}", inline=True)
-            embed.add_field(name="Qi Gained", value=f"+{rewards['qi']:,}", inline=True)
-            embed.add_field(name="Spirit Stones", value=f"+{rewards['spirit_stones']:,}", inline=True)
-            embed.add_field(name="Total EXP", value=f"{p['exp']:,}", inline=True)
-            embed.add_field(name="Total Qi", value=f"{p['qi']:,}", inline=True)
-            embed.add_field(name="Total Stones", value=f"{p['spirit_stones']:,}", inline=True)
-            
-            await ctx.send(embed=embed)
-            
-            # Clean up
-            del ACTIVE_EXPLORATIONS[user_id]
-        
-    except asyncio.TimeoutError:
-        # Clean up after timeout
-        if user_id in ACTIVE_EXPLORATIONS:
-            del ACTIVE_EXPLORATIONS[user_id]
-        await ctx.send("⏰ Waktu petualangan habis! Exploration dihentikan.")
-
-@bot.command()
-async def stop_explore(ctx):
-    """Hentikan petualangan AI yang sedang berjalan"""
-    user_id = ctx.author.id
-    
-    if user_id in ACTIVE_EXPLORATIONS:
-        del ACTIVE_EXPLORATIONS[user_id]
-        await ctx.send("✅ Petualangan dihentikan!")
-    else:
-        await ctx.send("❌ Anda tidak sedang dalam petualangan!")
-
-# Tambahkan di global variables
-ACTIVE_EXPLORATIONS = {}
-HF_TOKEN = os.environ.get("HUGGING_FACE_TOKEN", "")
-# ===============================
 # Command: realms
 # ===============================
 @bot.command()
@@ -1909,7 +1722,7 @@ async def boss(ctx, action: str = None, boss_name: str = None):
     """Sistem boss - Lihat atau tantang boss dungeon"""
     if not BOSS_SYSTEM_LOADED:
         return await ctx.send("❌ Boss system sedang maintenance!")
-
+    
     if action == "list":
         await list_bosses(ctx)
     elif action == "challenge" and boss_name:
@@ -2237,7 +2050,7 @@ async def breakthrough(ctx):
     realm_data = REALMS[p["realm"]]
     stages = realm_data["stages"]
     current_stage_idx = stages.index(p["stage"])
-
+    
     # Current stage EXP cap adalah requirement breakthrough
     required_exp = get_exp_cap(p)
 
@@ -2246,18 +2059,18 @@ async def breakthrough(ctx):
 
     # Hitung kelebihan EXP setelah breakthrough
     excess_exp = p["exp"] - required_exp
-
+    
     if current_stage_idx + 1 < len(stages):
         # Naik ke stage berikutnya di realm yang sama
         next_stage = stages[current_stage_idx + 1]
         p["stage"] = next_stage
-
+        
         # ✅ PERBAIKAN: Simpan kelebihan EXP, jangan reset ke 0!
         p["exp"] = excess_exp  # Hanya kurangi dengan EXP yang dibutuhkan
-
+        
         p["base_power"] += 15
         p["breakthroughs"] += 1
-
+        
         # Update daily quest progress
         p["daily_quests"]["breakthrough"]["progress"] += 1
         if p["daily_quests"]["breakthrough"]["progress"] >= p["daily_quests"]["breakthrough"].get("progress_needed", 1):
@@ -2267,9 +2080,9 @@ async def breakthrough(ctx):
         technique_bonus = 1 + sum(t['power_bonus'] for t in p["techniques"])
         set_bonus = calculate_set_bonus(p["equipment"])
         p["total_power"] = int(p["base_power"] * technique_bonus * (1 + set_bonus))
-
+        
         message = f"🔥 {ctx.author.mention} broke through to **{next_stage}**! ({excess_exp} EXP carried over)"
-
+        
     else:
         # Naik ke realm berikutnya
         realm_idx = REALM_ORDER.index(p["realm"])
@@ -2277,13 +2090,13 @@ async def breakthrough(ctx):
             next_realm = REALM_ORDER[realm_idx + 1]
             p["realm"] = next_realm
             p["stage"] = REALMS[next_realm]["stages"][0]
-
+            
             # ✅ PERBAIKAN: Simpan kelebihan EXP untuk realm baru
             p["exp"] = excess_exp
-
+            
             p["base_power"] += 50
             p["breakthroughs"] += 1
-
+            
             # Update daily quest progress
             p["daily_quests"]["breakthrough"]["progress"] += 1
             if p["daily_quests"]["breakthrough"]["progress"] >= p["daily_quests"]["breakthrough"].get("progress_needed", 1):
@@ -2293,7 +2106,7 @@ async def breakthrough(ctx):
             technique_bonus = 1 + sum(t['power_bonus'] for t in p["techniques"])
             set_bonus = calculate_set_bonus(p["equipment"])
             p["total_power"] = int(p["base_power"] * technique_bonus * (1 + set_bonus))
-
+            
             message = f"🌟 {ctx.author.mention} ascended to **{next_realm}**! ({excess_exp} EXP carried over)"
         else:
             return await ctx.send("🎉 You already reached the peak realm!")
@@ -2310,12 +2123,12 @@ async def breakthrough(ctx):
         description=message,
         color=0x00ff00
     )
-
+    
     embed.add_field(name="New Stage", value=p["stage"], inline=True)
     embed.add_field(name="Current EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
     embed.add_field(name="Total Power", value=p["total_power"], inline=True)
     embed.add_field(name="EXPreserved", value=f"✅ {excess_exp} EXP carried over", inline=True)
-
+    
     await ctx.send(embed=embed)
 
 # ===============================
@@ -2420,48 +2233,8 @@ async def learn_technique(ctx, technique_id: str):
     )
 
     await ctx.send(embed=embed)
-    
+
 # ===============================
-# WORLD BOSS COMMANDS
-# ===============================
-if WORLD_BOSS_SYSTEM_LOADED:
-
-    @bot.command(name="world")
-    async def world_cmd(ctx):
-        """Lihat status semua World Boss"""
-        await world_boss_status(ctx)
-
-    @bot.command(name="createparty")
-    async def create_party_cmd(ctx, *, party_name: str):
-        """Buat party untuk lawan World Boss"""
-        await create_party(ctx, party_name)
-
-    @bot.command(name="inviteparty")
-    async def invite_party_cmd(ctx, member: discord.Member):
-        """Invite member ke party"""
-        await invite_party(ctx, member)
-
-    @bot.command(name="joinparty")
-    async def join_party_cmd(ctx, *, party_name: str):
-        """Join party yang sudah ada"""
-        await join_party(ctx, party_name)
-
-    @bot.command(name="leaveparty")
-    async def leave_party_cmd(ctx):
-        """Keluar dari party"""
-        await leave_party(ctx)
-
-    @bot.command(name="partyinfo")
-    async def party_info_cmd(ctx):
-        """Lihat info party"""
-        await party_info(ctx)
-
-    @bot.command(name="challengeboss")
-    async def challenge_boss_cmd(ctx, *, boss_name: str):
-        """Tantang World Boss (hanya leader yang bisa)"""
-        await challenge_world_boss(ctx, boss_name)
-
-# ================================
 # Command: my_techniques
 # ===============================
 @bot.command()
@@ -3292,7 +3065,7 @@ def apply_beast_bonuses(player_data, base_gain, qi_gain, power_gain):
     total_exp_bonus = 1.0
     total_qi_bonus = 1.0
     total_power_bonus = 1.0
-
+    
     for beast in player_data.get("spirit_beasts", []):
         for bonus_type, bonus_value in beast["bonus"].items():
             if bonus_type == "exp":
@@ -3305,7 +3078,7 @@ def apply_beast_bonuses(player_data, base_gain, qi_gain, power_gain):
                 total_exp_bonus += bonus_value
                 total_qi_bonus += bonus_value
                 total_power_bonus += bonus_value
-
+    
     return (
         int(base_gain * total_exp_bonus),
         int(qi_gain * total_qi_bonus),
@@ -3331,7 +3104,7 @@ async def spirit_beasts(ctx):
             bonus_text = ", ".join([f"+{int(v*100)}% {k}" for k, v in beast["bonus"].items()])
             rarity_text += f"{beast['emoji']} **{beast['name']}** - {beast['cost']} Spirit Stones\n"
             rarity_text += f"   Power: +{beast['power']} | Bonus: {bonus_text}\n\n"
-
+        
         embed.add_field(name=f"🌟 {rarity.title()} Tier", value=rarity_text, inline=False)
 
     embed.set_footer(text="Gunakan !tame [beast_name] untuk menjinakkan spirit beast")
@@ -3350,7 +3123,7 @@ async def tame(ctx, beast_name: str):
     # Cari beast berdasarkan nama
     found_beast = None
     beast_rarity = None
-
+    
     for rarity, beasts in SPIRIT_BEASTS.items():
         for beast in beasts:
             if beast["name"].lower() == beast_name.lower():
@@ -3373,12 +3146,12 @@ async def tame(ctx, beast_name: str):
 
     # Jinakkan beast
     p["spirit_stones"] -= found_beast["cost"]
-
+    
     if "spirit_beasts" not in p:
         p["spirit_beasts"] = []
-
+    
     p["spirit_beasts"].append(found_beast)
-
+    
     # Update server stats
     data = load_data()
     data["server_stats"]["total_spirit_beasts"] = data["server_stats"].get("total_spirit_beasts", 0) + 1
@@ -3387,7 +3160,7 @@ async def tame(ctx, beast_name: str):
     update_player(ctx.author.id, p)
 
     bonus_text = ", ".join([f"+{int(v*100)}% {k}" for k, v in found_beast["bonus"].items()])
-
+    
     embed = discord.Embed(
         title="🎉 Spirit Beast Tamed!",
         description=f"{ctx.author.mention} berhasil menjinakkan {found_beast['emoji']} {found_beast['name']}!",
@@ -3428,7 +3201,7 @@ async def set_beast(ctx, beast_name: str = None):
         for i, beast in enumerate(p["spirit_beasts"]):
             status = "✅" if p.get("current_beast") == beast["name"] else "❌"
             bonus_text = ", ".join([f"+{int(v*100)}% {k}" for k, v in beast["bonus"].items()])
-
+            
             embed.add_field(
                 name=f"{status} {beast['emoji']} {beast['name']}",
                 value=f"**Power:** +{beast['power']} | **Bonus:** {bonus_text}",
@@ -3453,7 +3226,7 @@ async def set_beast(ctx, beast_name: str = None):
     update_player(ctx.author.id, p)
 
     bonus_text = ", ".join([f"+{int(v*100)}% {k}" for k, v in found_beast["bonus"].items()])
-
+    
     embed = discord.Embed(
         title="🎯 Active Spirit Beast Set!",
         description=f"{ctx.author.mention} mengaktifkan {found_beast['emoji']} {found_beast['name']}",
@@ -3608,7 +3381,7 @@ async def achievements(ctx):
 
 ACHIEVEMENTS = {
     # ... achievement lainnya yang sudah ada,
-
+    
     "dragon_slayer": {
         "name": "Dragon Slayer",
         "description": "Kalahkan Ancient Dragon",
@@ -4862,7 +4635,7 @@ async def reset_boss_cooldown(ctx, member: discord.Member):
 
     # Reset boss-related cooldowns
     boss_fields = ["last_boss", "boss_cooldown", "last_boss_fight", "boss_challenge_time"]
-
+    
     reset_count = 0
     for field in boss_fields:
         if field in p:
