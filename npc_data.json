@@ -1,0 +1,27 @@
+{
+  "877390433519562842": {
+    "hua_rong": {
+      "name": "Hua Rong",
+      "gender": "female",
+      "emoji": "\ud83c\udf3a",
+      "cultivation_level": 38,
+      "realm": "Mortal Realm",
+      "personality": "flower_maiden",
+      "specialty": "plant_cultivation",
+      "backstory": "Flower spirit who became human through cultivation",
+      "dialogue_style": "flowery_sweet",
+      "affection_level": 1,
+      "max_affection": 100,
+      "gifts_loved": [
+        "rare_flowers",
+        "garden_items",
+        "nature_gifts"
+      ],
+      "gifts_hated": [
+        "poison_items",
+        "withered_items"
+      ],
+      "relationship_status": "stranger"
+    }
+  }
+}
