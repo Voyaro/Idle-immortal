@@ -1685,120 +1685,220 @@ async def tutorial(ctx):
     await ctx.send(embed=embed)
 
 # ===============================
-# AI EXPLORATION COMMANDS - DITAMBAHKAN
+# AI-DRIVEN EXPLORATION SYSTEM - FULLY DYNAMIC
 # ===============================
+
+import aiohttp
+import json
+import re
+
+# Hugging Face API Setup
+HF_TOKEN = os.environ.get("HUGGING_FACE_TOKEN", "")
+HF_API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
+
+async def query_huggingface_api(prompt, max_length=200):
+    """Query Hugging Face API for text generation (non-blocking)"""
+    if not HF_TOKEN:
+        return "AI is currently unavailable."
+    
+    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "max_length": max_length,
+            "temperature": 0.9,
+            "do_sample": True,
+            "top_p": 0.9
+        }
+    }
+    
+    try:
+        timeout = aiohttp.ClientTimeout(total=30)  # 30 second timeout
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.post(HF_API_URL, headers=headers, json=payload) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    if isinstance(result, list) and len(result) > 0:
+                        generated = result[0].get("generated_text", "")
+                        return generated.replace(prompt, "").strip()
+                return f"API Error: {response.status}"
+    except asyncio.TimeoutError:
+        return "AI timeout - generating fallback scenario..."
+    except Exception as e:
+        return f"AI Error: {str(e)[:50]}..."
+
+def parse_ai_response(response):
+    """Parse AI response to extract scenario and choices"""
+    try:
+        # Extract scenario description
+        scenario_match = re.search(r"SCENARIO:(.*?)CHOICES:", response, re.DOTALL)
+        scenario = scenario_match.group(1).strip() if scenario_match else response[:200]
+        
+        # Extract choices
+        choices_match = re.search(r"CHOICES:(.*)", response, re.DOTALL)
+        choices_text = choices_match.group(1) if choices_match else ""
+        
+        choices = []
+        for i, line in enumerate(choices_text.split('\n')[:3], 1):
+            if line.strip():
+                choices.append({
+                    "number": i,
+                    "text": line.strip()[:100],  # Limit choice length
+                    "emoji": ["🗡️", "🛡️", "🏃‍♂️"][i-1]
+                })
+        
+        # Ensure we have at least 3 choices
+        while len(choices) < 3:
+            defaults = [
+                {"number": 1, "text": "Attack with full power", "emoji": "🗡️"},
+                {"number": 2, "text": "Defend and observe", "emoji": "🛡️"},
+                {"number": 3, "text": "Retreat carefully", "emoji": "🏃‍♂️"}
+            ]
+            choices.append(defaults[len(choices)])
+        
+        return scenario, choices[:3]
+    except:
+        # Fallback if parsing fails
+        return response[:200], [
+            {"number": 1, "text": "Face the challenge head-on", "emoji": "🗡️"},
+            {"number": 2, "text": "Proceed with caution", "emoji": "🛡️"}, 
+            {"number": 3, "text": "Look for alternative path", "emoji": "🏃‍♂️"}
+        ]
+
+def calculate_exploration_outcome(choice_num, player_power, scenario_difficulty):
+    """Calculate outcome based on AI choice and player stats"""
+    import random
+    
+    # Base success rate depends on player power vs scenario difficulty
+    base_success = min(85, 30 + (player_power // 100))
+    
+    # Choice modifiers
+    choice_modifiers = {1: -10, 2: 0, 3: 5}  # Aggressive, Balanced, Cautious
+    success_rate = base_success + choice_modifiers.get(choice_num, 0)
+    
+    success = random.randint(1, 100) <= success_rate
+    
+    # Calculate rewards/penalties
+    if success:
+        exp_base = random.randint(10000, 50000) * (scenario_difficulty // 10)
+        qi_base = random.randint(100, 500) * (scenario_difficulty // 10)
+        stones_base = random.randint(5, 25) * (scenario_difficulty // 10)
+        health_change = random.randint(-5, 10)
+        
+        return {
+            "success": True,
+            "exp": exp_base,
+            "qi": qi_base,
+            "spirit_stones": stones_base,
+            "health_change": health_change,
+            "continue": True
+        }
+    else:
+        # Failure - potential damage/loss
+        health_loss = random.randint(10, 30)
+        exp_loss = random.randint(1000, 5000)
+        
+        return {
+            "success": False,
+            "exp": -exp_loss,
+            "qi": 0,
+            "spirit_stones": 0,
+            "health_change": -health_loss,
+            "continue": True
+        }
+
 @bot.command()
-@commands.cooldown(1, 300, commands.BucketType.user)  # 5 menit cooldown
+@commands.cooldown(1, 60, commands.BucketType.user)  # 1 minute cooldown
 async def explore(ctx):
-    """Mulai petualangan cultivation yang interaktif!"""
+    """Start an AI-driven cultivation adventure that continues until death or stop!"""
     user_id = ctx.author.id
     p = get_player(user_id)
     
     if user_id in ACTIVE_EXPLORATIONS:
-        return await ctx.send("⏳ Anda sedang dalam petualangan! Selesaikan dulu dengan `!stop_explore`.")
+        return await ctx.send("⏳ You're already on an adventure! Use `!stop_explore` to end it.")
     
-    # Exploration scenarios berdasarkan cultivation level
+    if not HF_TOKEN:
+        return await ctx.send("❌ AI exploration system is unavailable. Missing API token.")
+    
+    # Initialize exploration health if not exists
+    if "exploration_health" not in p:
+        p["exploration_health"] = 100
+    
     player_level = get_player_level(p)
+    player_realm = p["realm"]
+    player_power = p["total_power"]
     
-    if player_level <= 10:
-        scenarios = [
-            {
-                "title": "🌳 Hutan Spiritual Pemula",
-                "description": "Kamu menemukan hutan dengan energi qi yang lemah tetapi cocok untuk pemula.",
-                "choices": [
-                    {"emoji": "🪷", "text": "Kumpulkan spirit herbs", "rewards": {"exp": 50000, "qi": 200, "spirit_stones": 10}},
-                    {"emoji": "🧘‍♂️", "text": "Meditasi di sini", "rewards": {"exp": 80000, "qi": 150, "spirit_stones": 5}},
-                    {"emoji": "🔍", "text": "Cari treasures", "rewards": {"exp": 30000, "qi": 100, "spirit_stones": 15}}
-                ]
-            },
-            {
-                "title": "🕳️ Gua Kecil Misterius",
-                "description": "Sebuah gua kecil dengan energi qi yang terasa menarik.",
-                "choices": [
-                    {"emoji": "🔮", "text": "Masuk gua", "rewards": {"exp": 70000, "qi": 250, "spirit_stones": 12}},
-                    {"emoji": "🛡️", "text": "Siapkan pertahanan dulu", "rewards": {"exp": 40000, "qi": 180, "spirit_stones": 8}},
-                    {"emoji": "🏃‍♂️", "text": "Mundur dengan hati-hati", "rewards": {"exp": 20000, "qi": 120, "spirit_stones": 5}}
-                ]
-            }
-        ]
-    elif player_level <= 30:
-        scenarios = [
-            {
-                "title": "⛰️ Puncak Gunung Berawan",
-                "description": "Kamu mencapai puncak gunung dengan energi cultivation yang kuat.",
-                "choices": [
-                    {"emoji": "⚡", "text": "Serap energi lightning", "rewards": {"exp": 150000, "qi": 500, "spirit_stones": 25}},
-                    {"emoji": "🌪️", "text": "Berlatih teknik angin", "rewards": {"exp": 120000, "qi": 400, "spirit_stones": 20}},
-                    {"emoji": "🧘‍♂️", "text": "Meditasi dengan clouds", "rewards": {"exp": 180000, "qi": 350, "spirit_stones": 15}}
-                ]
-            },
-            {
-                "title": "🌊 Danau Spiritual",
-                "description": "Danau jernih dengan energi water yang menyegarkan jiwa.",
-                "choices": [
-                    {"emoji": "🏊‍♂️", "text": "Berenang di danau", "rewards": {"exp": 140000, "qi": 450, "spirit_stones": 22}},
-                    {"emoji": "🐟", "text": "Tangkap spirit fish", "rewards": {"exp": 100000, "qi": 300, "spirit_stones": 30}},
-                    {"emoji": "💧", "text": "Minum air spiritual", "rewards": {"exp": 160000, "qi": 400, "spirit_stones": 18}}
-                ]
-            }
-        ]
-    else:
-        scenarios = [
-            {
-                "title": "🌌 Dimensi Void", 
-                "description": "Kamu terlempar ke dimensi void yang penuh dengan energi cosmik.",
-                "choices": [
-                    {"emoji": "🌟", "text": "Serap cosmic energy", "rewards": {"exp": 500000, "qi": 2000, "spirit_stones": 100}},
-                    {"emoji": "🕳️", "text": "Jelajahi void rifts", "rewards": {"exp": 450000, "qi": 1500, "spirit_stones": 120}},
-                    {"emoji": "🧘‍♂️", "text": "Transcend reality", "rewards": {"exp": 600000, "qi": 1800, "spirit_stones": 80}}
-                ]
-            },
-            {
-                "title": "🏯 Ancient Immortal Palace",
-                "description": "Istana kuno milik immortal yang dipenuhi treasures dan bahaya.",
-                "choices": [
-                    {"emoji": "💎", "text": "Ambil immortal treasures", "rewards": {"exp": 400000, "qi": 1200, "spirit_stones": 150}},
-                    {"emoji": "📚", "text": "Pelajari ancient texts", "rewards": {"exp": 550000, "qi": 1000, "spirit_stones": 80}},
-                    {"emoji": "⚔️", "text": "Tantang palace guardian", "rewards": {"exp": 700000, "qi": 2500, "spirit_stones": 200}}
-                ]
-            }
-        ]
+    # Start AI-driven exploration
+    initial_prompt = f"""You are creating a cultivation adventure for a {player_realm} realm cultivator at level {player_level} with {player_power} power. 
+
+Create an unpredictable, dangerous scenario in a cultivation world. Include mystical elements, potential treasures, spirit beasts, or ancient ruins. Make it immersive and atmospheric.
+
+SCENARIO: [Describe the situation in 1-2 sentences]
+CHOICES:
+1. [Aggressive/risky action]
+2. [Balanced/careful action] 
+3. [Defensive/retreat action]
+
+Keep responses under 150 words total."""
+
+    await ctx.send("🧠 The AI is weaving your destiny...")
     
-    # Pilih scenario secara random
-    scenario = random.choice(scenarios)
+    try:
+        ai_response = await query_huggingface_api(initial_prompt, max_length=200)
+        scenario_text, choices = parse_ai_response(ai_response)
+        
+        # Calculate scenario difficulty based on player level
+        scenario_difficulty = random.randint(max(1, player_level - 5), player_level + 10)
+        
+        # Create initial exploration embed
+        embed = discord.Embed(
+            title="🌌 AI-Driven Cultivation Adventure",
+            description=f"**Health:** {p['exploration_health']}/100 ❤️\n\n{scenario_text}",
+            color=0x00ff00
+        )
+        
+        choice_text = ""
+        for choice in choices:
+            choice_text += f"{choice['number']}️⃣ {choice['emoji']} {choice['text']}\n"
+        
+        embed.add_field(name="Your Options:", value=choice_text, inline=False)
+        embed.set_footer(text="React with 1️⃣2️⃣3️⃣ to choose or ❌ to stop exploring")
+        
+        message = await ctx.send(embed=embed)
+        
+        # Add reactions
+        emojis = ['1️⃣', '2️⃣', '3️⃣', '❌']
+        for emoji in emojis:
+            await message.add_reaction(emoji)
+        
+        # Store exploration state
+        ACTIVE_EXPLORATIONS[user_id] = {
+            "message": message,
+            "scenario": scenario_text,
+            "choices": choices,
+            "difficulty": scenario_difficulty,
+            "turn": 1,
+            "active": True,
+            "start_time": time.time(),
+            "story_context": [scenario_text]  # Track story for continuity
+        }
+        
+        # Start the exploration loop
+        await continue_exploration(ctx, user_id)
+        
+    except Exception as e:
+        await ctx.send(f"❌ Error starting AI adventure: {str(e)}")
+
+async def continue_exploration(ctx, user_id):
+    """Continue the AI-driven exploration based on player choice"""
+    if user_id not in ACTIVE_EXPLORATIONS:
+        return
     
-    # Kirim embed dengan pilihan
-    embed = discord.Embed(
-        title=f"🌌 {scenario['title']}",
-        description=scenario['description'],
-        color=0x00ff00
-    )
+    exploration = ACTIVE_EXPLORATIONS[user_id]
+    message = exploration["message"]
     
-    choice_text = ""
-    for i, choice in enumerate(scenario['choices'], 1):
-        choice_text += f"{i}️⃣ {choice['emoji']} {choice['text']}\n"
-    
-    embed.add_field(name="Pilihan Aksi:", value=choice_text, inline=False)
-    embed.set_footer(text="Bereaksi dengan angka untuk memilih (1️⃣2️⃣3️⃣) atau ❌ untuk berhenti")
-    
-    message = await ctx.send(embed=embed)
-    
-    # Tambahkan reactions
-    emojis = ['1️⃣', '2️⃣', '3️⃣', '❌']
-    for emoji in emojis:
-        await message.add_reaction(emoji)
-    
-    # Simpan data exploration
-    ACTIVE_EXPLORATIONS[user_id] = {
-        "message": message,
-        "scenario": scenario,
-        "active": True,
-        "start_time": time.time()
-    }
-    
-    # Handle user reaction choices
     def check(reaction, user):
-        return (user == ctx.author and 
+        return (user.id == user_id and 
                 str(reaction.emoji) in ['1️⃣', '2️⃣', '3️⃣', '❌'] and 
                 reaction.message.id == message.id)
     
@@ -1806,64 +1906,164 @@ async def explore(ctx):
         reaction, user = await bot.wait_for('reaction_add', timeout=300.0, check=check)
         
         if str(reaction.emoji) == '❌':
-            # Cancel exploration
+            # Player chooses to stop
             del ACTIVE_EXPLORATIONS[user_id]
-            await ctx.send("❌ Petualangan dihentikan!")
+            embed = discord.Embed(
+                title="🏠 Adventure Ended",
+                description="You decide to return safely from your exploration.",
+                color=0x00ff00
+            )
+            await ctx.send(embed=embed)
             return
         
-        # Process choice
-        choice_map = {'1️⃣': 0, '2️⃣': 1, '3️⃣': 2}
-        choice_index = choice_map.get(str(reaction.emoji))
+        # Get player choice
+        choice_map = {'1️⃣': 1, '2️⃣': 2, '3️⃣': 3}
+        choice_num = choice_map.get(str(reaction.emoji))
         
-        if choice_index is not None:
-            selected_choice = scenario['choices'][choice_index]
-            rewards = selected_choice['rewards']
+        if choice_num:
+            p = get_player(user_id)
             
-            # Apply rewards
-            p["exp"] = min(p["exp"] + rewards["exp"], get_exp_cap(p))
-            p["qi"] += rewards["qi"]
-            p["spirit_stones"] += rewards["spirit_stones"]
+            # Calculate outcome
+            outcome = calculate_exploration_outcome(choice_num, p["total_power"], exploration["difficulty"])
+            
+            # Apply health change
+            p["exploration_health"] = max(0, min(100, p["exploration_health"] + outcome["health_change"]))
+            
+            # Check for death
+            if p["exploration_health"] <= 0:
+                # DEATH - End exploration
+                del ACTIVE_EXPLORATIONS[user_id]
+                p["exploration_health"] = 100  # Reset for next time
+                
+                embed = discord.Embed(
+                    title="💀 Death in the Wilderness",
+                    description=f"Your cultivation journey ends here. You died during exploration but will be revived.\n\n"
+                               f"**Final Stats:**\nTurns Survived: {exploration['turn']}\nDifficulty: {exploration['difficulty']}",
+                    color=0xff0000
+                )
+                update_player(user_id, p)
+                await ctx.send(embed=embed)
+                return
+            
+            # Apply rewards/penalties
+            if outcome["success"]:
+                p["exp"] = min(p["exp"] + outcome["exp"], get_exp_cap(p))
+                p["qi"] += outcome["qi"]
+                p["spirit_stones"] += outcome["spirit_stones"]
+            else:
+                p["exp"] = max(0, p["exp"] + outcome["exp"])  # EXP can be negative
             
             update_player(user_id, p)
             
-            # Show reward message
-            embed = discord.Embed(
-                title=f"✨ {selected_choice['emoji']} {selected_choice['text']}",
-                description=f"{ctx.author.mention} menyelesaikan petualangan dengan sukses!",
+            # Generate next scenario using AI
+            selected_choice = exploration["choices"][choice_num - 1]
+            story_context = " ".join(exploration["story_context"][-2:])  # Last 2 story beats
+            
+            next_prompt = f"""Continue this cultivation adventure story:
+Previous context: {story_context}
+Player chose: {selected_choice['text']}
+Result: {'Success' if outcome['success'] else 'Failure/Danger'}
+Current health: {p['exploration_health']}/100
+
+Create the next unpredictable scenario. The adventure continues to escalate. Include new dangers, discoveries, or mysterious encounters.
+
+SCENARIO: [What happens next in 1-2 sentences]
+CHOICES:
+1. [New aggressive action]
+2. [New careful action]
+3. [New defensive action]
+
+Keep under 150 words."""
+
+            await ctx.send("🎲 The AI is determining your fate...")
+            
+            ai_response = await query_huggingface_api(next_prompt, max_length=200)
+            
+            # Fallback if AI fails
+            if "Error" in ai_response or "timeout" in ai_response.lower():
+                fallback_scenarios = [
+                    f"You continue deeper into the mystical realm. Strange energies pulse around you as you encounter a {['ancient shrine', 'spiritual vortex', 'hidden treasure'][random.randint(0,2)]}.",
+                    f"The cultivation world reveals new challenges. A {['powerful spirit beast', 'mysterious cultivator', 'dangerous formation'][random.randint(0,2)]} appears before you.",
+                    f"Your journey leads to a crossroads. The path ahead splits toward {['danger and glory', 'mystery and power', 'wisdom and peril'][random.randint(0,2)]}."
+                ]
+                ai_response = f"SCENARIO: {random.choice(fallback_scenarios)} CHOICES:\n1. Face it with determination\n2. Approach with caution\n3. Seek alternative route"
+            
+            next_scenario, next_choices = parse_ai_response(ai_response)
+            
+            # Create result embed
+            result_color = 0x00ff00 if outcome["success"] else 0xff6600
+            result_title = "✅ Success!" if outcome["success"] else "⚠️ Danger!"
+            
+            result_embed = discord.Embed(
+                title=result_title,
+                description=f"**Choice:** {selected_choice['text']}\n\n"
+                           f"**Health:** {p['exploration_health']}/100 ❤️\n"
+                           f"**EXP:** {outcome['exp']:+,} | **Qi:** {outcome['qi']:+,} | **Stones:** {outcome['spirit_stones']:+,}",
+                color=result_color
+            )
+            await ctx.send(embed=result_embed)
+            
+            # Continue with next scenario
+            next_embed = discord.Embed(
+                title=f"🌌 Adventure Continues - Turn {exploration['turn'] + 1}",
+                description=f"**Health:** {p['exploration_health']}/100 ❤️\n\n{next_scenario}",
                 color=0x00ff00
             )
-            embed.add_field(name="EXP Gained", value=f"+{rewards['exp']:,}", inline=True)
-            embed.add_field(name="Qi Gained", value=f"+{rewards['qi']:,}", inline=True)
-            embed.add_field(name="Spirit Stones", value=f"+{rewards['spirit_stones']:,}", inline=True)
-            embed.add_field(name="Total EXP", value=f"{p['exp']:,}", inline=True)
-            embed.add_field(name="Total Qi", value=f"{p['qi']:,}", inline=True)
-            embed.add_field(name="Total Stones", value=f"{p['spirit_stones']:,}", inline=True)
             
-            await ctx.send(embed=embed)
+            next_choice_text = ""
+            for choice in next_choices:
+                next_choice_text += f"{choice['number']}️⃣ {choice['emoji']} {choice['text']}\n"
             
-            # Clean up
-            del ACTIVE_EXPLORATIONS[user_id]
+            next_embed.add_field(name="Your Options:", value=next_choice_text, inline=False)
+            next_embed.set_footer(text="React with 1️⃣2️⃣3️⃣ to choose or ❌ to stop")
+            
+            next_message = await ctx.send(embed=next_embed)
+            
+            # Add reactions to new message
+            for emoji in ['1️⃣', '2️⃣', '3️⃣', '❌']:
+                await next_message.add_reaction(emoji)
+            
+            # Update exploration state
+            exploration["message"] = next_message
+            exploration["scenario"] = next_scenario
+            exploration["choices"] = next_choices
+            exploration["turn"] += 1
+            exploration["difficulty"] += random.randint(1, 3)  # Escalating difficulty
+            exploration["story_context"].append(next_scenario)
+            
+            # Keep story context manageable
+            if len(exploration["story_context"]) > 5:
+                exploration["story_context"] = exploration["story_context"][-3:]
+            
+            # Continue the loop
+            await continue_exploration(ctx, user_id)
         
     except asyncio.TimeoutError:
-        # Clean up after timeout
+        # Timeout - end exploration
         if user_id in ACTIVE_EXPLORATIONS:
             del ACTIVE_EXPLORATIONS[user_id]
-        await ctx.send("⏰ Waktu petualangan habis! Exploration dihentikan.")
+        await ctx.send("⏰ Your adventure times out. You return safely from the wilderness.")
 
 @bot.command()
 async def stop_explore(ctx):
-    """Hentikan petualangan AI yang sedang berjalan"""
+    """Stop your current AI-driven exploration"""
     user_id = ctx.author.id
     
     if user_id in ACTIVE_EXPLORATIONS:
+        turns = ACTIVE_EXPLORATIONS[user_id].get("turn", 1)
         del ACTIVE_EXPLORATIONS[user_id]
-        await ctx.send("✅ Petualangan dihentikan!")
+        
+        embed = discord.Embed(
+            title="🏠 Exploration Ended",
+            description=f"You safely return from your AI-driven adventure.\n**Turns Survived:** {turns}",
+            color=0x00ff00
+        )
+        await ctx.send(embed=embed)
     else:
-        await ctx.send("❌ Anda tidak sedang dalam petualangan!")
+        await ctx.send("❌ You're not currently exploring!")
 
-# Tambahkan di global variables
+# Global exploration tracking
 ACTIVE_EXPLORATIONS = {}
-HF_TOKEN = os.environ.get("HUGGING_FACE_TOKEN", "")
 # ===============================
 # Command: realms
 # ===============================

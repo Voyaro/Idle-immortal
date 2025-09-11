@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Divine Bridge [Middle]",
-            "exp": 1127241,
-            "qi": 21133,
-            "spirit_stones": 9879,
+            "exp": 1527241,
+            "qi": 22333,
+            "spirit_stones": 10029,
             "equipment": {
                 "spirit_pendant": 30,
                 "spirit_armor": 35,
@@ -70,7 +70,7 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2025-09-11T17:32:19.273984",
+            "last_updated": "2025-09-11T17:45:15.212216",
             "breakthroughs": 16,
             "daily_quests": {
                 "cultivate_5": {
@@ -265,9 +265,9 @@
         "1090452614212231201": {
             "realm": "Mortal Realm",
             "stage": "Nirvana [Peak]",
-            "exp": 5136250,
-            "qi": 150028,
-            "spirit_stones": 88608,
+            "exp": 5136258,
+            "qi": 150031,
+            "spirit_stones": 88610,
             "equipment": {
                 "spirit_sword": 40,
                 "spirit_armor": 35,
@@ -439,8 +439,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 2501,
-            "total_power": 16630,
+            "base_power": 2505,
+            "total_power": 16656,
             "pvp_wins": 1,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -505,11 +505,11 @@
             "gender": "female",
             "display_name": "deranaatma",
             "created_at": "2025-09-08T00:39:28.711397",
-            "last_updated": "2025-09-11T17:44:22.944705",
+            "last_updated": "2025-09-11T17:46:23.832454",
             "breakthroughs": 20,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 690,
+                    "progress": 692,
                     "completed": true,
                     "claimed": true
                 },
@@ -635,7 +635,7 @@
         "total_techniques_learned": 13,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2025-09-11T17:45:11.555725",
+        "last_update": "2025-09-11T17:47:24.653725",
         "bosses_defeated": 2
     },
     "guilds": {},
