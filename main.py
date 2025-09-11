@@ -5215,8 +5215,8 @@ async def help_command(ctx, category: str = None):
         )
         
         embed.add_field(
-            name="🌸 **NPCs & Relationships**",
-            value="`!help npcs` - 50 unique NPCs, affection system, exclusive soulmate mechanics",
+            name="🌸 **NPCs & Relationships**", 
+            value="`!help npcs` - 20 unique NPCs, affection system, exclusive soulmate mechanics",
             inline=False
         )
         
@@ -5645,7 +5645,7 @@ async def help_command(ctx, category: str = None):
         
         embed.add_field(
             name="📚 **Technique Mastery**",
-            value="`!learn_technique <name>` - Master sect techniques with spirit stones\n`!sect_info <name>` - View detailed sect information and requirements\n`!leave_sect` - Leave current sect (⚠️ loses all techniques!)",
+            value="`!learn_sect_technique <name>` - Master sect techniques with spirit stones\n`!sect_info <name>` - View detailed sect information and requirements\n`!leave_sect` - Leave current sect (⚠️ loses all techniques!)",
             inline=False
         )
 
@@ -5701,7 +5701,7 @@ async def help_command(ctx, category: str = None):
         
         embed.add_field(
             name="🏛️ **Sect Management (6 commands)**",
-            value="`!sect_list`, `!join_sect`, `!leave_sect`, `!my_sect`, `!learn_technique`, `!sect_info`",
+            value="`!sect_list`, `!join_sect`, `!leave_sect`, `!my_sect`, `!learn_sect_technique`, `!sect_info`",
             inline=False
         )
         
@@ -6692,8 +6692,8 @@ async def my_sect(ctx):
     
     await ctx.send(embed=embed)
 
-@bot.command(name="learn_technique")
-async def learn_technique(ctx, *, technique_name=None):
+@bot.command(name="learn_sect_technique")
+async def learn_sect_technique(ctx, *, technique_name=None):
     """Learn a technique from your sect"""
     if not technique_name:
         return await ctx.send("❌ Please specify a technique name! Use `!my_sect` to see available techniques.")
