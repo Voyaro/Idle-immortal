@@ -74,8 +74,8 @@
             "breakthroughs": 16,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 502,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -84,18 +84,18 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 1,
+                    "progress": 0,
                     "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 1,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 12,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -211,9 +211,9 @@
             "breakthroughs": 16,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 896,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "pvp_battle": {
                     "progress": 0,
@@ -221,19 +221,19 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 3,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 1,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 4,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "find_treasure": {
                     "progress": 0,
@@ -509,9 +509,9 @@
             "breakthroughs": 20,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 695,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "pvp_battle": {
                     "progress": 0,
@@ -519,19 +519,19 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 6,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 1,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 9,
-                    "completed": true,
-                    "claimed": true
+                    "progress": 0,
+                    "completed": false,
+                    "claimed": false
                 },
                 "find_treasure": {
                     "progress": 0,
@@ -635,12 +635,12 @@
         "total_techniques_learned": 13,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2025-09-11T19:17:20.515058",
+        "last_update": "2026-01-13T10:37:17.926818",
         "bosses_defeated": 2
     },
     "guilds": {},
     "market_items": [],
     "server_events": {},
-    "daily_quests_reset": "2025-09-11T02:03:15.393295",
+    "daily_quests_reset": "2026-01-13T10:37:17.926231",
     "world_bosses": {}
 }
