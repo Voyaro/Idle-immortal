@@ -3200,8 +3200,12 @@ async def cultivate_status(ctx):
         return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk mulai.")
         
     cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
+    duration = time.time() - cultivation_data["start_time"]
+    hours = duration / 3600
+
+    realm_data = REALMS[p["realm"]]
+    exp_gain = int(hours * 200 * realm_data["exp_multiplier"])
     qi_gain = int(hours * 405)
-    spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
 
     embed = discord.Embed(
         title="🧘 Cultivation Status",
@@ -3572,6 +3576,7 @@ async def status(ctx):
     )
 
     # Resources
+    exp_cap = get_exp_cap(p)
     embed.add_field(
         name="💎 Resources",
         value=f"EXP: {p['exp']}/{exp_cap}\nQi: {p['qi']}\nSpirit Stones: {p['spirit_stones']}",
@@ -3613,13 +3618,16 @@ async def shop(ctx, realm: str = None):
             realms_equipment[realm_name].append((item_id, item_data))
 
     # If specific realm requested, show only that realm
-    if realm and realm.lower().replace(" ", "_") in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
-        if realm.lower() in ["mortal", "mortal_realm"]:
+    if realm and realm.lower().strip() in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
+        clean_realm = realm.lower().strip()
+        if clean_realm in ["mortal", "mortal_realm"]:
             target_realm = "Mortal Realm"
-        elif realm.lower() in ["immortal", "immortal_realm"]:
+        elif clean_realm in ["immortal", "immortal_realm"]:
             target_realm = "Immortal Realm"
-        elif realm.lower() in ["god", "god_realm"]:
+        elif clean_realm in ["god", "god_realm"]:
             target_realm = "God Realm"
+        else:
+            target_realm = "Mortal Realm" # Fallback
 
         embed = discord.Embed(
             title=f"🏪 {target_realm} Equipment Shop",
