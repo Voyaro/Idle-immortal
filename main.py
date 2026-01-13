@@ -1864,14 +1864,39 @@ async def battle_task(battle_id, ctx):
 async def battle_round(battle_id, ctx):
     """Satu round battle"""
     battle_data = ACTIVE_BATTLES[battle_id]
+    attacker = get_player(battle_data["attacker"])
+    defender = get_player(battle_data["defender"])
 
-    # Calculate damage
-    att_dmg = max(5, random.randint(10, 20) * battle_data["attacker_power"] // 100)
-    def_dmg = max(5, random.randint(10, 20) * battle_data["defender_power"] // 100)
+    # Calculate basic damage based on power ratio to prevent "instant kill" and lucky wins
+    # att_dmg = max(5, random.randint(10, 20) * battle_data["attacker_power"] // 100)
+    
+    # New scaling: Damage is based on power difference and level
+    power_ratio = battle_data["attacker_power"] / max(1, battle_data["defender_power"])
+    def_ratio = battle_data["defender_power"] / max(1, battle_data["attacker_power"])
+    
+    base_dmg = 15
+    att_dmg = int(base_dmg * (power_ratio ** 0.5) * random.uniform(0.8, 1.2))
+    def_dmg = int(base_dmg * (def_ratio ** 0.5) * random.uniform(0.8, 1.2))
+    
+    # Ensure minimum damage but cap it to prevent instant kills in round 1
+    att_dmg = max(5, min(40, att_dmg))
+    def_dmg = max(5, min(40, def_dmg))
 
     # Apply damage
     battle_data["defender_hp"] = max(0, battle_data["defender_hp"] - att_dmg)
     battle_data["attacker_hp"] = max(0, battle_data["attacker_hp"] - def_dmg)
+
+    # Technique flavor text
+    techniques = [
+        "menggunakan *Palm of Thousand Winds*",
+        "melancarkan *Heavenly Sword Strike*",
+        "mengaktifkan *Dragon Breath Aura*",
+        "menyerang dengan *Shadow Step Punch*",
+        "memanggil *Golden Bell Shield* namun tetap terkena",
+        "menggunakan *Jade Flute Melody*"
+    ]
+    att_tech = random.choice(techniques)
+    def_tech = random.choice(techniques)
 
     # Update message
     embed = discord.Embed(
@@ -1881,18 +1906,20 @@ async def battle_round(battle_id, ctx):
     )
 
     embed.add_field(
-        name="Action", 
-        value=f"<@{battle_data['attacker']}> deals **{att_dmg} damage**!\n<@{battle_data['defender']}> deals **{def_dmg} damage**!",
+        name="Combat Log", 
+        value=f"🔸 <@{battle_data['attacker']}> {att_tech} dealing **{att_dmg} damage**!\n"
+              f"🔹 <@{battle_data['defender']}> {def_tech} dealing **{def_dmg} damage**!",
         inline=False
     )
 
     # HP bars
-    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "♡" * (10 - battle_data["attacker_hp"] // 10)
-    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "♡" * (10 - battle_data["defender_hp"] // 10)
+    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "🖤" * (10 - battle_data["attacker_hp"] // 10)
+    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "🖤" * (10 - battle_data["defender_hp"] // 10)
 
     embed.add_field(
-        name="HP Status",
-        value=f"**Attacker:** {att_hp_bar} {battle_data['attacker_hp']}%\n**Defender:** {def_hp_bar} {battle_data['defender_hp']}%",
+        name="Health",
+        value=f"**Attacker:** {att_hp_bar} {battle_data['attacker_hp']}%\n"
+              f"**Defender:** {def_hp_bar} {battle_data['defender_hp']}%",
         inline=False
     )
 
