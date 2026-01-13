@@ -400,6 +400,8 @@ TECHNIQUE_TYPES = {
 def get_player_sect(player_id):
     """Get player's current sect"""
     p = get_player(player_id)
+    if p is None:
+        return None
     return p.get("sect", None)
 
 def can_join_sect(player_data, sect_id):
@@ -1971,7 +1973,7 @@ async def finish_battle(battle_id, ctx):
 # ===============================
 async def update_cultivation_message(user_id, player_data, realm_data):
     """Update cultivation status message"""
-    if user_id not in ACTIVE_CULTIVATIONS:
+    if user_id not in ACTIVE_CULTIVATIONS or player_data is None:
         return
 
     cultivation_data = ACTIVE_CULTIVATIONS[user_id]
@@ -2022,6 +2024,11 @@ async def stop_cultivation(user_id, reason="manual"):
     cultivation_data["active"] = False
 
     p = get_player(user_id)
+    if p is None:
+        if user_id in ACTIVE_CULTIVATIONS:
+            del ACTIVE_CULTIVATIONS[user_id]
+        return
+
     realm_data = REALMS[p["realm"]]
     exp_cap = get_exp_cap(p)
 
@@ -2703,6 +2710,9 @@ async def continue_exploration(ctx, user_id):
         
         if choice_num:
             p = get_player(user_id)
+            if p is None:
+                del ACTIVE_EXPLORATIONS[user_id]
+                return
             
             # Calculate outcome
             outcome = calculate_exploration_outcome(choice_num, p["total_power"], exploration["difficulty"])
@@ -3186,9 +3196,10 @@ async def cultivate_status(ctx):
     hours = duration / 3600
 
     p = get_player(ctx.author.id)
-    realm_data = REALMS[p["realm"]]
-
-    exp_gain = int(hours * 200 * realm_data["exp_multiplier"])
+    if not p:
+        return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk mulai.")
+        
+    cultivation_data = ACTIVE_CULTIVATIONS[ctx.author.id]
     qi_gain = int(hours * 405)
     spirit_stones_gain = int(hours * (realm_data["spirit_stone_gain"] + 400))
 
@@ -3212,9 +3223,9 @@ async def cultivate_status(ctx):
 async def breakthrough(ctx):
     """Breakthrough ke stage berikutnya tanpa kehilangan EXP berlebih"""
     p = get_player(ctx.author.id)
-    if not p:
-        return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk memulai.")
-
+    if p is None:
+        return await ctx.send("❌ Anda belum terdaftar!")
+        
     realm_data = REALMS[p["realm"]]
     stages = realm_data["stages"]
     current_stage_idx = stages.index(p["stage"])
@@ -3926,8 +3937,8 @@ async def leaderboard(ctx, page: int = 1):
 
     # Sort players by total power
     sorted_players = sorted(
-        [(uid, data) for uid, data in players.items()],
-        key=lambda x: x[1]["total_power"],
+        [(uid, data) for uid, data in players.items() if data is not None],
+        key=lambda x: x[1].get("total_power", 0),
         reverse=True
     )
 
@@ -3977,8 +3988,8 @@ async def myrank(ctx):
 
     # Sort players by total power
     sorted_players = sorted(
-        [(uid, data) for uid, data in players.items()],
-        key=lambda x: x[1]["total_power"],
+        [(uid, data) for uid, data in players.items() if data is not None],
+        key=lambda x: x[1].get("total_power", 0),
         reverse=True
     )
 
@@ -4034,8 +4045,8 @@ async def pvp_rank(ctx, page: int = 1):
 
     # Sort players by PvP wins
     sorted_players = sorted(
-        [(uid, data) for uid, data in players.items()],
-        key=lambda x: (x[1]["pvp_wins"], -x[1]["pvp_losses"]),
+        [(uid, data) for uid, data in players.items() if data is not None],
+        key=lambda x: (x[1].get("pvp_wins", 0), -x[1].get("pvp_losses", 0)),
         reverse=True
     )
 
@@ -4089,8 +4100,8 @@ async def top(ctx, count: int = 5):
 
     # Sort players by total power
     sorted_players = sorted(
-        [(uid, data) for uid, data in players.items()],
-        key=lambda x: x[1]["total_power"],
+        [(uid, data) for uid, data in players.items() if data is not None],
+        key=lambda x: x[1].get("total_power", 0),
         reverse=True
     )[:count]
 
