@@ -3628,29 +3628,32 @@ async def shop(ctx, realm: str = None):
         elif clean_realm in ["god", "god_realm"]:
             target_realm = "God Realm"
         
-        embed = discord.Embed(
-            title=f"🏪 {target_realm} Equipment Shop",
-            description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_id>` to purchase",
-            color=0xffd700
-        )
-
-        can_access = can_access_equipment(player_realm, target_realm)
-        access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
-        embed.add_field(name="Access Status", value=access_status, inline=False)
-
-        items_shown = 0
-        for item_id, item_data in realms_equipment[target_realm]:
-            embed.add_field(
-                name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
-                value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\n**Tier:** {item_data['tier']} | **Set:** {item_data['set']}\nID: `{item_id}`",
-                inline=False
-            )
-            items_shown += 1
+        # Paginate shop items (Discord limit is 25 fields)
+        items = realms_equipment[target_realm]
+        pages = [items[i:i + 20] for i in range(0, len(items), 20)]
         
-        if items_shown == 0:
-            embed.description = f"No items found for {target_realm}."
+        for page_idx, page_items in enumerate(pages):
+            embed = discord.Embed(
+                title=f"🏪 {target_realm} Equipment Shop (Part {page_idx + 1}/{len(pages)})",
+                description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_id>` to purchase",
+                color=0xffd700
+            )
+
+            can_access = can_access_equipment(player_realm, target_realm)
+            access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
+            embed.add_field(name="Access Status", value=access_status, inline=False)
+
+            for item_id, item_data in page_items:
+                embed.add_field(
+                    name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
+                    value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\nID: `{item_id}`",
+                    inline=True
+                )
             
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
+        
+        if not items:
+            await ctx.send(f"ℹ️ No items found for {target_realm}.")
         return
 
     else:
