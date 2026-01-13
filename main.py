@@ -3612,26 +3612,25 @@ async def shop(ctx, realm: str = None):
         "God Realm": []
     }
 
+    print(f"DEBUG: Shop requested for realm: '{realm}'")
     for item_id, item_data in EQUIPMENT_SHOP.items():
-        realm_name = item_data["realm"]
+        realm_name = item_data.get("realm")
         if realm_name in realms_equipment:
             realms_equipment[realm_name].append((item_id, item_data))
-
+    
     # If specific realm requested, show only that realm
-    if realm and realm.lower().strip() in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
-        clean_realm = realm.lower().strip()
+    clean_realm = realm.lower().strip() if realm else None
+    if clean_realm in ["mortal", "mortal_realm", "immortal", "immortal_realm", "god", "god_realm"]:
         if clean_realm in ["mortal", "mortal_realm"]:
             target_realm = "Mortal Realm"
         elif clean_realm in ["immortal", "immortal_realm"]:
             target_realm = "Immortal Realm"
         elif clean_realm in ["god", "god_realm"]:
             target_realm = "God Realm"
-        else:
-            target_realm = "Mortal Realm" # Fallback
-
+        
         embed = discord.Embed(
             title=f"🏪 {target_realm} Equipment Shop",
-            description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_name>` to purchase",
+            description=f"Equipment for **{target_realm}** cultivators\nUse `!buy <item_id>` to purchase",
             color=0xffd700
         )
 
@@ -3639,12 +3638,20 @@ async def shop(ctx, realm: str = None):
         access_status = "✅ Accessible" if can_access else "❌ Realm Too Low"
         embed.add_field(name="Access Status", value=access_status, inline=False)
 
+        items_shown = 0
         for item_id, item_data in realms_equipment[target_realm]:
             embed.add_field(
                 name=f"{item_data['emoji']} {item_data['name']} - {item_data['cost']:,} Qi",
                 value=f"**Power:** +{item_data['power']} | **Type:** {item_data['type']}\n**Tier:** {item_data['tier']} | **Set:** {item_data['set']}\nID: `{item_id}`",
                 inline=False
             )
+            items_shown += 1
+        
+        if items_shown == 0:
+            embed.description = f"No items found for {target_realm}."
+            
+        await ctx.send(embed=embed)
+        return
 
     else:
         # Show overview of all realms
