@@ -4227,8 +4227,8 @@ async def dungeons(ctx):
 # Command: enter
 # ===============================
 @bot.command()
-@commands.cooldown(1, 300, commands.BucketType.user)  # 5 minute cooldown
-async def enter(ctx, dungeon_name: str):
+@commands.cooldown(1, 120, commands.BucketType.user)  # 2 minute cooldown
+async def enter(ctx, *, dungeon_name: str):
     """Memasuki dungeon untuk mencari reward"""
     p = get_player(ctx.author.id)
     if not p:
@@ -4236,8 +4236,16 @@ async def enter(ctx, dungeon_name: str):
 
     player_level = get_player_level(p)
 
-    dungeon_id = dungeon_name.lower()
-    if dungeon_id not in DUNGEONS:
+    # Search for dungeon by name or ID
+    dungeon_id = None
+    target_name = dungeon_name.lower().strip()
+    
+    for d_id, d_data in DUNGEONS.items():
+        if target_name == d_id or target_name == d_data["name"].lower():
+            dungeon_id = d_id
+            break
+            
+    if not dungeon_id:
         return await ctx.send("❌ Dungeon tidak ditemukan! Gunakan `!dungeons` untuk melihat dungeon yang tersedia.")
 
     dungeon_data = DUNGEONS[dungeon_id]
@@ -4250,7 +4258,7 @@ async def enter(ctx, dungeon_name: str):
         return await ctx.send(f"❌ Level Anda ({player_level}) terlalu tinggi! Maksimal level {dungeon_data['max_level']}.")
 
     # Calculate success chance based on power
-    success_chance = min(90, 50 + (p["total_power"] // 10))
+    success_chance = min(95, 60 + (p["total_power"] // 5))
     success = random.randint(1, 100) <= success_chance
 
     if success:
@@ -4314,6 +4322,71 @@ async def enter(ctx, dungeon_name: str):
         embed.add_field(name="Success Chance", value=f"{success_chance}%", inline=True)
         embed.add_field(name="Result", value="Anda dikalahkan oleh guardian dungeon!", inline=True)
         await ctx.send(embed=embed)
+
+# ===============================
+# Crafting System - NEW
+# ===============================
+CRAFTING_RECIPES = {
+    "heavenly_dragon_set": {
+        "name": "Heavenly Dragon Set Piece",
+        "description": "Craft a random piece of the Heavenly Dragon set",
+        "requirements": {
+            "dragon_scale": 10,
+            "dragon_heart": 1,
+            "fire_crystal": 5
+        },
+        "reward_type": "world_boss_set",
+        "boss_name": "heavenly_dragon"
+    },
+    "void_emperor_set": {
+        "name": "Void Emperor Set Piece",
+        "description": "Craft a random piece of the Void Emperor set",
+        "requirements": {
+            "void_shard": 15,
+            "titan_core": 2,
+            "cosmic_dust": 10
+        },
+        "reward_type": "world_boss_set",
+        "boss_name": "void_emperor"
+    }
+}
+
+@bot.command(name="craft_legendary")
+async def craft_legendary(ctx, *, recipe_id: str = None):
+    """Crafting equipment legendaris"""
+    p = get_player(ctx.author.id)
+    if not p:
+        return await ctx.send("❌ Anda belum terdaftar!")
+
+    if not recipe_id:
+        embed = discord.Embed(title="⚒️ Crafting Recipes", color=0xffd700)
+        for rid, data in CRAFTING_RECIPES.items():
+            reqs = "\n".join([f"• {k.replace('_', ' ').title()}: {v}" for k, v in data["requirements"].items()])
+            embed.add_field(name=f"{data['name']} (`{rid}`)", value=f"{data['description']}\n**Requirements:**\n{reqs}", inline=False)
+        return await ctx.send(embed=embed)
+
+    recipe = CRAFTING_RECIPES.get(recipe_id.lower())
+    if not recipe:
+        return await ctx.send("❌ Resep tidak ditemukan!")
+
+    # Check materials
+    for mat, amount in recipe["requirements"].items():
+        if p.get("inventory", {}).get(mat, 0) < amount:
+            return await ctx.send(f"❌ Material tidak cukup! Anda butuh {amount} {mat.replace('_', ' ').title()}.")
+
+    # Consume materials
+    for mat, amount in recipe["requirements"].items():
+        p["inventory"][mat] -= amount
+
+    # Give reward
+    from world_boss_system import WORLD_BOSSES
+    boss_data = WORLD_BOSSES.get(recipe["boss_name"])
+    new_item = random.choice(boss_data["reward_equipment"]).copy()
+    
+    p["equipment"].append(new_item)
+    update_player(ctx.author.id, p)
+
+    await ctx.send(f"🎉 Selamat! Anda berhasil membuat **{new_item['name']}**!")
 
 # ===============================
 # SPIRIT BEAST SYSTEM - NEW

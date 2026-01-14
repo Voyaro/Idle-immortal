@@ -23,5 +23,191 @@
       ],
       "relationship_status": "stranger"
     }
+  },
+  "1340566017251868748": {
+    "li_feng": {
+      "name": "Li Feng",
+      "gender": "male",
+      "emoji": "\ud83e\uddd1\u200d\ud83d\udcbc",
+      "cultivation_level": 35,
+      "realm": "Mortal Realm",
+      "personality": "business_minded",
+      "specialty": "alchemy",
+      "backstory": "Brilliant alchemist who turned cultivation into profit",
+      "dialogue_style": "business_casual",
+      "affection_level": 3,
+      "max_affection": 100,
+      "gifts_loved": [
+        "rare_herbs",
+        "spirit_stones",
+        "gold"
+      ],
+      "gifts_hated": [
+        "cheap_items",
+        "common_herbs"
+      ],
+      "relationship_status": "stranger"
+    },
+    "xiao_yu": {
+      "name": "Xiao Yu",
+      "gender": "female",
+      "emoji": "\ud83c\udf38",
+      "cultivation_level": 28,
+      "realm": "Mortal Realm",
+      "personality": "gentle_healer",
+      "specialty": "healing_arts",
+      "backstory": "Gentle healer who saved countless lives",
+      "dialogue_style": "soft_caring",
+      "affection_level": 2,
+      "max_affection": 100,
+      "gifts_loved": [
+        "healing_herbs",
+        "life_crystals",
+        "peaceful_items"
+      ],
+      "gifts_hated": [
+        "weapons",
+        "violent_items"
+      ],
+      "relationship_status": "stranger"
+    },
+    "ning_er": {
+      "name": "Ning Er",
+      "gender": "female",
+      "emoji": "\ud83c\udfb5",
+      "cultivation_level": 35,
+      "realm": "Mortal Realm",
+      "personality": "musical_artist",
+      "specialty": "sound_cultivation",
+      "backstory": "Musician who weaponized sound through cultivation",
+      "dialogue_style": "melodic_artistic",
+      "affection_level": 19,
+      "max_affection": 100,
+      "gifts_loved": [
+        "musical_items",
+        "sound_crystals",
+        "art_gifts"
+      ],
+      "gifts_hated": [
+        "silence_items",
+        "noise_items"
+      ],
+      "relationship_status": "acquaintance"
+    },
+    "hua_rong": {
+      "name": "Hua Rong",
+      "gender": "female",
+      "emoji": "\ud83c\udf3a",
+      "cultivation_level": 38,
+      "realm": "Mortal Realm",
+      "personality": "flower_maiden",
+      "specialty": "plant_cultivation",
+      "backstory": "Flower spirit who became human through cultivation",
+      "dialogue_style": "flowery_sweet",
+      "affection_level": 2,
+      "max_affection": 100,
+      "gifts_loved": [
+        "rare_flowers",
+        "garden_items",
+        "nature_gifts"
+      ],
+      "gifts_hated": [
+        "poison_items",
+        "withered_items"
+      ],
+      "relationship_status": "stranger"
+    },
+    "bai_su": {
+      "name": "Bai Su",
+      "gender": "female",
+      "emoji": "\ud83c\udffa",
+      "cultivation_level": 33,
+      "realm": "Mortal Realm",
+      "personality": "alchemist_genius",
+      "specialty": "pill_refinement",
+      "backstory": "Genius alchemist who creates miraculous pills",
+      "dialogue_style": "scientific_precise",
+      "affection_level": 3,
+      "max_affection": 100,
+      "gifts_loved": [
+        "rare_ingredients",
+        "alchemy_tools",
+        "research_items"
+      ],
+      "gifts_hated": [
+        "impure_items",
+        "contaminated_gifts"
+      ],
+      "relationship_status": "stranger"
+    },
+    "xu_bin": {
+      "name": "Xu Bin",
+      "gender": "male",
+      "emoji": "\ud83c\udfad",
+      "cultivation_level": 30,
+      "realm": "Mortal Realm",
+      "personality": "joker",
+      "specialty": "illusion_arts",
+      "backstory": "Trickster who uses illusions to confuse enemies",
+      "dialogue_style": "playful_humorous",
+      "affection_level": 1,
+      "max_affection": 100,
+      "gifts_loved": [
+        "joke_items",
+        "illusion_crystals",
+        "entertainment"
+      ],
+      "gifts_hated": [
+        "serious_items",
+        "boring_gifts"
+      ],
+      "relationship_status": "stranger"
+    },
+    "liu_han": {
+      "name": "Liu Han",
+      "gender": "male",
+      "emoji": "\ud83c\udf3f",
+      "cultivation_level": 25,
+      "realm": "Mortal Realm",
+      "personality": "nature_lover",
+      "specialty": "beast_taming",
+      "backstory": "Beast tamer who communicates with spirit animals",
+      "dialogue_style": "gentle_nature",
+      "affection_level": 3,
+      "max_affection": 100,
+      "gifts_loved": [
+        "spirit_beasts",
+        "natural_items",
+        "beast_cores"
+      ],
+      "gifts_hated": [
+        "artificial_items",
+        "demon_items"
+      ],
+      "relationship_status": "stranger"
+    },
+    "wang_jun": {
+      "name": "Wang Jun",
+      "gender": "male",
+      "emoji": "\ud83d\udcda",
+      "cultivation_level": 40,
+      "realm": "Mortal Realm",
+      "personality": "scholarly",
+      "specialty": "formation_arrays",
+      "backstory": "Scholar obsessed with ancient cultivation formations",
+      "dialogue_style": "intellectual_verbose",
+      "affection_level": 3,
+      "max_affection": 100,
+      "gifts_loved": [
+        "ancient_texts",
+        "formation_stones",
+        "research_materials"
+      ],
+      "gifts_hated": [
+        "weapons",
+        "crude_items"
+      ],
+      "relationship_status": "stranger"
+    }
   }
 }
