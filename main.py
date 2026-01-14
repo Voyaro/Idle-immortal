@@ -1913,8 +1913,8 @@ async def battle_round(battle_id, ctx):
     )
 
     # HP bars
-    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "🖤" * (10 - battle_data["attacker_hp"] // 10)
-    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "🖤" * (10 - battle_data["defender_hp"] // 10)
+    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "♡" * (10 - battle_data["attacker_hp"] // 10)
+    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "♡" * (10 - battle_data["defender_hp"] // 10)
 
     embed.add_field(
         name="Health",
