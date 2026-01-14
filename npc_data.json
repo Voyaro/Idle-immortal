@@ -81,7 +81,7 @@
       "specialty": "sound_cultivation",
       "backstory": "Musician who weaponized sound through cultivation",
       "dialogue_style": "melodic_artistic",
-      "affection_level": 19,
+      "affection_level": 28,
       "max_affection": 100,
       "gifts_loved": [
         "musical_items",
@@ -92,7 +92,7 @@
         "silence_items",
         "noise_items"
       ],
-      "relationship_status": "acquaintance"
+      "relationship_status": "friend"
     },
     "hua_rong": {
       "name": "Hua Rong",
@@ -208,6 +208,31 @@
         "crude_items"
       ],
       "relationship_status": "stranger"
+    }
+  },
+  "1090452614212231201": {
+    "ma_tian": {
+      "name": "Ma Tian",
+      "gender": "male",
+      "emoji": "\ud83d\udde1\ufe0f",
+      "cultivation_level": 70,
+      "realm": "Immortal Realm",
+      "personality": "silent_assassin",
+      "specialty": "stealth_techniques",
+      "backstory": "Former assassin seeking redemption through cultivation",
+      "dialogue_style": "brief_mysterious",
+      "affection_level": 0,
+      "max_affection": 100,
+      "gifts_loved": [
+        "shadow_items",
+        "stealth_gear",
+        "poison_antidotes"
+      ],
+      "gifts_hated": [
+        "loud_items",
+        "bright_items"
+      ],
+      "relationship_status": "mysterious"
     }
   }
 }

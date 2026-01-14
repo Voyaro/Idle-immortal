@@ -2933,6 +2933,52 @@ async def realms(ctx):
     embed.set_footer(text="💡 EXP needed = Stage Position × 100 × Realm Multiplier")
     await ctx.send(embed=embed)
 
+@bot.command()
+async def mortal_realms(ctx):
+    """List all stages in Mortal Realm"""
+    realm = REALMS["Mortal Realm"]
+    embed = discord.Embed(title="📜 Mortal Realm Stages", color=realm["color"])
+    stages_text = "\n".join([f"• {stage}" for stage in realm["stages"]])
+    # Split if too long
+    if len(stages_text) > 1024:
+        parts = [realm["stages"][i:i + 15] for i in range(0, len(realm["stages"]), 15)]
+        for i, part in enumerate(parts):
+            embed.add_field(name=f"Part {i+1}", value="\n".join([f"• {s}" for s in part]), inline=True)
+    else:
+        embed.description = stages_text
+    embed.set_footer(text=f"Multiplier: x{realm['exp_multiplier']} EXP, x{realm['power_multiplier']} Power")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def immortal_realms(ctx):
+    """List all stages in Immortal Realm"""
+    realm = REALMS["Immortal Realm"]
+    embed = discord.Embed(title="✨ Immortal Realm Stages", color=realm["color"])
+    stages_text = "\n".join([f"• {stage}" for stage in realm["stages"]])
+    if len(stages_text) > 1024:
+        parts = [realm["stages"][i:i + 12] for i in range(0, len(realm["stages"]), 12)]
+        for i, part in enumerate(parts):
+            embed.add_field(name=f"Part {i+1}", value="\n".join([f"• {s}" for s in part]), inline=True)
+    else:
+        embed.description = stages_text
+    embed.set_footer(text=f"Multiplier: x{realm['exp_multiplier']} EXP, x{realm['power_multiplier']} Power")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def god_realms(ctx):
+    """List all stages in God Realm"""
+    realm = REALMS["God Realm"]
+    embed = discord.Embed(title="🔱 God Realm Stages", color=realm["color"])
+    stages_text = "\n".join([f"• {stage}" for stage in realm["stages"]])
+    if len(stages_text) > 1024:
+        parts = [realm["stages"][i:i + 15] for i in range(0, len(realm["stages"]), 15)]
+        for i, part in enumerate(parts):
+            embed.add_field(name=f"Part {i+1}", value="\n".join([f"• {s}" for s in part]), inline=True)
+    else:
+        embed.description = stages_text
+    embed.set_footer(text=f"Multiplier: x{realm['exp_multiplier']} EXP, x{realm['power_multiplier']} Power")
+    await ctx.send(embed=embed)
+
 # ===============================
 # Command: boss
 # ===============================
