@@ -2,10 +2,10 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Divine Bridge [Middle]",
-            "exp": 1527274,
-            "qi": 22358,
-            "spirit_stones": 10038,
+            "stage": "Divine Bridge [Peak]",
+            "exp": 55000,
+            "qi": 23867,
+            "spirit_stones": 10438,
             "equipment": {
                 "spirit_pendant": 30,
                 "spirit_armor": 35,
@@ -33,8 +33,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 1602,
-            "total_power": 3426,
+            "base_power": 1962,
+            "total_power": 4196,
             "pvp_wins": 0,
             "pvp_losses": 1,
             "last_pvp": "0",
@@ -70,11 +70,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-14T09:56:23.114072",
-            "breakthroughs": 16,
+            "last_updated": "2026-01-14T10:08:17.669500",
+            "breakthroughs": 17,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 5,
+                    "progress": 27,
                     "completed": true,
                     "claimed": false
                 },
@@ -94,8 +94,8 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -627,18 +627,18 @@
         },
         "1340566017251868748": {
             "realm": "Mortal Realm",
-            "stage": "Body Refining [Entry]",
-            "exp": 41,
-            "qi": 66,
-            "spirit_stones": 6,
+            "stage": "Yuan Sea [Peak]",
+            "exp": 181644,
+            "qi": 7173,
+            "spirit_stones": 2326,
             "equipment": {},
             "techniques": [],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 21,
-            "total_power": 21,
+            "base_power": 2292,
+            "total_power": 2292,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -664,11 +664,11 @@
             "gender": "female",
             "display_name": "rubahikikomori",
             "created_at": "2026-01-14T09:49:28.909231",
-            "last_updated": "2026-01-14T09:56:47.117659",
-            "breakthroughs": 0,
+            "last_updated": "2026-01-14T10:08:00.360279",
+            "breakthroughs": 11,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 6,
+                    "progress": 58,
                     "completed": true,
                     "claimed": false
                 },
@@ -688,8 +688,8 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 11,
+                    "completed": true,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -714,12 +714,12 @@
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 1,
-        "total_breakthroughs": 52,
+        "total_breakthroughs": 64,
         "total_dungeons": 40,
         "total_techniques_learned": 13,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-14T09:58:35.565105",
+        "last_update": "2026-01-14T10:08:21.133710",
         "bosses_defeated": 2
     },
     "guilds": {},

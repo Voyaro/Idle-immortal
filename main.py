@@ -2212,6 +2212,15 @@ async def on_ready():
     print('✅ World Boss system loaded successfully!')
     print('🌟 Bot siap menerima command!')
 
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(f"❌ command on cooldown! Silakan coba lagi dalam {round(error.retry_after, 2)} detik.")
+    elif isinstance(error, commands.CommandNotFound):
+        pass
+    else:
+        print(f"Error: {error}")
+
 #================================
 # TEST COMMAND: ping
 # ===============================
@@ -3089,7 +3098,7 @@ async def progress(ctx):
 # Command: cultivate (dengan cooldown dan race bonus)
 # ===============================
 @bot.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 60, commands.BucketType.user)
 async def cultivate(ctx):
     """Cultivate manual sekali dengan race bonus"""
     p = get_player(ctx.author.id)
