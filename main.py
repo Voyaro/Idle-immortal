@@ -5492,7 +5492,13 @@ async def help_command(ctx, category: str = None):
         )
         
         embed.add_field(
-            name="🏛️ **Sects & Techniques**",
+            name="📜 **Techniques**",
+            value="`!help techniques` - Discover and learn powerful techniques",
+            inline=False
+        )
+        
+        embed.add_field(
+            name="🏛️ **Sects**",
             value="`!help sects` - 15 sects with unique techniques, realm-based progression",
             inline=False
         )
@@ -5516,6 +5522,30 @@ async def help_command(ctx, category: str = None):
         )
         
         embed.set_footer(text="🎮 Use !help <category> to see detailed information | 🎊 Featuring 50 NPCs, 15 sects, 96 items, and epic adventures!")
+
+    elif category.lower() in ["techniques", "sects"]:
+        embed = discord.Embed(
+            title="📜 Techniques & Sects",
+            description="Master powerful techniques and join prestigious sects!",
+            color=0x00ffff
+        )
+        embed.add_field(
+            name="📜 Technique Commands",
+            value="`!find_technique` - Discover techniques (1hr cooldown)\n"
+                  "`!learn_technique <id>` - Learn discovered techniques\n"
+                  "`!my_techniques` - View learned techniques\n"
+                  "`!discovered_techniques` - View discovered techniques",
+            inline=False
+        )
+        embed.add_field(
+            name="🏛️ Sect Commands",
+            value="`!sect_list` - View all available sects\n"
+                  "`!join_sect <name>` - Join a sect\n"
+                  "`!leave_sect` - Leave current sect\n"
+                  "`!sect_info` - View your sect information",
+            inline=False
+        )
+        embed.set_footer(text="💫 Techniques provide permanent power bonuses!")
 
     elif category.lower() == "registration":
         embed = discord.Embed(
