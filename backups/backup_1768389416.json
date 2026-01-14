@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Destiny [Entry]",
-            "exp": 14571513,
-            "qi": 118642,
-            "spirit_stones": 41822,
+            "exp": 12646513,
+            "qi": 112614,
+            "spirit_stones": 40072,
             "equipment": {
                 "spirit_pendant": 30,
                 "spirit_armor": 35,
@@ -33,8 +33,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 26941,
-            "total_power": 57626,
+            "base_power": 25167,
+            "total_power": 53832,
             "pvp_wins": 1,
             "pvp_losses": 1,
             "last_pvp": "0",
@@ -72,11 +72,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-14T11:13:17.997773",
+            "last_updated": "2026-01-14T11:16:55.752749",
             "breakthroughs": 21,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 2494,
+                    "progress": 2319,
                     "completed": true,
                     "claimed": false
                 },
@@ -749,7 +749,7 @@
         "total_techniques_learned": 13,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-14T11:13:19.004655",
+        "last_update": "2026-01-14T11:16:56.758211",
         "bosses_defeated": 7
     },
     "guilds": {},
