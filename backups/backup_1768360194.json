@@ -74,7 +74,7 @@
             "breakthroughs": 16,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 4,
+                    "progress": 0,
                     "completed": false,
                     "claimed": false
                 },
@@ -635,12 +635,12 @@
         "total_techniques_learned": 13,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-13T10:51:25.178626",
+        "last_update": "2026-01-14T03:06:12.380293",
         "bosses_defeated": 2
     },
     "guilds": {},
     "market_items": [],
     "server_events": {},
-    "daily_quests_reset": "2026-01-13T10:37:17.926231",
+    "daily_quests_reset": "2026-01-14T03:03:58.367296",
     "world_bosses": {}
 }

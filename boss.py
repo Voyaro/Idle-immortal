@@ -15,9 +15,9 @@ BOSSES = {
         "level": 1,  # No level requirement
         "health": 10000,
         "damage": (600, 800),
-        "reward_exp": 5000000,  # 🚀 5M EXP! (10x boost)
-        "reward_qi": 5000,
-        "reward_stones": 3000,
+        "reward_exp": 10000000,  # 2x boost (was 5M)
+        "reward_qi": 10000,
+        "reward_stones": 6000,
         "element": "fire",
         "weakness": "water",
         "description": "Naga kuno yang menjaga gunung berapi",
@@ -34,9 +34,9 @@ BOSSES = {
         "level": 1,  # No level requirement
         "health": 20000,
         "damage": (1000, 1500),
-        "reward_exp": 7500000,  # 🚀 7.5M EXP! (10x boost)
-        "reward_qi": 8000, 
-        "reward_stones": 6000,
+        "reward_exp": 15000000,  # 2x boost (was 7.5M)
+        "reward_qi": 16000, 
+        "reward_stones": 12000,
         "element": "light",
         "weakness": "dark",
         "description": "Burung phoenix suci dari langit",
@@ -53,9 +53,9 @@ BOSSES = {
         "level": 1,  # No level requirement
         "health": 300000,
         "damage": (2000, 2500),
-        "reward_exp": 10000000,  # 🚀 10 JUTA EXP! (10x boost)
-        "reward_qi": 12000,
-        "reward_stones": 10000,
+        "reward_exp": 20000000,  # 2x boost (was 10M)
+        "reward_qi": 24000,
+        "reward_stones": 20000,
         "element": "water",
         "weakness": "lightning", 
         "description": "Monster laut dari kedalaman abyss",
@@ -72,9 +72,9 @@ BOSSES = {
         "level": 1,  # No level requirement
         "health": 40000,
         "damage": (4000, 5000),
-        "reward_exp": 20000000,  # 🚀 20 JUTA EXP! (10x boost)
-        "reward_qi": 15000,
-        "reward_stones": 12000,
+        "reward_exp": 40000000,  # 2x boost (was 20M)
+        "reward_qi": 30000,
+        "reward_stones": 24000,
         "element": "void",
         "weakness": "light",
         "description": "Titan dari dimensi void yang menguasai kegelapan",
@@ -91,9 +91,9 @@ BOSSES = {
         "level": 1,
         "health": 60000,
         "damage": (6000, 8000),
-        "reward_exp": 30000000,  # 30M EXP!
-        "reward_qi": 20000,
-        "reward_stones": 18000,
+        "reward_exp": 60000000,  # 2x boost (was 30M)
+        "reward_qi": 40000,
+        "reward_stones": 36000,
         "element": "time",
         "weakness": "space",
         "description": "Naga abadi yang menguasai waktu dan takdir",
@@ -110,9 +110,9 @@ BOSSES = {
         "level": 1,
         "health": 80000,
         "damage": (8000, 12000),
-        "reward_exp": 50000000,  # 50M EXP!
-        "reward_qi": 30000,
-        "reward_stones": 25000,
+        "reward_exp": 100000000,  # 2x boost (was 50M)
+        "reward_qi": 60000,
+        "reward_stones": 50000,
         "element": "chaos",
         "weakness": "order",
         "description": "Kaisar chaos yang menguasai kekacauan primordial",
@@ -129,9 +129,9 @@ BOSSES = {
         "level": 1,
         "health": 100000,
         "damage": (10000, 15000),
-        "reward_exp": 75000000,  # 75M EXP!
-        "reward_qi": 40000,
-        "reward_stones": 35000,
+        "reward_exp": 150000000,  # 2x boost (was 75M)
+        "reward_qi": 80000,
+        "reward_stones": 70000,
         "element": "cosmic",
         "weakness": "mortal",
         "description": "Penguasa cosmic yang mengendalikan seluruh alam semesta",
@@ -148,9 +148,9 @@ BOSSES = {
         "level": 1,
         "health": 150000,
         "damage": (15000, 20000),
-        "reward_exp": 100000000,  # 100M EXP!
-        "reward_qi": 50000,
-        "reward_stones": 45000,
+        "reward_exp": 200000000,  # 2x boost (was 100M)
+        "reward_qi": 100000,
+        "reward_stones": 90000,
         "element": "infinity",
         "weakness": "finite",
         "description": "Sage tak terbatas yang mencapai pencerahan ultimate",
@@ -167,9 +167,9 @@ BOSSES = {
         "level": 1,  # No level requirement
         "health": 50000,
         "damage": (6000, 70000),
-        "reward_exp": 5000000,  # 🚀 5 JUTA EXP!
-        "reward_qi": 30000,
-        "reward_stones": 20000,
+        "reward_exp": 10000000,  # 2x boost (was 5M)
+        "reward_qi": 60000,
+        "reward_stones": 40000,
         "element": "all",
         "weakness": "none",
         "description": "Dragon legendaris dengan kekuatan tak terbatas",

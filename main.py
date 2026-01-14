@@ -1026,9 +1026,9 @@ DUNGEONS = {
         "name": "Spirit Forest",
         "min_level": 1,
         "max_level": 10,
-        "min_reward": 8000,  # 10x from 800
-        "max_reward": 15000,  # 10x from 1500
-        "spirit_stone_reward": (1, 3),
+        "min_reward": 16000,  # 2x (was 8000)
+        "max_reward": 30000,  # 2x (was 15000)
+        "spirit_stone_reward": (2, 6),
         "emoji": "🌳",
         "difficulty": "Easy",
         "description": "A peaceful forest filled with low-level spirit beasts"
@@ -1037,9 +1037,9 @@ DUNGEONS = {
         "name": "Ancient Cave", 
         "min_level": 5,
         "max_level": 20,
-        "min_reward": 25000,  # 10x from 2500
-        "max_reward": 40000,  # 10x from 4000
-        "spirit_stone_reward": (2, 5),
+        "min_reward": 50000,  # 2x (was 25000)
+        "max_reward": 80000,  # 2x (was 40000)
+        "spirit_stone_reward": (4, 10),
         "emoji": "🕳️",
         "difficulty": "Medium",
         "description": "Dark caves with ancient treasures and dangers"
@@ -1048,9 +1048,9 @@ DUNGEONS = {
         "name": "Celestial Mountain",
         "min_level": 15,
         "max_level": 30,
-        "min_reward": 80000,  # 10x from 8000
-        "max_reward": 120000,  # 10x from 12000
-        "spirit_stone_reward": (3, 8),
+        "min_reward": 160000,  # 2x (was 80000)
+        "max_reward": 240000,  # 2x (was 120000)
+        "spirit_stone_reward": (6, 16),
         "emoji": "⛰️",
         "difficulty": "Hard",
         "description": "A sacred mountain with powerful guardians"
@@ -1059,9 +1059,9 @@ DUNGEONS = {
         "name": "Demon Abyss",
         "min_level": 25,
         "max_level": 50,
-        "min_reward": 150000,  # 10x from 15000
-        "max_reward": 200000,  # 10x from 20000
-        "spirit_stone_reward": (5, 15),
+        "min_reward": 300000,  # 2x (was 150000)
+        "max_reward": 400000,  # 2x (was 200000)
+        "spirit_stone_reward": (10, 30),
         "emoji": "🔥",
         "difficulty": "Very Hard",
         "description": "A dangerous abyss filled with demonic creatures"
@@ -1070,9 +1070,9 @@ DUNGEONS = {
         "name": "Heavenly Palace",
         "min_level": 40,
         "max_level": 80,
-        "min_reward": 250000,  # 10x from 25000
-        "max_reward": 300000,  # 10x from 30000
-        "spirit_stone_reward": (10, 25),
+        "min_reward": 500000,  # 2x (was 250000)
+        "max_reward": 600000,  # 2x (was 300000)
+        "spirit_stone_reward": (20, 50),
         "emoji": "🏯",
         "difficulty": "Extreme",
         "description": "The celestial palace of immortals"
@@ -1081,9 +1081,9 @@ DUNGEONS = {
         "name": "Forbidden Realm",
         "min_level": 60,
         "max_level": 100,
-        "min_reward": 400000,
-        "max_reward": 600000,
-        "spirit_stone_reward": (20, 40),
+        "min_reward": 800000,  # 2x (was 400000)
+        "max_reward": 1200000, # 2x (was 600000)
+        "spirit_stone_reward": (40, 80),
         "emoji": "🚫",
         "difficulty": "Nightmare",
         "description": "Forbidden realm where ancient evils slumber"
@@ -1092,9 +1092,9 @@ DUNGEONS = {
         "name": "Void Dimension",
         "min_level": 80,
         "max_level": 120,
-        "min_reward": 700000,
-        "max_reward": 1000000,
-        "spirit_stone_reward": (30, 60),
+        "min_reward": 1400000,  # 2x (was 700000)
+        "max_reward": 2000000,  # 2x (was 1000000)
+        "spirit_stone_reward": (60, 120),
         "emoji": "🌌",
         "difficulty": "Impossible",
         "description": "Dimension of nothingness where reality breaks down"
@@ -1103,9 +1103,9 @@ DUNGEONS = {
         "name": "Cosmic Labyrinth",
         "min_level": 100,
         "max_level": 150,
-        "min_reward": 1200000,
-        "max_reward": 1800000,
-        "spirit_stone_reward": (50, 100),
+        "min_reward": 2400000, # 2x (was 1200000)
+        "max_reward": 3600000, # 2x (was 1800000)
+        "spirit_stone_reward": (100, 200),
         "emoji": "🌠",
         "difficulty": "Transcendent",
         "description": "Infinite labyrinth that spans across galaxies"
@@ -1114,9 +1114,9 @@ DUNGEONS = {
         "name": "Primordial Depths",
         "min_level": 120,
         "max_level": 200,
-        "min_reward": 2000000,
-        "max_reward": 3000000,
-        "spirit_stone_reward": (80, 150),
+        "min_reward": 4000000, # 2x (was 2000000)
+        "max_reward": 6000000, # 2x (was 3000000)
+        "spirit_stone_reward": (160, 300),
         "emoji": "⚫",
         "difficulty": "Primordial",
         "description": "The deepest depths where creation itself began"
