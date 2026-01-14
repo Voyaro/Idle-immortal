@@ -3476,7 +3476,23 @@ async def learn_technique(ctx, technique_id: str):
     p["spirit_stones"] -= technique["cost"]
     p["techniques"].append(technique)
     p["techniques_learned"] += 1
-    p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
+    
+    # Recalculate total power properly
+    # Ensure techniques exists
+    if "techniques" not in p:
+        p["techniques"] = []
+    
+    technique_bonus = sum(t.get('power_bonus', 0) for t in p["techniques"])
+    
+    # Include sect techniques if they exist
+    sect_bonus = 0
+    if p.get("sect") and p["sect"] in CULTIVATION_SECTS:
+        sect_data = CULTIVATION_SECTS[p["sect"]]
+        # Add static bonuses from sect
+        sect_bonus = sum(sect_data.get("bonus", {}).values())
+        
+    set_bonus = calculate_set_bonus(p["equipment"])
+    p["total_power"] = int(p["base_power"] * (1 + technique_bonus + sect_bonus) * (1 + set_bonus))
 
     # Remove from discovered techniques
     p["discovered_techniques"] = [tech for tech in p["discovered_techniques"] if tech["id"] != technique_id]
@@ -4286,10 +4302,15 @@ async def enter(ctx, *, dungeon_name: str):
     dungeon_id = None
     target_name = dungeon_name.lower().strip()
     
-    for d_id, d_data in DUNGEONS.items():
-        if target_name == d_id or target_name == d_data["name"].lower():
-            dungeon_id = d_id
-            break
+    # Try exact ID match first
+    if target_name in DUNGEONS:
+        dungeon_id = target_name
+    else:
+        # Try name match
+        for d_id, d_data in DUNGEONS.items():
+            if target_name == d_data["name"].lower():
+                dungeon_id = d_id
+                break
             
     if not dungeon_id:
         return await ctx.send("❌ Dungeon tidak ditemukan! Gunakan `!dungeons` untuk melihat dungeon yang tersedia.")
@@ -4304,7 +4325,7 @@ async def enter(ctx, *, dungeon_name: str):
         return await ctx.send(f"❌ Level Anda ({player_level}) terlalu tinggi! Maksimal level {dungeon_data['max_level']}.")
 
     # Calculate success chance based on power
-    success_chance = min(95, 60 + (p["total_power"] // 5))
+    success_chance = min(95, 60 + (p["total_power"] // 100))
     success = random.randint(1, 100) <= success_chance
 
     if success:
@@ -4433,6 +4454,65 @@ async def craft_legendary(ctx, *, recipe_id: str = None):
     update_player(ctx.author.id, p)
 
     await ctx.send(f"🎉 Selamat! Anda berhasil membuat **{new_item['name']}**!")
+
+@bot.command(name="my_sect")
+async def my_sect(ctx):
+    """View your current sect information"""
+    player_id = str(ctx.author.id)
+    player = get_player(player_id)
+    if not player:
+        return await ctx.send("❌ You need to register first!")
+    
+    sect_id = player.get("sect")
+    if not sect_id or sect_id not in CULTIVATION_SECTS:
+        return await ctx.send("❌ You haven't joined a sect yet! Use `!sect_list` to see options.")
+    
+    sect = CULTIVATION_SECTS[sect_id]
+    embed = discord.Embed(
+        title=f"{sect['emoji']} {sect['name']}",
+        description=sect['description'],
+        color=0x9400d3
+    )
+    
+    embed.add_field(name="Specialty", value=sect['specialty'], inline=True)
+    embed.add_field(name="Realm", value=sect['realm'], inline=True)
+    
+    bonuses = "\n".join([f"• {k.replace('_', ' ').title()}: +{int(v*100)}%" for k, v in sect['bonus'].items()])
+    embed.add_field(name="Active Bonuses", value=bonuses, inline=False)
+    
+    techniques = "\n".join([f"• {t}" for t in sect['techniques']])
+    embed.add_field(name="Sect Techniques", value=techniques, inline=False)
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="sect_info")
+async def sect_info_cmd(ctx, *, sect_name=None):
+    """View details of a specific sect"""
+    if not sect_name:
+        return await my_sect(ctx)
+        
+    sect_id = None
+    for sid, s in CULTIVATION_SECTS.items():
+        if s['name'].lower() == sect_name.lower():
+            sect_id = sid
+            break
+            
+    if not sect_id:
+        return await ctx.send(f"❌ Sect '{sect_name}' not found!")
+        
+    sect = CULTIVATION_SECTS[sect_id]
+    embed = discord.Embed(
+        title=f"{sect['emoji']} {sect['name']}",
+        description=sect['description'],
+        color=0x9400d3
+    )
+    embed.add_field(name="Specialty", value=sect['specialty'], inline=True)
+    embed.add_field(name="Requirement", value=sect['entrance_requirement'], inline=True)
+    
+    bonuses = "\n".join([f"• {k.replace('_', ' ').title()}: +{int(v*100)}%" for k, v in sect['bonus'].items()])
+    embed.add_field(name="Bonuses", value=bonuses, inline=False)
+    
+    await ctx.send(embed=embed)
 
 # ===============================
 # SPIRIT BEAST SYSTEM - NEW
@@ -6947,7 +7027,8 @@ async def join_sect(ctx, *, sect_name=None):
     
     # Join the sect
     player["sect"] = sect_id
-    player["sect_techniques"] = []  # Initialize techniques list
+    if "sect_techniques" not in player:
+        player["sect_techniques"] = []  # Initialize techniques list
     update_player(player_id, player)
     
     # Create welcome embed
