@@ -2109,7 +2109,10 @@ async def idle_cultivation_task(user_id, player_data, realm_data):
             gain = int(base_gain * realm_data["exp_multiplier"])
             qi_gain = random.randint(10, 50)
             power_gain = random.randint(5, 15)
-            spirit_stones_gain = random.randint(10, realm_data["spirit_stone_gain"])
+            
+            # Ensure min <= max for spirit stones in idle
+            ss_max_idle = max(10, realm_data["spirit_stone_gain"])
+            spirit_stones_gain = random.randint(10, ss_max_idle)
 
             # Apply race bonuses
             race_data = RACES.get(p.get("race", "human"), RACES["human"])
@@ -3109,7 +3112,10 @@ async def cultivate(ctx):
         qi_gain = int(qi_gain * (1 + race_data["bonuses"]["qi"]))
 
     power_gain = random.randint(50, 150)
-    spirit_stones_gain = random.randint(100, realm_data["spirit_stone_gain"] * 10)
+    
+    # Ensure min <= max for spirit stones
+    ss_max = max(100, realm_data["spirit_stone_gain"] * 10)
+    spirit_stones_gain = random.randint(100, ss_max)
 
     if p["exp"] + gain > exp_cap:
         gain = max(0, exp_cap - p["exp"])
