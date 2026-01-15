@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Ascended [Entry]",
-            "exp": 177387387,
-            "qi": 516652,
-            "spirit_stones": 247884,
+            "exp": 179323387,
+            "qi": 522777,
+            "spirit_stones": 248304,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -76,22 +76,54 @@
                         "realm": "Mortal Realm",
                         "stage": "Ascended [Entry]"
                     }
+                },
+                {
+                    "id": "movement_earth_2669",
+                    "name": "Heavenly Mountain Domain",
+                    "sect": "void_abyss",
+                    "type": "movement",
+                    "element": "earth",
+                    "power_bonus": 0.7,
+                    "description": "Teleports through earth space",
+                    "cost": 700,
+                    "emoji": "💨",
+                    "element_emoji": "🌍",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
+                },
+                {
+                    "id": "healing_fire_4589",
+                    "name": "Supreme Moon Step",
+                    "sect": "iron_body",
+                    "type": "healing",
+                    "element": "fire",
+                    "power_bonus": 0.64,
+                    "description": "Revives damaged meridians",
+                    "cost": 640,
+                    "emoji": "❤️",
+                    "element_emoji": "🔥",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 99634,
-            "total_power": 647621,
+            "base_power": 101398,
+            "total_power": 930833,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768448010.7560375",
+            "last_technique_find": "1768448551.751732",
             "last_daily_quest": "0",
             "dungeons_completed": 4,
-            "techniques_learned": 4,
+            "techniques_learned": 6,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -123,11 +155,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T03:33:58.001693",
+            "last_updated": "2026-01-15T03:45:11.285244",
             "breakthroughs": 27,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 400,
+                    "progress": 576,
                     "completed": true,
                     "claimed": false
                 },
@@ -142,7 +174,7 @@
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 2,
+                    "progress": 4,
                     "completed": true,
                     "claimed": false
                 },
@@ -851,16 +883,16 @@
             }
         }
     },
-    "last_backup": 1768447915,
+    "last_backup": 1768448649,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
         "total_breakthroughs": 102,
         "total_dungeons": 60,
-        "total_techniques_learned": 18,
+        "total_techniques_learned": 20,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:33:58.001710",
+        "last_update": "2026-01-15T03:45:11.285255",
         "bosses_defeated": 12
     },
     "guilds": {},

@@ -2390,6 +2390,31 @@ async def register(ctx):
         confirm_msg = await bot.wait_for('message', timeout=60.0, check=check_confirm)
 
         if confirm_msg.content.lower() == 'confirm':
+            # Choice of faction for hybrids
+            faction = "Orthodox Alliance"
+            if race_choice == "demon":
+                faction = "Demonic Cult"
+            elif race_choice in ["half_demon", "beast"]:
+                embed = discord.Embed(
+                    title="⚖️ Choose Your Path",
+                    description="Sebagai keturunan hybrid, Anda memiliki pilihan untuk bergabung dengan salah satu faksi besar:",
+                    color=0xffa500
+                )
+                embed.add_field(name="1️⃣ Orthodox Alliance", value="Mengejar keadilan dan keseimbangan alam.", inline=False)
+                embed.add_field(name="2️⃣ Demonic Cult", value="Mengejar kekuatan absolut tanpa batasan.", inline=False)
+                embed.set_footer(text="Balas dengan '1' atau '2'")
+                await ctx.send(embed=embed)
+
+                def check_faction(m):
+                    return m.author == ctx.author and m.content in ['1', '2']
+                
+                try:
+                    faction_msg = await bot.wait_for('message', timeout=60.0, check=check_faction)
+                    faction = "Orthodox Alliance" if faction_msg.content == '1' else "Demonic Cult"
+                except asyncio.TimeoutError:
+                    await ctx.send("⌛ Waktu habis, faksi default dipilih: Orthodox Alliance")
+                    faction = "Orthodox Alliance"
+
             # Buat player baru
             player_data = create_new_player(
                 ctx.author.id, 
@@ -2397,9 +2422,8 @@ async def register(ctx):
                 gender_choice,
                 ctx.author.name
             )
-
-            # Hapus dari pending registrations
-            del PENDING_REGISTRATIONS[ctx.author.id]
+            player_data["faction"] = faction
+            update_player(ctx.author.id, player_data)
 
             embed = discord.Embed(
                 title="🎉 Registration Successful!",
@@ -2476,6 +2500,11 @@ async def profile(ctx, member: discord.Member = None):
     # Join date
     join_date = datetime.datetime.fromisoformat(p["created_at"]).strftime("%Y-%m-%d")
     embed.set_footer(text=f"Registered on {join_date}")
+
+    # Faction display
+    faction = p.get("faction", "Unknown")
+    faction_emoji = "⚖️" if faction == "Orthodox Alliance" else "🔥"
+    embed.add_field(name="Faction", value=f"{faction_emoji} {faction}", inline=True)
 
     await ctx.send(embed=embed)
 
