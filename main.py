@@ -2250,15 +2250,35 @@ bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)  # Di
 @bot.event
 async def on_ready():
     print(f'✅ Bot {bot.user} telah online!')
-    print(f'🔑 Token valid: {bool(BOT_TOKEN)}')
     
-    # Safe data loading
+    # Apply realm power migration for existing players
     try:
         data = load_data()
-        total_players = data.get("total_players", 0) if data else 0
-        print(f'📊 Total players: {total_players}')
-    except:
-        print(f'📊 Total players: 0 (data loading error)')
+        migration_count = 0
+        for player_id, player_data in data.get("players", {}).items():
+            if not player_data.get("realm_scaling_applied"):
+                realm = player_data.get("realm", "Mortal Realm")
+                realm_idx = REALM_ORDER.index(realm) if realm in REALM_ORDER else 0
+                
+                # Apply 2x multiplier for each realm above Mortal
+                if realm_idx > 0:
+                    old_power = player_data.get("base_power", 10)
+                    new_power = int(old_power * (2 ** realm_idx))
+                    player_data["base_power"] = new_power
+                    
+                    # Recalculate total power
+                    tech_bonus = 1 + sum(t.get('power_bonus', 0) for t in player_data.get("techniques", []))
+                    set_bonus = calculate_set_bonus(player_data.get("equipment", {}))
+                    player_data["total_power"] = int(new_power * tech_bonus * (1 + set_bonus))
+                    migration_count += 1
+                
+                player_data["realm_scaling_applied"] = True
+        
+        if migration_count > 0:
+            save_data(data)
+            print(f"📊 Applied 2x realm power scaling to {migration_count} players!")
+    except Exception as e:
+        print(f"❌ Realm power migration failed: {e}")
 
     if BOT_TOKEN and BOT_TOKEN != "placeholder_token_untuk_development":
         print(f'🔒 Token length: {len(BOT_TOKEN)}')
@@ -3541,7 +3561,8 @@ async def breakthrough(ctx):
             # ✅ PERBAIKAN: Simpan kelebihan EXP untuk realm baru
             p["exp"] = excess_exp
 
-            p["base_power"] += 50
+            # Multiplier x2 power scaling per realm ascension
+            p["base_power"] = int(p["base_power"] * 2)
             p["breakthroughs"] += 1
 
             # Update daily quest progress
