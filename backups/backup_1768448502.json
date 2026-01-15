@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Ascended [Entry]",
-            "exp": 175033387,
-            "qi": 509387,
-            "spirit_stones": 247094,
+            "exp": 177387387,
+            "qi": 516652,
+            "spirit_stones": 247184,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -44,22 +44,70 @@
                         "realm": "Mortal Realm",
                         "stage": "Destiny [Middle]"
                     }
+                },
+                {
+                    "id": "attack_dark_2615",
+                    "name": "Primordial Moon Step",
+                    "sect": "primordial_dao",
+                    "type": "attack",
+                    "element": "dark",
+                    "power_bonus": 0.71,
+                    "description": "Cuts through space itself",
+                    "cost": 710,
+                    "emoji": "⚡",
+                    "element_emoji": "🌙",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
+                },
+                {
+                    "id": "support_ice_9028",
+                    "name": "Primordial Ocean Gaze",
+                    "sect": "infinite_void",
+                    "type": "support",
+                    "element": "ice",
+                    "power_bonus": 0.64,
+                    "description": "Amplifies ice cultivation speed",
+                    "cost": 640,
+                    "emoji": "💫",
+                    "element_emoji": "❄️",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
+                },
+                {
+                    "id": "movement_earth_2669",
+                    "name": "Heavenly Mountain Domain",
+                    "sect": "void_abyss",
+                    "type": "movement",
+                    "element": "earth",
+                    "power_bonus": 0.7,
+                    "description": "Teleports through earth space",
+                    "cost": 700,
+                    "emoji": "💨",
+                    "element_emoji": "🌍",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 97483,
-            "total_power": 370435,
+            "base_power": 99634,
+            "total_power": 393554,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768447699.0715156",
+            "last_technique_find": "1768448349.1612356",
             "last_daily_quest": "0",
             "dungeons_completed": 4,
-            "techniques_learned": 2,
+            "techniques_learned": 5,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -91,11 +139,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T03:29:46.304502",
+            "last_updated": "2026-01-15T03:39:26.689617",
             "breakthroughs": 27,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 186,
+                    "progress": 400,
                     "completed": true,
                     "claimed": false
                 },
@@ -110,8 +158,8 @@
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 3,
+                    "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
@@ -131,24 +179,7 @@
                 }
             },
             "last_daily_claim": "1757432963.7332876",
-            "discovered_techniques": [
-                {
-                    "id": "attack_dark_2615",
-                    "name": "Primordial Moon Step",
-                    "sect": "primordial_dao",
-                    "type": "attack",
-                    "element": "dark",
-                    "power_bonus": 0.71,
-                    "description": "Cuts through space itself",
-                    "cost": 710,
-                    "emoji": "⚡",
-                    "element_emoji": "🌙",
-                    "requirements": {
-                        "realm": "Mortal Realm",
-                        "stage": "Ascended [Entry]"
-                    }
-                }
-            ],
+            "discovered_techniques": [],
             "guild_contributions": 0,
             "login_streak": 1,
             "last_login": "1757265301.5352273",
@@ -836,16 +867,16 @@
             }
         }
     },
-    "last_backup": 1768447615,
+    "last_backup": 1768448349,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
         "total_breakthroughs": 102,
         "total_dungeons": 60,
-        "total_techniques_learned": 16,
+        "total_techniques_learned": 19,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:29:46.304515",
+        "last_update": "2026-01-15T03:40:01.430733",
         "bosses_defeated": 12
     },
     "guilds": {},
