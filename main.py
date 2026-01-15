@@ -3397,6 +3397,31 @@ async def breakthrough(ctx):
     if p["exp"] < required_exp:
         return await ctx.send(f"❌ Not enough EXP. You need {required_exp} EXP to breakthrough! (Current: {p['exp']}/{required_exp})")
 
+    # Interactive Choice
+    embed = discord.Embed(
+        title="⚡ Potential Breakthrough Detected!",
+        description=f"You have reached the peak of **{p['stage']}**. Do you wish to attempt a breakthrough now?\n\n"
+                    f"**Required EXP:** {required_exp}\n"
+                    f"**Current EXP:** {p['exp']}\n"
+                    f"**Excess EXP:** {p['exp'] - required_exp} (will be preserved)",
+        color=0xffa500
+    )
+    embed.set_footer(text="React with ✅ to breakthrough or ❌ to wait.")
+    confirm_msg = await ctx.send(embed=embed)
+    await confirm_msg.add_reaction("✅")
+    await confirm_msg.add_reaction("❌")
+
+    def check(reaction, user):
+        return user == ctx.author and str(reaction.emoji) in ["✅", "❌"] and reaction.message.id == confirm_msg.id
+
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=60.0, check=check)
+    except asyncio.TimeoutError:
+        return await confirm_msg.edit(content="⌛ Breakthrough attempt timed out.", embed=None)
+
+    if str(reaction.emoji) == "❌":
+        return await ctx.send("🙏 You chose to consolidate your foundation further.")
+
     # Hitung kelebihan EXP setelah breakthrough
     excess_exp = p["exp"] - required_exp
 
@@ -3448,6 +3473,21 @@ async def breakthrough(ctx):
             p["total_power"] = int(p["base_power"] * technique_bonus * (1 + set_bonus))
 
             message = f"🌟 {ctx.author.mention} ascended to **{next_realm}**! ({excess_exp} EXP carried over)"
+            
+            # Global Announcement for first Immortal/God
+            data = load_data()
+            if next_realm in ["Immortal", "God Realm", "God"]:
+                if f"first_{next_realm.lower()}" not in data:
+                    data[f"first_{next_realm.lower()}"] = str(ctx.author.id)
+                    save_data(data)
+                    announcement_embed = discord.Embed(
+                        title="🌌 LEGENDARY ASCENSION 🌌",
+                        description=f"***The heavens tremble as the first {next_realm} is born!***\n\n"
+                                    f"Congratulations to {ctx.author.mention} for becoming the world's first **{next_realm}**!",
+                        color=0xffd700
+                    )
+                    announcement_embed.set_thumbnail(url=ctx.author.display_avatar.url)
+                    await ctx.send("@everyone", embed=announcement_embed)
         else:
             return await ctx.send("🎉 You already reached the peak realm!")
 
