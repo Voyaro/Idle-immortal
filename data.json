@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Ascended [Middle]",
-            "exp": 8624000,
-            "qi": 644510,
-            "spirit_stones": 283594,
+            "exp": 15279050,
+            "qi": 665285,
+            "spirit_stones": 289654,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -130,9 +130,9 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 137059,
-            "total_power": 1433637,
-            "pvp_wins": 1,
+            "base_power": 143027,
+            "total_power": 1496062,
+            "pvp_wins": 2,
             "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
@@ -171,17 +171,17 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T06:27:35.185771",
+            "last_updated": "2026-01-15T06:38:40.928697",
             "breakthroughs": 28,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 4169,
+                    "progress": 4774,
                     "completed": true,
                     "claimed": false
                 },
                 "pvp_battle": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "complete_dungeon": {
@@ -408,9 +408,9 @@
         "1090452614212231201": {
             "realm": "Mortal Realm",
             "stage": "Life and Death [Peak]",
-            "exp": 58478291,
-            "qi": 467762,
-            "spirit_stones": 242774,
+            "exp": 59520278,
+            "qi": 467791,
+            "spirit_stones": 242826,
             "equipment": {
                 "dragon_fang": 160,
                 "dragon_horn_helm": 130,
@@ -602,12 +602,12 @@
             "base_power": 74882,
             "total_power": 732345,
             "pvp_wins": 2,
-            "pvp_losses": 1,
+            "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768458192.124531",
+            "last_technique_find": "1768458627.445845",
             "last_daily_quest": "0",
-            "dungeons_completed": 35,
+            "dungeons_completed": 36,
             "techniques_learned": 11,
             "daily_streak": 0,
             "spirit_beasts": [
@@ -653,7 +653,7 @@
                 "spirit_herb": 2,
                 "spirit_water": 2,
                 "spirit_crystal": 0,
-                "dragon_scale": 6,
+                "dragon_scale": 8,
                 "phoenix_feather": 3,
                 "dragon_heart": 3
             },
@@ -666,7 +666,7 @@
             "gender": "female",
             "display_name": "deranaatma",
             "created_at": "2025-09-08T00:39:28.711397",
-            "last_updated": "2026-01-15T06:27:35.092686",
+            "last_updated": "2026-01-15T06:31:10.317354",
             "breakthroughs": 26,
             "daily_quests": {
                 "cultivate_5": {
@@ -680,8 +680,8 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 1,
-                    "completed": false,
+                    "progress": 2,
+                    "completed": true,
                     "claimed": false
                 },
                 "learn_technique": {
@@ -782,6 +782,22 @@
                     "cost": 680,
                     "emoji": "🛡️",
                     "element_emoji": "🔥",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Life and Death [Peak]"
+                    }
+                },
+                {
+                    "id": "healing_wind_5449",
+                    "name": "Mystic Ocean Gaze",
+                    "sect": "phoenix_flame",
+                    "type": "healing",
+                    "element": "wind",
+                    "power_bonus": 0.57,
+                    "description": "Purifies toxins",
+                    "cost": 570,
+                    "emoji": "❤️",
+                    "element_emoji": "💨",
                     "requirements": {
                         "realm": "Mortal Realm",
                         "stage": "Life and Death [Peak]"
@@ -917,16 +933,16 @@
             }
         }
     },
-    "last_backup": 1768458455,
+    "last_backup": 1768459055,
     "total_players": 4,
     "server_stats": {
-        "total_pvp_battles": 3,
+        "total_pvp_battles": 4,
         "total_breakthroughs": 103,
-        "total_dungeons": 61,
+        "total_dungeons": 62,
         "total_techniques_learned": 21,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T06:27:51.716887",
+        "last_update": "2026-01-15T06:38:40.928714",
         "bosses_defeated": 12
     },
     "guilds": {},

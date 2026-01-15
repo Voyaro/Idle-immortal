@@ -2559,6 +2559,29 @@ async def profile(ctx, member: discord.Member = None):
     faction_emoji = "⚖️" if faction == "Orthodox Alliance" else "🔥"
     embed.add_field(name="Faction", value=f"{faction_emoji} {faction}", inline=True)
 
+    # Title display
+    titles = []
+    data = load_data()
+    # Check for Strongest Under Heaven
+    players = list(data["players"].items())
+    if players:
+        strongest_id = max(players, key=lambda x: x[1].get("total_power", 0))[0]
+        if str(target.id) == strongest_id:
+            titles.append("🏆 **Strongest Under Heaven**")
+    
+    # Check for Immortal Lord
+    if data.get("first_immortal") == str(target.id):
+        titles.append("✨ **Immortal Lord**")
+    elif data.get("first_god") == str(target.id):
+        titles.append("🌌 **God of Creation**")
+    
+    # Check for Rich Merchant
+    if p.get("spirit_stones", 0) >= 1000000:
+        titles.append("💰 **Rich Merchant**")
+
+    if titles:
+        embed.add_field(name="Titles", value="\n".join(titles), inline=False)
+
     await ctx.send(embed=embed)
 
 # ===============================
@@ -2657,6 +2680,14 @@ async def tutorial(ctx):
         inline=False
     )
 
+    embed.add_field(
+        name="📚 Unique Titles",
+        value="• **Strongest Under Heaven**: Currently #1 on the leaderboard.\n"
+              "• **Immortal Lord**: The first person to reach the Immortal realm.\n"
+              "• **God of Creation**: The first person to reach the God realm.\n"
+              "• **Rich Merchant**: Own at least 1,000,000 Spirit Stones.",
+        inline=False
+    )
     embed.set_footer(text="Gunakan !help untuk melihat semua command yang tersedia")
     await ctx.send(embed=embed)
 
@@ -4273,9 +4304,20 @@ async def leaderboard(ctx, page: int = 1):
         except:
             username = f"Unknown User ({uid})"
 
+        # Unique Titles Logic for Leaderboard
+        title_suffix = ""
+        if i == 1 and page == 1:
+            title_suffix += " 🏆 [Strongest Under Heaven]"
+        
+        data = load_data()
+        if data.get("first_immortal") == str(uid):
+            title_suffix += " ✨ [Immortal Lord]"
+        elif data.get("first_god") == str(uid):
+            title_suffix += " 🌌 [God of Creation]"
+
         embed.add_field(
-            name=f"{i}. {username}",
-            value=f"**Power:** {player['total_power']} | **Realm:** {player['realm']}\n**Stage:** {player['stage']} | **Wins:** {player['pvp_wins']}",
+            name=f"{i}. {username}{title_suffix}",
+            value=f"**Power:** {player['total_power']:,} | **Realm:** {player['realm']}\n**Stage:** {player['stage']} | **Wins:** {player['pvp_wins']}",
             inline=False
         )
 
