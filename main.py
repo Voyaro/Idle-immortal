@@ -1350,11 +1350,19 @@ def load_data():
         return create_default_data()
 
 def save_data(data):
-    """Save data dengan backup otomatis"""
+    """Save data dengan backup otomatis setiap 5 menit"""
     try:
-        # Backup data lama sebelum menimpa
-        if os.path.exists(DATA_FILE):
+        # Backup data lama sebelum menimpa jika sudah 5 menit sejak backup terakhir
+        current_time = int(time.time())
+        last_backup = data.get("last_backup", 0)
+        
+        # Ensure last_backup is an integer
+        if not isinstance(last_backup, (int, float)):
+            last_backup = 0
+
+        if os.path.exists(DATA_FILE) and (current_time - last_backup >= 300):
             backup_data()
+            data["last_backup"] = current_time
 
         # Update timestamp
         data["server_stats"]["last_update"] = datetime.datetime.now().isoformat()
@@ -1362,7 +1370,7 @@ def save_data(data):
         with open(DATA_FILE, "w") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
-        print("💾 Data saved successfully!")
+        # print("💾 Data saved successfully!") # Reduced noise
         return True
 
     except Exception as e:
