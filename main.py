@@ -2256,7 +2256,7 @@ async def on_ready():
         data = load_data()
         migration_count = 0
         for player_id, player_data in data.get("players", {}).items():
-            if not player_data.get("stage_scaling_applied_v2"):
+            if not player_data.get("stage_scaling_applied_v3"):
                 realm = player_data.get("realm", "Mortal Realm")
                 stage = player_data.get("stage", "")
                 
@@ -2264,29 +2264,25 @@ async def on_ready():
                 stages = REALMS.get(realm, {}).get("stages", [])
                 stage_idx = stages.index(stage) if stage in stages else 0
                 
-                # Base power start
-                new_power = 10
-                
-                # Apply 2x for each realm (assuming each realm has its stages)
-                # But more accurately, we apply 2x for every single breakthrough (stage and realm)
-                # Count total breakthroughs
+                # Count total breakthroughs (each one is 2x previous)
                 total_stages_behind = 0
                 for r_name in REALM_ORDER[:realm_idx]:
                     total_stages_behind += len(REALMS[r_name]["stages"])
                 
                 total_breakthroughs = total_stages_behind + stage_idx
                 
-                if total_breakthroughs > 0:
-                    new_power = int(10 * (2 ** total_breakthroughs))
-                    player_data["base_power"] = new_power
-                    
-                    # Recalculate total power
-                    tech_bonus = 1 + sum(t.get('power_bonus', 0) for t in player_data.get("techniques", []))
-                    set_bonus = calculate_set_bonus(player_data.get("equipment", {}))
-                    player_data["total_power"] = int(new_power * tech_bonus * (1 + set_bonus))
-                    migration_count += 1
+                # Base power start is 10. Each breakthrough doubles it.
+                # Power = 10 * (2^total_breakthroughs)
+                new_power = int(10 * (2 ** total_breakthroughs))
+                player_data["base_power"] = new_power
                 
-                player_data["stage_scaling_applied_v2"] = True
+                # Recalculate total power
+                tech_bonus = 1 + sum(t.get('power_bonus', 0) for t in player_data.get("techniques", []))
+                set_bonus = calculate_set_bonus(player_data.get("equipment", {}))
+                player_data["total_power"] = int(new_power * tech_bonus * (1 + set_bonus))
+                migration_count += 1
+                
+                player_data["stage_scaling_applied_v3"] = True
         
         if migration_count > 0:
             save_data(data)
@@ -2575,9 +2571,9 @@ async def profile(ctx, member: discord.Member = None):
     embed.add_field(name="EXP", value=f"{p['exp']}/{exp_cap}", inline=True)
 
     # Stats
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    embed.add_field(name="Qi", value=p["qi"], inline=True)
-    embed.add_field(name="Spirit Stones", value=p["spirit_stones"], inline=True)
+    embed.add_field(name="Total Power", value=f"{p['total_power']:,}", inline=True)
+    embed.add_field(name="Qi", value=f"{p['qi']:,}", inline=True)
+    embed.add_field(name="Spirit Stones", value=f"{p['spirit_stones']:,}", inline=True)
 
     # Additional info
     embed.add_field(name="PvP Record", value=f"🏆 {p['pvp_wins']}W / 💀 {p['pvp_losses']}L", inline=True)
@@ -3576,7 +3572,7 @@ async def breakthrough(ctx):
             # ✅ PERBAIKAN: Simpan kelebihan EXP untuk realm baru
             p["exp"] = excess_exp
 
-            # Multiplier x2 power scaling per realm ascension
+            # Multiplier x2 power scaling for reaching first stage of new realm (next level up)
             p["base_power"] = int(p["base_power"] * 2)
             p["breakthroughs"] += 1
 
@@ -3623,9 +3619,9 @@ async def breakthrough(ctx):
     )
 
     embed.add_field(name="New Stage", value=p["stage"], inline=True)
-    embed.add_field(name="Current EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    embed.add_field(name="EXPreserved", value=f"✅ {excess_exp} EXP carried over", inline=True)
+    embed.add_field(name="Current EXP", value=f"{p['exp']:,}/{get_exp_cap(p):,}", inline=True)
+    embed.add_field(name="Total Power", value=f"{p['total_power']:,}", inline=True)
+    embed.add_field(name="EXPreserved", value=f"✅ {excess_exp:,} EXP carried over", inline=True)
 
     await ctx.send(embed=embed)
 

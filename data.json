@@ -220,7 +220,8 @@
                 "Cosmic Sovereign": 1768449152.6877954
             },
             "faction": "Orthodox Alliance",
-            "stage_scaling_applied_v2": true
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true
         },
         "757567126121873521": {
             "realm": "Mortal Realm",
@@ -391,7 +392,8 @@
                 "Celestial Phoenix": 1768396151.8604069,
                 "Void Titan": 1768397362.2316823
             },
-            "stage_scaling_applied_v2": true
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true
         },
         "1090452614212231201": {
             "realm": "Mortal Realm",
@@ -778,7 +780,8 @@
                 "Ancient Dragon": 1768388409.5292177,
                 "Celestial Phoenix": 1768387897.9469619
             },
-            "stage_scaling_applied_v2": true
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true
         },
         "1340566017251868748": {
             "realm": "Mortal Realm",
@@ -887,7 +890,8 @@
                 "Celestial Phoenix": 1768387944.4680011,
                 "Ancient Dragon": 1768388014.177352
             },
-            "stage_scaling_applied_v2": true
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true
         }
     },
     "last_backup": 1768449465,
@@ -899,7 +903,7 @@
         "total_techniques_learned": 20,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:57:45.903467",
+        "last_update": "2026-01-15T04:00:43.010388",
         "bosses_defeated": 13
     },
     "guilds": {},
