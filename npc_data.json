@@ -81,7 +81,7 @@
       "specialty": "sound_cultivation",
       "backstory": "Musician who weaponized sound through cultivation",
       "dialogue_style": "melodic_artistic",
-      "affection_level": 28,
+      "affection_level": 34,
       "max_affection": 100,
       "gifts_loved": [
         "musical_items",
@@ -221,7 +221,7 @@
       "specialty": "stealth_techniques",
       "backstory": "Former assassin seeking redemption through cultivation",
       "dialogue_style": "brief_mysterious",
-      "affection_level": 0,
+      "affection_level": 6,
       "max_affection": 100,
       "gifts_loved": [
         "shadow_items",
@@ -232,7 +232,30 @@
         "loud_items",
         "bright_items"
       ],
-      "relationship_status": "mysterious"
+      "relationship_status": "stranger"
+    },
+    "qing_lian": {
+      "name": "Qing Lian",
+      "gender": "female",
+      "emoji": "\ud83d\udc8e",
+      "cultivation_level": 75,
+      "realm": "God Realm",
+      "personality": "jade_empress",
+      "specialty": "jade_cultivation",
+      "backstory": "Empress who rules over jade mountains and crystal valleys",
+      "dialogue_style": "imperial_majestic",
+      "affection_level": 3,
+      "max_affection": 100,
+      "gifts_loved": [
+        "precious_jade",
+        "imperial_items",
+        "luxury_gifts"
+      ],
+      "gifts_hated": [
+        "common_items",
+        "peasant_gifts"
+      ],
+      "relationship_status": "stranger"
     }
   }
 }

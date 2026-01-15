@@ -2,14 +2,15 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Destiny [Entry]",
-            "exp": 12635513,
-            "qi": 112578,
-            "spirit_stones": 40062,
+            "stage": "Ascended [Entry]",
+            "exp": 172954387,
+            "qi": 502717,
+            "spirit_stones": 245204,
             "equipment": {
-                "spirit_pendant": 30,
-                "spirit_armor": 35,
-                "spirit_sword": 40
+                "dragon_scale_armor": 140,
+                "dragon_pearl": 120,
+                "dragon_horn_helm": 130,
+                "dragon_fang": 160
             },
             "techniques": [
                 {
@@ -27,22 +28,38 @@
                         "realm": "Mortal Realm",
                         "stage": "Yuan Sea [Peak]"
                     }
+                },
+                {
+                    "id": "movement_dark_6906",
+                    "name": "Supreme Star Shield",
+                    "sect": "primordial_dao",
+                    "type": "movement",
+                    "element": "dark",
+                    "power_bonus": 0.52,
+                    "description": "Teleports through dark space",
+                    "cost": 520,
+                    "emoji": "💨",
+                    "element_emoji": "🌙",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Destiny [Middle]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 25162,
-            "total_power": 53821,
+            "base_power": 95549,
+            "total_power": 363086,
             "pvp_wins": 1,
-            "pvp_losses": 1,
+            "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1757610561.406601",
+            "last_technique_find": "1768395058.2703147",
             "last_daily_quest": "0",
-            "dungeons_completed": 2,
-            "techniques_learned": 1,
+            "dungeons_completed": 4,
+            "techniques_learned": 2,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -58,7 +75,7 @@
             "current_beast": "Azure Dragon",
             "inventory": {
                 "spirit_herb": 0,
-                "spirit_water": 0,
+                "spirit_water": 1,
                 "spirit_crystal": 0,
                 "dragon_scale": 1,
                 "phoenix_feather": 0,
@@ -66,17 +83,19 @@
             },
             "pills_crafted": 0,
             "achievements": [
-                "dragon_slayer"
+                "dragon_slayer",
+                "phoenix_hunter",
+                "boss_master"
             ],
             "race": "human",
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-14T11:16:54.726703",
-            "breakthroughs": 21,
+            "last_updated": "2026-01-14T16:16:51.269447",
+            "breakthroughs": 27,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 2318,
+                    "progress": 9351,
                     "completed": true,
                     "claimed": false
                 },
@@ -86,17 +105,17 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 1,
-                    "completed": false,
+                    "progress": 3,
+                    "completed": true,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 5,
+                    "progress": 11,
                     "completed": true,
                     "claimed": false
                 },
@@ -117,22 +136,30 @@
             "login_streak": 1,
             "last_login": "1757265301.5352273",
             "world_boss_kills": {
-                "Heavenly Dragon": 26
+                "Heavenly Dragon": 29,
+                "Cosmic Leviathan": 1,
+                "Primordial Titan": 1,
+                "Stellar Phoenix": 2,
+                "Void Emperor": 1
             },
             "last_world_boss": "0",
             "bosses_defeated": [
-                "Ancient Dragon"
+                "Ancient Dragon",
+                "Celestial Phoenix",
+                "Eternal Dragon"
             ],
             "last_boss_challenge": {
-                "Ancient Dragon": 1768388422.7661788
+                "Ancient Dragon": 1768388422.7661788,
+                "Celestial Phoenix": 1768396189.1964083,
+                "Eternal Dragon": 1768397426.9775817
             }
         },
         "757567126121873521": {
             "realm": "Mortal Realm",
-            "stage": "Divine Bridge [Peak]",
-            "exp": 2660205,
-            "qi": 40940,
-            "spirit_stones": 22040,
+            "stage": "Life and Death [Middle]",
+            "exp": 65390367,
+            "qi": 316933,
+            "spirit_stones": 153585,
             "equipment": {
                 "spirit_pendant": 30,
                 "spirit_sword": 40,
@@ -170,22 +197,38 @@
                         "realm": "Mortal Realm",
                         "stage": "Becoming God [Middle]"
                     }
+                },
+                {
+                    "id": "defense_wind_2678",
+                    "name": "Ancient Mountain Breath",
+                    "sect": "primordial_dao",
+                    "type": "defense",
+                    "element": "wind",
+                    "power_bonus": 0.48,
+                    "description": "Reflects damage back",
+                    "cost": 480,
+                    "emoji": "🛡️",
+                    "element_emoji": "💨",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Nirvana [Middle]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 7007,
-            "total_power": 20092,
+            "base_power": 67553,
+            "total_power": 243967,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1757611592.4038408",
+            "last_technique_find": "1768395771.380266",
             "last_daily_quest": "0",
-            "dungeons_completed": 12,
-            "techniques_learned": 2,
+            "dungeons_completed": 18,
+            "techniques_learned": 3,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -204,22 +247,26 @@
                 "spirit_water": 1,
                 "spirit_crystal": 0,
                 "dragon_scale": 2,
-                "phoenix_feather": 3,
-                "dragon_heart": 0
+                "phoenix_feather": 4,
+                "dragon_heart": 0,
+                "void_shard": 1,
+                "fire_crystal": 1
             },
             "pills_crafted": 0,
             "achievements": [
-                "dragon_slayer"
+                "dragon_slayer",
+                "phoenix_hunter",
+                "boss_master"
             ],
             "race": "half_demon",
             "gender": "male",
             "display_name": "hanakokun7689",
             "created_at": "2025-09-07T17:21:02.317072",
-            "last_updated": "2026-01-14T11:06:36.363039",
-            "breakthroughs": 17,
+            "last_updated": "2026-01-14T14:48:59.109984",
+            "breakthroughs": 25,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 320,
+                    "progress": 6354,
                     "completed": true,
                     "claimed": false
                 },
@@ -229,17 +276,17 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 6,
+                    "completed": true,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 1,
+                    "progress": 9,
                     "completed": true,
                     "claimed": false
                 },
@@ -260,26 +307,34 @@
             "login_streak": 3,
             "last_login": "1757265662.3170774",
             "world_boss_kills": {
-                "Heavenly Dragon": 10
+                "Heavenly Dragon": 13,
+                "Void Emperor": 1,
+                "Primordial Titan": 1,
+                "Stellar Phoenix": 2
             },
             "last_world_boss": "0",
             "bosses_defeated": [
-                "Ancient Dragon"
+                "Ancient Dragon",
+                "Celestial Phoenix",
+                "Void Titan"
             ],
             "last_boss_challenge": {
-                "Ancient Dragon": 1757611834.501996
+                "Ancient Dragon": 1768397523.9126747,
+                "Celestial Phoenix": 1768396151.8604069,
+                "Void Titan": 1768397362.2316823
             }
         },
         "1090452614212231201": {
             "realm": "Mortal Realm",
-            "stage": "Destiny [Middle]",
-            "exp": 11213067,
-            "qi": 190136,
-            "spirit_stones": 111918,
+            "stage": "Life and Death [Peak]",
+            "exp": 54044247,
+            "qi": 457762,
+            "spirit_stones": 239630,
             "equipment": {
-                "spirit_sword": 40,
-                "spirit_armor": 35,
-                "spirit_pendant": 30
+                "dragon_fang": 160,
+                "dragon_horn_helm": 130,
+                "dragon_scale_armor": 140,
+                "dragon_pearl": 120
             },
             "techniques": [
                 {
@@ -441,22 +496,38 @@
                         "realm": "Mortal Realm",
                         "stage": "Becoming God [Middle]"
                     }
+                },
+                {
+                    "id": "defense_wind_1629",
+                    "name": "Mystic Mountain Step",
+                    "sect": "chaos_order",
+                    "type": "defense",
+                    "element": "wind",
+                    "power_bonus": 0.6,
+                    "description": "Reflects damage back",
+                    "cost": 600,
+                    "emoji": "🛡️",
+                    "element_emoji": "💨",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Destiny [Middle]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 6886,
-            "total_power": 45788,
-            "pvp_wins": 1,
+            "base_power": 71807,
+            "total_power": 702272,
+            "pvp_wins": 2,
             "pvp_losses": 1,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1757610556.585094",
+            "last_technique_find": "1768395064.2574701",
             "last_daily_quest": "0",
-            "dungeons_completed": 29,
-            "techniques_learned": 10,
+            "dungeons_completed": 34,
+            "techniques_learned": 11,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -503,7 +574,7 @@
                 "spirit_crystal": 0,
                 "dragon_scale": 6,
                 "phoenix_feather": 3,
-                "dragon_heart": 0
+                "dragon_heart": 3
             },
             "pills_crafted": 1,
             "achievements": [
@@ -514,31 +585,31 @@
             "gender": "female",
             "display_name": "deranaatma",
             "created_at": "2025-09-08T00:39:28.711397",
-            "last_updated": "2026-01-14T11:09:33.955441",
-            "breakthroughs": 22,
+            "last_updated": "2026-01-14T14:48:59.809528",
+            "breakthroughs": 26,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 431,
+                    "progress": 6944,
                     "completed": true,
                     "claimed": false
                 },
                 "pvp_battle": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 2,
+                    "progress": 7,
                     "completed": true,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 2,
+                    "progress": 6,
                     "completed": true,
                     "claimed": false
                 },
@@ -624,7 +695,10 @@
             "login_streak": 5,
             "last_login": "1757291968.7114015",
             "world_boss_kills": {
-                "Heavenly Dragon": 26
+                "Heavenly Dragon": 29,
+                "Void Emperor": 1,
+                "Cosmic Leviathan": 1,
+                "Stellar Phoenix": 1
             },
             "last_world_boss": "0",
             "bosses_defeated": [
@@ -638,10 +712,10 @@
         },
         "1340566017251868748": {
             "realm": "Mortal Realm",
-            "stage": "Destiny [Middle]",
-            "exp": 4700430,
-            "qi": 81340,
-            "spirit_stones": 41185,
+            "stage": "Life and Death [Entry]",
+            "exp": 57235981,
+            "qi": 223741,
+            "spirit_stones": 98202,
             "equipment": {
                 "dragon_fang": 160,
                 "dragon_scale_armor": 140,
@@ -653,15 +727,15 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 22024,
-            "total_power": 44048,
+            "base_power": 60968,
+            "total_power": 121936,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
             "last_dungeon": "0",
             "last_technique_find": "0",
             "last_daily_quest": "0",
-            "dungeons_completed": 1,
+            "dungeons_completed": 4,
             "techniques_learned": 0,
             "daily_streak": 0,
             "spirit_beasts": [],
@@ -684,11 +758,11 @@
             "gender": "female",
             "display_name": "rubahikikomori",
             "created_at": "2026-01-14T09:49:28.909231",
-            "last_updated": "2026-01-14T11:09:34.242165",
-            "breakthroughs": 22,
+            "last_updated": "2026-01-14T14:08:13.144013",
+            "breakthroughs": 24,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 2014,
+                    "progress": 5928,
                     "completed": true,
                     "claimed": false
                 },
@@ -698,8 +772,8 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 1,
-                    "completed": false,
+                    "progress": 4,
+                    "completed": true,
                     "claimed": false
                 },
                 "learn_technique": {
@@ -708,7 +782,7 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 22,
+                    "progress": 24,
                     "completed": true,
                     "claimed": false
                 },
@@ -728,7 +802,12 @@
             "guild_contributions": 0,
             "login_streak": 0,
             "last_login": "1768384168.9092371",
-            "world_boss_kills": {},
+            "world_boss_kills": {
+                "Heavenly Dragon": 3,
+                "Void Emperor": 1,
+                "Cosmic Leviathan": 1,
+                "Stellar Phoenix": 1
+            },
             "last_world_boss": "0",
             "bosses_defeated": [
                 "Celestial Phoenix",
@@ -743,14 +822,14 @@
     "last_backup": 0,
     "total_players": 4,
     "server_stats": {
-        "total_pvp_battles": 2,
-        "total_breakthroughs": 82,
-        "total_dungeons": 44,
-        "total_techniques_learned": 13,
+        "total_pvp_battles": 3,
+        "total_breakthroughs": 102,
+        "total_dungeons": 60,
+        "total_techniques_learned": 16,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-14T11:16:55.748614",
-        "bosses_defeated": 7
+        "last_update": "2026-01-14T16:16:52.276191",
+        "bosses_defeated": 12
     },
     "guilds": {},
     "market_items": [],
