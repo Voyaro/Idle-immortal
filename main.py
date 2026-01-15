@@ -2251,19 +2251,33 @@ bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)  # Di
 async def on_ready():
     print(f'✅ Bot {bot.user} telah online!')
     
-    # Apply realm power migration for existing players
+    # Apply realm and stage power migration for existing players
     try:
         data = load_data()
         migration_count = 0
         for player_id, player_data in data.get("players", {}).items():
-            if not player_data.get("realm_scaling_applied"):
+            if not player_data.get("stage_scaling_applied_v2"):
                 realm = player_data.get("realm", "Mortal Realm")
-                realm_idx = REALM_ORDER.index(realm) if realm in REALM_ORDER else 0
+                stage = player_data.get("stage", "")
                 
-                # Apply 2x multiplier for each realm above Mortal
-                if realm_idx > 0:
-                    old_power = player_data.get("base_power", 10)
-                    new_power = int(old_power * (2 ** realm_idx))
+                realm_idx = REALM_ORDER.index(realm) if realm in REALM_ORDER else 0
+                stages = REALMS.get(realm, {}).get("stages", [])
+                stage_idx = stages.index(stage) if stage in stages else 0
+                
+                # Base power start
+                new_power = 10
+                
+                # Apply 2x for each realm (assuming each realm has its stages)
+                # But more accurately, we apply 2x for every single breakthrough (stage and realm)
+                # Count total breakthroughs
+                total_stages_behind = 0
+                for r_name in REALM_ORDER[:realm_idx]:
+                    total_stages_behind += len(REALMS[r_name]["stages"])
+                
+                total_breakthroughs = total_stages_behind + stage_idx
+                
+                if total_breakthroughs > 0:
+                    new_power = int(10 * (2 ** total_breakthroughs))
                     player_data["base_power"] = new_power
                     
                     # Recalculate total power
@@ -2272,13 +2286,13 @@ async def on_ready():
                     player_data["total_power"] = int(new_power * tech_bonus * (1 + set_bonus))
                     migration_count += 1
                 
-                player_data["realm_scaling_applied"] = True
+                player_data["stage_scaling_applied_v2"] = True
         
         if migration_count > 0:
             save_data(data)
-            print(f"📊 Applied 2x realm power scaling to {migration_count} players!")
+            print(f"📊 Applied 2x stage power scaling to {migration_count} players!")
     except Exception as e:
-        print(f"❌ Realm power migration failed: {e}")
+        print(f"❌ Stage power migration failed: {e}")
 
     if BOT_TOKEN and BOT_TOKEN != "placeholder_token_untuk_development":
         print(f'🔒 Token length: {len(BOT_TOKEN)}')
@@ -3535,7 +3549,8 @@ async def breakthrough(ctx):
         # ✅ PERBAIKAN: Simpan kelebihan EXP, jangan reset ke 0!
         p["exp"] = excess_exp  # Hanya kurangi dengan EXP yang dibutuhkan
 
-        p["base_power"] += 15
+        # Multiplier x2 power scaling per stage ascension
+        p["base_power"] = int(p["base_power"] * 2)
         p["breakthroughs"] += 1
 
         # Update daily quest progress
