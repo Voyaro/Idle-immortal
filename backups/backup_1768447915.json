@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Mortal Realm",
             "stage": "Ascended [Entry]",
-            "exp": 173185387,
-            "qi": 503434,
-            "spirit_stones": 245414,
+            "exp": 176067387,
+            "qi": 512342,
+            "spirit_stones": 247324,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -44,22 +44,38 @@
                         "realm": "Mortal Realm",
                         "stage": "Destiny [Middle]"
                     }
+                },
+                {
+                    "id": "attack_dark_2615",
+                    "name": "Primordial Moon Step",
+                    "sect": "primordial_dao",
+                    "type": "attack",
+                    "element": "dark",
+                    "power_bonus": 0.71,
+                    "description": "Cuts through space itself",
+                    "cost": 710,
+                    "emoji": "⚡",
+                    "element_emoji": "🌙",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 95750,
-            "total_power": 363850,
+            "base_power": 98412,
+            "total_power": 513710,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768395058.2703147",
+            "last_technique_find": "1768447699.0715156",
             "last_daily_quest": "0",
             "dungeons_completed": 4,
-            "techniques_learned": 2,
+            "techniques_learned": 3,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -91,11 +107,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T03:24:48.661678",
+            "last_updated": "2026-01-15T03:31:54.828562",
             "breakthroughs": 27,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 18,
+                    "progress": 280,
                     "completed": true,
                     "claimed": false
                 },
@@ -110,8 +126,8 @@
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
@@ -819,16 +835,16 @@
             }
         }
     },
-    "last_backup": 0,
+    "last_backup": 1768447615,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
         "total_breakthroughs": 102,
         "total_dungeons": 60,
-        "total_techniques_learned": 16,
+        "total_techniques_learned": 17,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:24:49.665170",
+        "last_update": "2026-01-15T03:31:54.828590",
         "bosses_defeated": 12
     },
     "guilds": {},

@@ -1146,6 +1146,12 @@ SPIRIT_BEASTS = {
         {"name": "Golden Qilin", "emoji": "🦄", "power": 100, "cost": 20000, "bonus": {"all": 0.10}},
         {"name": "Vermilion Bird", "emoji": "🐦", "power": 120, "cost": 30000, "bonus": {"exp": 0.15, "qi": 0.15}},
         {"name": "Black Tortoise", "emoji": "🐢", "power": 150, "cost": 50000, "bonus": {"defense": 0.20, "healing": 0.10}}
+    ],
+    "four_divine_beasts": [
+        {"name": "Divine Black Tortoise", "emoji": "🐢", "power": 500, "cost": 250000, "bonus": {"defense": 0.50, "health": 0.50, "healing": 0.30}},
+        {"name": "Divine Dragon", "emoji": "🐉", "power": 600, "cost": 500000, "bonus": {"attack": 0.60, "qi": 0.40, "power": 0.50}},
+        {"name": "Immortal Phoenix", "emoji": "🔥", "power": 550, "cost": 400000, "bonus": {"exp": 0.50, "qi": 0.50, "regeneration": 0.40}},
+        {"name": "White Divine Tiger", "emoji": "🐯", "power": 500, "cost": 300000, "bonus": {"attack": 0.50, "critical": 0.30, "speed": 0.40}}
     ]
 }
 
@@ -3487,9 +3493,15 @@ async def learn_technique(ctx, technique_id: str):
     p["total_power"] = int(p["base_power"] * (1 + sum(t['power_bonus'] for t in p["techniques"])))
 
     # Remove from discovered techniques
-    p["discovered_techniques"] = [tech for tech in p["discovered_techniques"] if tech["id"] != technique_id]
+    p["discovered_techniques"] = [tech for tech in p.get("discovered_techniques", []) if tech.get("id") != technique_id]
 
     # Update daily quest progress
+    if "daily_quests" not in p:
+        p["daily_quests"] = {}
+    
+    if "learn_technique" not in p["daily_quests"]:
+        p["daily_quests"]["learn_technique"] = {"progress": 0, "completed": False}
+
     p["daily_quests"]["learn_technique"]["progress"] += 1
     if p["daily_quests"]["learn_technique"]["progress"] >= p["daily_quests"]["learn_technique"].get("progress_needed", 1):
         p["daily_quests"]["learn_technique"]["completed"] = True
@@ -4470,6 +4482,12 @@ SPIRIT_BEASTS = {
         {"name": "Golden Qilin", "emoji": "🦄", "power": 100, "cost": 20000, "bonus": {"all": 0.10}},
         {"name": "Vermilion Bird", "emoji": "🐦", "power": 120, "cost": 30000, "bonus": {"exp": 0.15, "qi": 0.15}},
         {"name": "Black Tortoise", "emoji": "🐢", "power": 150, "cost": 50000, "bonus": {"defense": 0.20, "healing": 0.10}}
+    ],
+    "four_divine_beasts": [
+        {"name": "Divine Black Tortoise", "emoji": "🐢", "power": 500, "cost": 250000, "bonus": {"defense": 0.50, "health": 0.50, "healing": 0.30}},
+        {"name": "Divine Dragon", "emoji": "🐉", "power": 600, "cost": 500000, "bonus": {"attack": 0.60, "qi": 0.40, "power": 0.50}},
+        {"name": "Immortal Phoenix", "emoji": "🔥", "power": 550, "cost": 400000, "bonus": {"exp": 0.50, "qi": 0.50, "regeneration": 0.40}},
+        {"name": "White Divine Tiger", "emoji": "🐯", "power": 500, "cost": 300000, "bonus": {"attack": 0.50, "critical": 0.30, "speed": 0.40}}
     ]
 }
 
@@ -4480,17 +4498,21 @@ def apply_beast_bonuses(player_data, base_gain, qi_gain, power_gain):
     total_power_bonus = 1.0
 
     for beast in player_data.get("spirit_beasts", []):
-        for bonus_type, bonus_value in beast["bonus"].items():
+        for bonus_type, bonus_value in beast.get("bonus", {}).items():
             if bonus_type == "exp":
                 total_exp_bonus += bonus_value
-            elif bonus_type == "qi":
+            elif bonus_type in ["qi", "spiritual_energy"]:
                 total_qi_bonus += bonus_value
-            elif bonus_type == "power":
+            elif bonus_type in ["power", "attack"]:
                 total_power_bonus += bonus_value
             elif bonus_type == "all":
                 total_exp_bonus += bonus_value
                 total_qi_bonus += bonus_value
                 total_power_bonus += bonus_value
+            elif bonus_type == "defense":
+                total_power_bonus += (bonus_value * 0.5) # Defense helps power slightly
+            elif bonus_type == "critical":
+                total_power_bonus += (bonus_value * 0.8) # Crit is very strong
 
     return (
         int(base_gain * total_exp_bonus),
@@ -4562,6 +4584,8 @@ async def tame(ctx, beast_name: str):
 
     if "spirit_beasts" not in p:
         p["spirit_beasts"] = []
+
+    # Apply race specific taming chance or cost reduction (Optional logic can go here)
 
     p["spirit_beasts"].append(found_beast)
 
