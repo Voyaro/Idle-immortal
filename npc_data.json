@@ -10,7 +10,7 @@
       "specialty": "plant_cultivation",
       "backstory": "Flower spirit who became human through cultivation",
       "dialogue_style": "flowery_sweet",
-      "affection_level": 1,
+      "affection_level": 3,
       "max_affection": 100,
       "gifts_loved": [
         "rare_flowers",
@@ -20,6 +20,29 @@
       "gifts_hated": [
         "poison_items",
         "withered_items"
+      ],
+      "relationship_status": "stranger"
+    },
+    "lan_xue": {
+      "name": "Lan Xue",
+      "gender": "female",
+      "emoji": "\u2744\ufe0f",
+      "cultivation_level": 52,
+      "realm": "Immortal Realm",
+      "personality": "proud_warrior",
+      "specialty": "sword_and_snow",
+      "backstory": "Proud sword maiden who never lost a duel",
+      "dialogue_style": "proud_confident",
+      "affection_level": 2,
+      "max_affection": 100,
+      "gifts_loved": [
+        "legendary_swords",
+        "honor_items",
+        "victory_tokens"
+      ],
+      "gifts_hated": [
+        "defeat_items",
+        "dishonor_gifts"
       ],
       "relationship_status": "stranger"
     }
@@ -81,7 +104,7 @@
       "specialty": "sound_cultivation",
       "backstory": "Musician who weaponized sound through cultivation",
       "dialogue_style": "melodic_artistic",
-      "affection_level": 34,
+      "affection_level": 36,
       "max_affection": 100,
       "gifts_loved": [
         "musical_items",
@@ -221,7 +244,7 @@
       "specialty": "stealth_techniques",
       "backstory": "Former assassin seeking redemption through cultivation",
       "dialogue_style": "brief_mysterious",
-      "affection_level": 6,
+      "affection_level": 16,
       "max_affection": 100,
       "gifts_loved": [
         "shadow_items",
@@ -232,7 +255,7 @@
         "loud_items",
         "bright_items"
       ],
-      "relationship_status": "stranger"
+      "relationship_status": "acquaintance"
     },
     "qing_lian": {
       "name": "Qing Lian",
@@ -256,6 +279,31 @@
         "peasant_gifts"
       ],
       "relationship_status": "stranger"
+    }
+  },
+  "757567126121873521": {
+    "qing_lian": {
+      "name": "Qing Lian",
+      "gender": "female",
+      "emoji": "\ud83d\udc8e",
+      "cultivation_level": 75,
+      "realm": "God Realm",
+      "personality": "jade_empress",
+      "specialty": "jade_cultivation",
+      "backstory": "Empress who rules over jade mountains and crystal valleys",
+      "dialogue_style": "imperial_majestic",
+      "affection_level": 43,
+      "max_affection": 100,
+      "gifts_loved": [
+        "precious_jade",
+        "imperial_items",
+        "luxury_gifts"
+      ],
+      "gifts_hated": [
+        "common_items",
+        "peasant_gifts"
+      ],
+      "relationship_status": "friend"
     }
   }
 }

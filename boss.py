@@ -165,9 +165,9 @@ BOSSES = {
         "name": "Infinity Dragon",
         "emoji": "∞",
         "level": 1,  # No level requirement
-        "health": 50000,
-        "damage": (6000, 70000),
-        "reward_exp": 10000000,  # 2x boost (was 5M)
+        "health": 300000,
+        "damage": (30000, 70000),
+        "reward_exp": 500000000,  # 2x boost (was 5M)
         "reward_qi": 60000,
         "reward_stones": 40000,
         "element": "all",
