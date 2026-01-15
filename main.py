@@ -3416,7 +3416,7 @@ async def breakthrough(ctx):
 # Command: find_technique
 # ===============================
 @bot.command()
-@commands.cooldown(1, 3600, commands.BucketType.user)
+@commands.cooldown(1, 180, commands.BucketType.user)
 async def find_technique(ctx):
     """Mencari teknik cultivation baru secara random"""
     p = get_player(ctx.author.id)
@@ -3426,9 +3426,9 @@ async def find_technique(ctx):
     now = time.time()
     last_find = float(p.get("last_technique_find", "0"))
 
-    if last_find + 3600 > now:
-        remaining = int(last_find + 3600 - now)
-        return await ctx.send(f"⏳ Anda harus menunggu {remaining//60} menit sebelum mencari teknik lagi!")
+    if last_find + 180 > now:
+        remaining = int(last_find + 180 - now)
+        return await ctx.send(f"⏳ Anda harus menunggu {remaining//60} menit {remaining%60} detik sebelum mencari teknik lagi!")
 
     technique = generate_random_technique(p["realm"], p["stage"])
 
@@ -5544,7 +5544,7 @@ async def help_command(ctx, category: str = None):
         )
         embed.add_field(
             name="📜 Technique Commands",
-            value="`!find_technique` - Discover techniques (1hr cooldown)\n"
+            value="`!find_technique` - Discover techniques (3min cooldown)\n"
                   "`!learn_technique <id>` - Learn discovered techniques\n"
                   "`!my_techniques` - View learned techniques\n"
                   "`!discovered_techniques` - View discovered techniques",
@@ -5633,7 +5633,7 @@ async def help_command(ctx, category: str = None):
 
         embed.add_field(
             name="📜 Techniques",
-            value="`!find_technique` - Discover techniques (1hr cooldown)\n"
+            value="`!find_technique` - Discover techniques (3min cooldown)\n"
                   "`!learn_technique <id>` - Learn discovered techniques\n"
                   "`!my_techniques` - View learned techniques\n"
                   "`!discovered_techniques` - View discovered techniques",
