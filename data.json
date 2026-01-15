@@ -114,8 +114,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 2684354560,
-            "total_power": 24642374860,
+            "base_power": 430,
+            "total_power": 3947,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
@@ -221,7 +221,8 @@
             },
             "faction": "Orthodox Alliance",
             "stage_scaling_applied_v2": true,
-            "stage_scaling_applied_v3": true
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         },
         "757567126121873521": {
             "realm": "Mortal Realm",
@@ -288,8 +289,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 335544320,
-            "total_power": 1211818311,
+            "base_power": 385,
+            "total_power": 1390,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -393,7 +394,8 @@
                 "Void Titan": 1768397362.2316823
             },
             "stage_scaling_applied_v2": true,
-            "stage_scaling_applied_v3": true
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         },
         "1090452614212231201": {
             "realm": "Mortal Realm",
@@ -589,8 +591,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 671088640,
-            "total_power": 6563246899,
+            "base_power": 400,
+            "total_power": 3912,
             "pvp_wins": 2,
             "pvp_losses": 1,
             "last_pvp": "0",
@@ -781,7 +783,8 @@
                 "Celestial Phoenix": 1768387897.9469619
             },
             "stage_scaling_applied_v2": true,
-            "stage_scaling_applied_v3": true
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         },
         "1340566017251868748": {
             "realm": "Mortal Realm",
@@ -800,8 +803,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 167772160,
-            "total_power": 335544320,
+            "base_power": 370,
+            "total_power": 740,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -891,10 +894,11 @@
                 "Ancient Dragon": 1768388014.177352
             },
             "stage_scaling_applied_v2": true,
-            "stage_scaling_applied_v3": true
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         }
     },
-    "last_backup": 1768449465,
+    "last_backup": 1768449861,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
@@ -903,7 +907,7 @@
         "total_techniques_learned": 20,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T04:01:52.737280",
+        "last_update": "2026-01-15T04:04:21.870902",
         "bosses_defeated": 13
     },
     "guilds": {},

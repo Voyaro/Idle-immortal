@@ -2256,7 +2256,7 @@ async def on_ready():
         data = load_data()
         migration_count = 0
         for player_id, player_data in data.get("players", {}).items():
-            if not player_data.get("stage_scaling_applied_v3"):
+            if not player_data.get("stage_scaling_reverted_v1"):
                 realm = player_data.get("realm", "Mortal Realm")
                 stage = player_data.get("stage", "")
                 
@@ -2264,16 +2264,16 @@ async def on_ready():
                 stages = REALMS.get(realm, {}).get("stages", [])
                 stage_idx = stages.index(stage) if stage in stages else 0
                 
-                # Count total breakthroughs (each one is 2x previous)
-                total_stages_behind = 0
-                for r_name in REALM_ORDER[:realm_idx]:
-                    total_stages_behind += len(REALMS[r_name]["stages"])
+                # Base power start
+                new_power = 10
                 
-                total_breakthroughs = total_stages_behind + stage_idx
+                # Apply 2x for each realm
+                if realm_idx > 0:
+                    new_power = int(10 * (2 ** realm_idx))
                 
-                # Base power start is 10. Each breakthrough doubles it.
-                # Power = 10 * (2^total_breakthroughs)
-                new_power = int(10 * (2 ** total_breakthroughs))
+                # Apply flat +15 for each stage within current realm
+                new_power += (stage_idx * 15)
+                
                 player_data["base_power"] = new_power
                 
                 # Recalculate total power
@@ -2282,13 +2282,13 @@ async def on_ready():
                 player_data["total_power"] = int(new_power * tech_bonus * (1 + set_bonus))
                 migration_count += 1
                 
-                player_data["stage_scaling_applied_v3"] = True
+                player_data["stage_scaling_reverted_v1"] = True
         
         if migration_count > 0:
             save_data(data)
-            print(f"📊 Applied 2x stage power scaling to {migration_count} players!")
+            print(f"📊 Reverted 2x stage scaling for {migration_count} players!")
     except Exception as e:
-        print(f"❌ Stage power migration failed: {e}")
+        print(f"❌ Power reversion migration failed: {e}")
 
     if BOT_TOKEN and BOT_TOKEN != "placeholder_token_untuk_development":
         print(f'🔒 Token length: {len(BOT_TOKEN)}')

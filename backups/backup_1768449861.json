@@ -2,10 +2,10 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Ascended [Entry]",
-            "exp": 179323387,
-            "qi": 522777,
-            "spirit_stones": 248304,
+            "stage": "Ascended [Middle]",
+            "exp": 121274411,
+            "qi": 609283,
+            "spirit_stones": 320274,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -114,8 +114,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 101398,
-            "total_power": 930833,
+            "base_power": 430,
+            "total_power": 3947,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
@@ -155,11 +155,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T03:45:11.285244",
-            "breakthroughs": 27,
+            "last_updated": "2026-01-15T03:55:16.676514",
+            "breakthroughs": 28,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 576,
+                    "progress": 773,
                     "completed": true,
                     "claimed": false
                 },
@@ -179,8 +179,8 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -210,13 +210,19 @@
             "bosses_defeated": [
                 "Ancient Dragon",
                 "Celestial Phoenix",
-                "Eternal Dragon"
+                "Eternal Dragon",
+                "Cosmic Sovereign"
             ],
             "last_boss_challenge": {
                 "Ancient Dragon": 1768388422.7661788,
                 "Celestial Phoenix": 1768396189.1964083,
-                "Eternal Dragon": 1768397426.9775817
-            }
+                "Eternal Dragon": 1768397426.9775817,
+                "Cosmic Sovereign": 1768449152.6877954
+            },
+            "faction": "Orthodox Alliance",
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         },
         "757567126121873521": {
             "realm": "Mortal Realm",
@@ -283,8 +289,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 67553,
-            "total_power": 243967,
+            "base_power": 385,
+            "total_power": 1390,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -386,7 +392,10 @@
                 "Ancient Dragon": 1768397523.9126747,
                 "Celestial Phoenix": 1768396151.8604069,
                 "Void Titan": 1768397362.2316823
-            }
+            },
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         },
         "1090452614212231201": {
             "realm": "Mortal Realm",
@@ -582,8 +591,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 71807,
-            "total_power": 702272,
+            "base_power": 400,
+            "total_power": 3912,
             "pvp_wins": 2,
             "pvp_losses": 1,
             "last_pvp": "0",
@@ -772,7 +781,10 @@
             "last_boss_challenge": {
                 "Ancient Dragon": 1768388409.5292177,
                 "Celestial Phoenix": 1768387897.9469619
-            }
+            },
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         },
         "1340566017251868748": {
             "realm": "Mortal Realm",
@@ -791,8 +803,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 60968,
-            "total_power": 121936,
+            "base_power": 370,
+            "total_power": 740,
             "pvp_wins": 0,
             "pvp_losses": 0,
             "last_pvp": "0",
@@ -880,20 +892,23 @@
             "last_boss_challenge": {
                 "Celestial Phoenix": 1768387944.4680011,
                 "Ancient Dragon": 1768388014.177352
-            }
+            },
+            "stage_scaling_applied_v2": true,
+            "stage_scaling_applied_v3": true,
+            "stage_scaling_reverted_v1": true
         }
     },
-    "last_backup": 1768448649,
+    "last_backup": 1768449861,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
-        "total_breakthroughs": 102,
+        "total_breakthroughs": 103,
         "total_dungeons": 60,
         "total_techniques_learned": 20,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:45:56.999076",
-        "bosses_defeated": 12
+        "last_update": "2026-01-15T04:04:21.870902",
+        "bosses_defeated": 13
     },
     "guilds": {},
     "market_items": [],
