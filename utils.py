@@ -105,7 +105,12 @@ def save_data(data):
         current_time = int(time.time())
         last_backup = data.get("last_backup", 0)
         
+        # Ensure last_backup is an integer
+        if not isinstance(last_backup, (int, float)):
+            last_backup = 0
+
         if os.path.exists(DATA_FILE) and (current_time - last_backup >= 300):
+            # Read current file before backing it up to ensure we don't backup corrupted data
             backup_data()
             data["last_backup"] = current_time
 
@@ -115,7 +120,7 @@ def save_data(data):
         with open(DATA_FILE, "w") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
-        print("💾 Data saved successfully!")
+        # print("💾 Data saved successfully!") # Removed to reduce console noise
         return True
 
     except Exception as e:
