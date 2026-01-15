@@ -3545,8 +3545,8 @@ async def breakthrough(ctx):
         # ✅ PERBAIKAN: Simpan kelebihan EXP, jangan reset ke 0!
         p["exp"] = excess_exp  # Hanya kurangi dengan EXP yang dibutuhkan
 
-        # Multiplier x2 power scaling per stage ascension
-        p["base_power"] = int(p["base_power"] * 2)
+        # Reverted to flat power increase for stage ascension
+        p["base_power"] += 15
         p["breakthroughs"] += 1
 
         # Update daily quest progress
