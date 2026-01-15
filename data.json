@@ -2,10 +2,10 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Ascended [Entry]",
-            "exp": 179323387,
-            "qi": 522777,
-            "spirit_stones": 248304,
+            "stage": "Ascended [Middle]",
+            "exp": 8624000,
+            "qi": 644510,
+            "spirit_stones": 283594,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -108,22 +108,38 @@
                         "realm": "Mortal Realm",
                         "stage": "Ascended [Entry]"
                     }
+                },
+                {
+                    "id": "support_light_4005",
+                    "name": "Primordial Moon Fist",
+                    "sect": "flame_lotus",
+                    "type": "support",
+                    "element": "light",
+                    "power_bonus": 0.64,
+                    "description": "Amplifies light cultivation speed",
+                    "cost": 640,
+                    "emoji": "💫",
+                    "element_emoji": "✨",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 101398,
-            "total_power": 930833,
+            "base_power": 137059,
+            "total_power": 1433637,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768448551.751732",
+            "last_technique_find": "1768452244.21245",
             "last_daily_quest": "0",
             "dungeons_completed": 4,
-            "techniques_learned": 6,
+            "techniques_learned": 7,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -155,11 +171,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T03:45:11.285244",
-            "breakthroughs": 27,
+            "last_updated": "2026-01-15T06:27:35.185771",
+            "breakthroughs": 28,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 576,
+                    "progress": 4169,
                     "completed": true,
                     "claimed": false
                 },
@@ -174,13 +190,13 @@
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 4,
+                    "progress": 5,
                     "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -216,7 +232,8 @@
                 "Ancient Dragon": 1768388422.7661788,
                 "Celestial Phoenix": 1768396189.1964083,
                 "Eternal Dragon": 1768397426.9775817
-            }
+            },
+            "faction": "Orthodox Alliance"
         },
         "757567126121873521": {
             "realm": "Mortal Realm",
@@ -391,9 +408,9 @@
         "1090452614212231201": {
             "realm": "Mortal Realm",
             "stage": "Life and Death [Peak]",
-            "exp": 54044247,
-            "qi": 457762,
-            "spirit_stones": 239630,
+            "exp": 58478291,
+            "qi": 467762,
+            "spirit_stones": 242774,
             "equipment": {
                 "dragon_fang": 160,
                 "dragon_horn_helm": 130,
@@ -582,15 +599,15 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 71807,
-            "total_power": 702272,
+            "base_power": 74882,
+            "total_power": 732345,
             "pvp_wins": 2,
             "pvp_losses": 1,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768395064.2574701",
+            "last_technique_find": "1768458192.124531",
             "last_daily_quest": "0",
-            "dungeons_completed": 34,
+            "dungeons_completed": 35,
             "techniques_learned": 11,
             "daily_streak": 0,
             "spirit_beasts": [
@@ -649,12 +666,12 @@
             "gender": "female",
             "display_name": "deranaatma",
             "created_at": "2025-09-08T00:39:28.711397",
-            "last_updated": "2026-01-14T14:48:59.809528",
+            "last_updated": "2026-01-15T06:27:35.092686",
             "breakthroughs": 26,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 310,
+                    "completed": true,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -663,7 +680,7 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 0,
+                    "progress": 1,
                     "completed": false,
                     "claimed": false
                 },
@@ -753,6 +770,22 @@
                         "realm": "Mortal Realm",
                         "stage": "Divine Bridge [Middle]"
                     }
+                },
+                {
+                    "id": "defense_fire_7281",
+                    "name": "Mystic Sun Gaze",
+                    "sect": "thunder_emperor",
+                    "type": "defense",
+                    "element": "fire",
+                    "power_bonus": 0.68,
+                    "description": "Absorbs enemy attacks",
+                    "cost": 680,
+                    "emoji": "🛡️",
+                    "element_emoji": "🔥",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Life and Death [Peak]"
+                    }
                 }
             ],
             "guild_contributions": 0,
@@ -772,7 +805,8 @@
             "last_boss_challenge": {
                 "Ancient Dragon": 1768388409.5292177,
                 "Celestial Phoenix": 1768387897.9469619
-            }
+            },
+            "faction": "Orthodox Alliance"
         },
         "1340566017251868748": {
             "realm": "Mortal Realm",
@@ -883,16 +917,16 @@
             }
         }
     },
-    "last_backup": 1768448649,
+    "last_backup": 1768458455,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
-        "total_breakthroughs": 102,
-        "total_dungeons": 60,
-        "total_techniques_learned": 20,
+        "total_breakthroughs": 103,
+        "total_dungeons": 61,
+        "total_techniques_learned": 21,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:45:56.999076",
+        "last_update": "2026-01-15T06:27:42.116342",
         "bosses_defeated": 12
     },
     "guilds": {},

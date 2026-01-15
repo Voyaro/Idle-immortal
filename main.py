@@ -2538,12 +2538,12 @@ async def profile(ctx, member: discord.Member = None):
     # Progress
     embed.add_field(name="Realm", value=p["realm"], inline=True)
     embed.add_field(name="Stage", value=p["stage"], inline=True)
-    embed.add_field(name="EXP", value=f"{p['exp']}/{exp_cap}", inline=True)
+    embed.add_field(name="EXP", value=f"{p['exp']:,}/{exp_cap:,}", inline=True)
 
     # Stats
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    embed.add_field(name="Qi", value=p["qi"], inline=True)
-    embed.add_field(name="Spirit Stones", value=p["spirit_stones"], inline=True)
+    embed.add_field(name="Total Power", value=f"{p['total_power']:,}", inline=True)
+    embed.add_field(name="Qi", value=f"{p['qi']:,}", inline=True)
+    embed.add_field(name="Spirit Stones", value=f"{p['spirit_stones']:,}", inline=True)
 
     # Additional info
     embed.add_field(name="PvP Record", value=f"🏆 {p['pvp_wins']}W / 💀 {p['pvp_losses']}L", inline=True)
@@ -3483,9 +3483,9 @@ async def breakthrough(ctx):
     embed = discord.Embed(
         title="⚡ Potential Breakthrough Detected!",
         description=f"You have reached the peak of **{p['stage']}**. Do you wish to attempt a breakthrough now?\n\n"
-                    f"**Required EXP:** {required_exp}\n"
-                    f"**Current EXP:** {p['exp']}\n"
-                    f"**Excess EXP:** {p['exp'] - required_exp} (will be preserved)",
+                    f"**Required EXP:** {required_exp:,}\n"
+                    f"**Current EXP:** {p['exp']:,}\n"
+                    f"**Excess EXP:** {p['exp'] - required_exp:,} (will be preserved)",
         color=0xffa500
     )
     embed.set_footer(text="React with ✅ to breakthrough or ❌ to wait.")
@@ -3587,9 +3587,9 @@ async def breakthrough(ctx):
     )
 
     embed.add_field(name="New Stage", value=p["stage"], inline=True)
-    embed.add_field(name="Current EXP", value=f"{p['exp']}/{get_exp_cap(p)}", inline=True)
-    embed.add_field(name="Total Power", value=p["total_power"], inline=True)
-    embed.add_field(name="EXPreserved", value=f"✅ {excess_exp} EXP carried over", inline=True)
+    embed.add_field(name="Current EXP", value=f"{p['exp']:,}/{get_exp_cap(p):,}", inline=True)
+    embed.add_field(name="Total Power", value=f"{p['total_power']:,}", inline=True)
+    embed.add_field(name="EXPreserved", value=f"✅ {excess_exp:,} EXP carried over", inline=True)
 
     await ctx.send(embed=embed)
 
@@ -3628,7 +3628,7 @@ async def find_technique(ctx):
         value=f"**Sect:** {CULTIVATION_SECTS[technique['sect']]['emoji']} {CULTIVATION_SECTS[technique['sect']]['name']}\n"
               f"**Type:** {TECHNIQUE_TYPES[technique['type']]['name']}\n"
               f"**Power Bonus:** +{technique['power_bonus']*100}%\n"
-              f"**Cost:** {technique['cost']} Spirit Stones\n"
+              f"**Cost:** {technique['cost']:,} Spirit Stones\n"
               f"**Description:** {technique['description']}",
         inline=False
     )
@@ -3696,7 +3696,7 @@ async def learn_technique(ctx, technique_id: str):
     embed.add_field(
         name=f"{technique['emoji']} {technique['name']}",
         value=f"**Power Bonus:** +{technique['power_bonus']*100}%\n"
-              f"**Total Power:** {p['total_power']} (+{int(technique['power_bonus']*p['base_power'])})",
+              f"**Total Power:** {p['total_power']:,} (+{int(technique['power_bonus']*p['base_power']):,})",
         inline=False
     )
 
@@ -3810,7 +3810,7 @@ async def discovered_techniques(ctx):
     for technique in discovered:
         embed.add_field(
             name=f"{technique.get('emoji', '📜')} {technique.get('element_emoji', '')} {technique.get('name', 'Unknown')}",
-            value=f"**Cost:** {technique.get('cost', 0)} Spirit Stones\n"
+            value=f"**Cost:** {technique.get('cost', 0):,} Spirit Stones\n"
                   f"**Bonus:** +{technique.get('power_bonus', 0)*100:.1f}% Power\n"
                   f"**ID:** `{technique.get('id', 'unknown')}`",
             inline=True

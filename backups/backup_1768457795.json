@@ -2,10 +2,10 @@
     "players": {
         "877390433519562842": {
             "realm": "Mortal Realm",
-            "stage": "Ascended [Entry]",
-            "exp": 177387387,
-            "qi": 516652,
-            "spirit_stones": 247184,
+            "stage": "Ascended [Middle]",
+            "exp": 2233000,
+            "qi": 625035,
+            "spirit_stones": 277784,
             "equipment": {
                 "dragon_scale_armor": 140,
                 "dragon_pearl": 120,
@@ -92,22 +92,54 @@
                         "realm": "Mortal Realm",
                         "stage": "Ascended [Entry]"
                     }
+                },
+                {
+                    "id": "healing_fire_4589",
+                    "name": "Supreme Moon Step",
+                    "sect": "iron_body",
+                    "type": "healing",
+                    "element": "fire",
+                    "power_bonus": 0.64,
+                    "description": "Revives damaged meridians",
+                    "cost": 640,
+                    "emoji": "❤️",
+                    "element_emoji": "🔥",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
+                },
+                {
+                    "id": "support_light_4005",
+                    "name": "Primordial Moon Fist",
+                    "sect": "flame_lotus",
+                    "type": "support",
+                    "element": "light",
+                    "power_bonus": 0.64,
+                    "description": "Amplifies light cultivation speed",
+                    "cost": 640,
+                    "emoji": "💫",
+                    "element_emoji": "✨",
+                    "requirements": {
+                        "realm": "Mortal Realm",
+                        "stage": "Ascended [Entry]"
+                    }
                 }
             ],
             "current_technique": null,
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 99634,
-            "total_power": 393554,
+            "base_power": 131268,
+            "total_power": 1373063,
             "pvp_wins": 1,
             "pvp_losses": 2,
             "last_pvp": "0",
             "last_dungeon": "0",
-            "last_technique_find": "1768448349.1612356",
+            "last_technique_find": "1768452244.21245",
             "last_daily_quest": "0",
             "dungeons_completed": 4,
-            "techniques_learned": 5,
+            "techniques_learned": 7,
             "daily_streak": 0,
             "spirit_beasts": [
                 {
@@ -139,11 +171,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T03:39:26.689617",
-            "breakthroughs": 27,
+            "last_updated": "2026-01-15T05:55:18.497156",
+            "breakthroughs": 28,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 400,
+                    "progress": 3588,
                     "completed": true,
                     "claimed": false
                 },
@@ -158,13 +190,13 @@
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 3,
+                    "progress": 5,
                     "completed": true,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -200,7 +232,8 @@
                 "Ancient Dragon": 1768388422.7661788,
                 "Celestial Phoenix": 1768396189.1964083,
                 "Eternal Dragon": 1768397426.9775817
-            }
+            },
+            "faction": "Orthodox Alliance"
         },
         "757567126121873521": {
             "realm": "Mortal Realm",
@@ -867,16 +900,16 @@
             }
         }
     },
-    "last_backup": 1768448349,
+    "last_backup": 1768456260,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 3,
-        "total_breakthroughs": 102,
+        "total_breakthroughs": 103,
         "total_dungeons": 60,
-        "total_techniques_learned": 19,
+        "total_techniques_learned": 21,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T03:40:01.430733",
+        "last_update": "2026-01-15T05:55:18.497173",
         "bosses_defeated": 12
     },
     "guilds": {},
