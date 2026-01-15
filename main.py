@@ -1896,7 +1896,55 @@ async def battle_round(battle_id, ctx):
     att_dmg = max(5, min(40, att_dmg))
     def_dmg = max(5, min(40, def_dmg))
 
-    # Apply damage
+    # HP bars
+    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "♡" * (10 - battle_data["attacker_hp"] // 10)
+    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "♡" * (10 - battle_data["defender_hp"] // 10)
+
+    # Apply Regeneration (Immortal Phoenix etc)
+    att_regen = 0
+    def_regen = 0
+    
+    attacker_data = get_player(battle_data["attacker"])
+    defender_data = get_player(battle_data["defender"])
+    
+    # Check Active Beast Bonuses for Regeneration
+    if attacker_data.get("current_beast"):
+        for beast in attacker_data.get("spirit_beasts", []):
+            if beast["name"] == attacker_data["current_beast"]:
+                regen_val = beast.get("bonus", {}).get("regeneration", 0)
+                if regen_val > 0:
+                    att_regen = int(100 * regen_val)
+                    battle_data["attacker_hp"] = min(100, battle_data["attacker_hp"] + att_regen)
+
+    if defender_data.get("current_beast"):
+        for beast in defender_data.get("spirit_beasts", []):
+            if beast["name"] == defender_data["current_beast"]:
+                regen_val = beast.get("bonus", {}).get("regeneration", 0)
+                if regen_val > 0:
+                    def_regen = int(100 * regen_val)
+                    battle_data["defender_hp"] = min(100, battle_data["defender_hp"] + def_regen)
+
+    # Apply Critical Hits (White Divine Tiger etc)
+    att_is_crit = False
+    def_is_crit = False
+    
+    if attacker_data.get("current_beast"):
+        for beast in attacker_data.get("spirit_beasts", []):
+            if beast["name"] == attacker_data["current_beast"]:
+                crit_chance = beast.get("bonus", {}).get("critical", 0)
+                if random.random() < crit_chance:
+                    att_is_crit = True
+                    att_dmg = int(att_dmg * 2)
+
+    if defender_data.get("current_beast"):
+        for beast in defender_data.get("spirit_beasts", []):
+            if beast["name"] == defender_data["current_beast"]:
+                crit_chance = beast.get("bonus", {}).get("critical", 0)
+                if random.random() < crit_chance:
+                    def_is_crit = True
+                    def_dmg = int(def_dmg * 2)
+
+    # Update damage application with potential crits
     battle_data["defender_hp"] = max(0, battle_data["defender_hp"] - att_dmg)
     battle_data["attacker_hp"] = max(0, battle_data["attacker_hp"] - def_dmg)
 
@@ -1919,16 +1967,21 @@ async def battle_round(battle_id, ctx):
         color=0xff0000
     )
 
+    log_msg = ""
+    if att_is_crit: log_msg += "💥 **CRITICAL HIT!** "
+    log_msg += f"🔸 <@{battle_data['attacker']}> {att_tech} dealing **{att_dmg} damage**!"
+    if att_regen > 0: log_msg += f" (+{att_regen} HP Regen)"
+    log_msg += "\n"
+    
+    if def_is_crit: log_msg += "💥 **CRITICAL HIT!** "
+    log_msg += f"🔹 <@{battle_data['defender']}> {def_tech} dealing **{def_dmg} damage**!"
+    if def_regen > 0: log_msg += f" (+{def_regen} HP Regen)"
+
     embed.add_field(
         name="Combat Log", 
-        value=f"🔸 <@{battle_data['attacker']}> {att_tech} dealing **{att_dmg} damage**!\n"
-              f"🔹 <@{battle_data['defender']}> {def_tech} dealing **{def_dmg} damage**!",
+        value=log_msg,
         inline=False
     )
-
-    # HP bars
-    att_hp_bar = "❤️" * (battle_data["attacker_hp"] // 10) + "♡" * (10 - battle_data["attacker_hp"] // 10)
-    def_hp_bar = "❤️" * (battle_data["defender_hp"] // 10) + "♡" * (10 - battle_data["defender_hp"] // 10)
 
     embed.add_field(
         name="Health",
