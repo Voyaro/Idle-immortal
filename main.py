@@ -1565,6 +1565,14 @@ def get_player(uid):
         if field not in player_data:
             player_data[field] = default_value
 
+    # Auto-assign faction for legacy players (Human/Demon)
+    if "faction" not in player_data:
+        race = player_data.get("race", "human")
+        if race == "human":
+            player_data["faction"] = "Orthodox Alliance"
+        elif race == "demon":
+            player_data["faction"] = "Demonic Cult"
+
     # Jika ada power lama, convert ke base_power
     if "power" in player_data and "base_power" not in player_data:
         player_data["base_power"] = player_data["power"]
@@ -2278,6 +2286,51 @@ async def on_ready():
     print('✅ Boss system loaded successfully!')
     print('✅ World Boss system loaded successfully!')
     print('🌟 Bot siap menerima command!')
+
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+
+    # Process commands normally first, but if they need a faction choice, intercept
+    if message.content.startswith(bot.command_prefix):
+        p = get_player(message.author.id)
+        if p and "faction" not in p and p.get("race") in ["half_demon", "beast"]:
+            # Check if they are already in the process of choosing
+            flag_key = f"faction_choice_{message.author.id}"
+            if flag_key in ACTIVE_QUESTS:
+                return # Don't re-trigger if already waiting
+
+            ACTIVE_QUESTS[flag_key] = True
+            
+            embed = discord.Embed(
+                title="⚖️ Legacy Faction Selection",
+                description=f"Welcome back, {message.author.mention}! As a **{p.get('race')}**, you must choose your path to continue.",
+                color=0xffa500
+            )
+            embed.add_field(name="1️⃣ Orthodox Alliance", value="Follow the path of light and order.", inline=False)
+            embed.add_field(name="2️⃣ Demonic Cult", value="Follow the path of power and chaos.", inline=False)
+            embed.set_footer(text="Reply with '1' or '2' to choose your faction.")
+            
+            await message.channel.send(embed=embed)
+
+            def check(m):
+                return m.author == message.author and m.content in ['1', '2'] and m.channel == message.channel
+
+            try:
+                msg = await bot.wait_for('message', check=check, timeout=60.0)
+                faction = "Orthodox Alliance" if msg.content == '1' else "Demonic Cult"
+                p["faction"] = faction
+                update_player(message.author.id, p)
+                await message.channel.send(f"✅ You have joined the **{faction}**! You can now use commands.")
+            except asyncio.TimeoutError:
+                await message.channel.send("⌛ Choice timed out. Use a command again to trigger the selection.")
+            finally:
+                if flag_key in ACTIVE_QUESTS:
+                    del ACTIVE_QUESTS[flag_key]
+            return # Block the original command
+
+    await bot.process_commands(message)
 
 @bot.event
 async def on_command_error(ctx, error):
