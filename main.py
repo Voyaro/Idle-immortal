@@ -3557,32 +3557,36 @@ async def my_techniques(ctx):
     if not p:
         return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk memulai.")
 
-    if not p["techniques"]:
+    techniques = p.get("techniques", [])
+    if not techniques:
         return await ctx.send("❌ Anda belum mempelajari teknik apapun! Gunakan `!find_technique` untuk mencari teknik.")
 
-    total_bonus = sum(t['power_bonus'] for t in p["techniques"])
+    total_bonus = sum(t.get('power_bonus', 0) for t in techniques)
 
     embed = discord.Embed(
         title=f"📚 {ctx.author.name}'s Cultivation Techniques",
-        description=f"Total Power Bonus: +{total_bonus*100}%",
+        description=f"Total Power Bonus: +{total_bonus*100:.1f}%",
         color=0x7289da
     )
 
-    for technique in p["techniques"]:
+    for technique in techniques:
+        sect_id = technique.get('sect')
+        sect_name = CULTIVATION_SECTS.get(sect_id, {}).get('name', 'Unknown Sect')
+        
         embed.add_field(
-            name=f"{technique['emoji']} {technique['element_emoji']} {technique['name']}",
-            value=f"**Sect:** {CULTIVATION_SECTS[technique['sect']]['name']}\n"
-                  f"**Type:** {technique['type'].title()}\n"
-                  f"**Bonus:** +{technique['power_bonus']*100}% Power\n"
-                  f"**Element:** {technique['element'].title()}",
+            name=f"{technique.get('emoji', '✨')} {technique.get('element_emoji', '')} {technique.get('name', 'Unknown Technique')}",
+            value=f"**Sect:** {sect_name}\n"
+                  f"**Type:** {technique.get('type', 'unknown').title()}\n"
+                  f"**Bonus:** +{technique.get('power_bonus', 0)*100:.1f}% Power\n"
+                  f"**Element:** {technique.get('element', 'none').title()}",
             inline=True
         )
 
     embed.add_field(
         name="Power Summary",
-        value=f"**Base Power:** {p['base_power']}\n"
-              f"**Total Bonus:** +{total_bonus*100}%\n"
-              f"**Total Power:** {p['total_power']}",
+        value=f"**Base Power:** {p.get('base_power', 0)}\n"
+              f"**Total Bonus:** +{total_bonus*100:.1f}%\n"
+              f"**Total Power:** {p.get('total_power', 0)}",
         inline=False
     )
 
@@ -3598,7 +3602,8 @@ async def discovered_techniques(ctx):
     if not p:
         return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk memulai.")
 
-    if not p["discovered_techniques"]:
+    discovered = p.get("discovered_techniques", [])
+    if not discovered:
         return await ctx.send("❌ Anda belum menemukan teknik apapun! Gunakan `!find_technique` untuk mencari teknik.")
 
     embed = discord.Embed(
@@ -3607,12 +3612,12 @@ async def discovered_techniques(ctx):
         color=0x7289da
     )
 
-    for technique in p["discovered_techniques"]:
+    for technique in discovered:
         embed.add_field(
-            name=f"{technique['emoji']} {technique['element_emoji']} {technique['name']}",
-            value=f"**Cost:** {technique['cost']} Spirit Stones\n"
-                  f"**Bonus:** +{technique['power_bonus']*100}% Power\n"
-                  f"**ID:** `{technique['id']}`",
+            name=f"{technique.get('emoji', '📜')} {technique.get('element_emoji', '')} {technique.get('name', 'Unknown')}",
+            value=f"**Cost:** {technique.get('cost', 0)} Spirit Stones\n"
+                  f"**Bonus:** +{technique.get('power_bonus', 0)*100:.1f}% Power\n"
+                  f"**ID:** `{technique.get('id', 'unknown')}`",
             inline=True
         )
 

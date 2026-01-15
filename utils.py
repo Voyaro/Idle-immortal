@@ -99,11 +99,15 @@ def create_default_data():
     return default_data
 
 def save_data(data):
-    """Save data dengan backup otomatis"""
+    """Save data dengan backup otomatis setiap 5 menit"""
     try:
-        # Backup data lama sebelum menimpa
-        if os.path.exists(DATA_FILE):
+        # Backup data lama sebelum menimpa jika sudah 5 menit sejak backup terakhir
+        current_time = int(time.time())
+        last_backup = data.get("last_backup", 0)
+        
+        if os.path.exists(DATA_FILE) and (current_time - last_backup >= 300):
             backup_data()
+            data["last_backup"] = current_time
 
         # Update timestamp
         data["server_stats"]["last_update"] = datetime.datetime.now().isoformat()
