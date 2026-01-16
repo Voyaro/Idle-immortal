@@ -46,5 +46,30 @@
       ],
       "relationship_status": "stranger"
     }
+  },
+  "1090452614212231201": {
+    "ma_tian": {
+      "name": "Ma Tian",
+      "gender": "male",
+      "emoji": "\ud83d\udde1\ufe0f",
+      "cultivation_level": 70,
+      "realm": "Immortal Realm",
+      "personality": "silent_assassin",
+      "specialty": "stealth_techniques",
+      "backstory": "Former assassin seeking redemption through cultivation",
+      "dialogue_style": "brief_mysterious",
+      "affection_level": 1,
+      "max_affection": 100,
+      "gifts_loved": [
+        "shadow_items",
+        "stealth_gear",
+        "poison_antidotes"
+      ],
+      "gifts_hated": [
+        "loud_items",
+        "bright_items"
+      ],
+      "relationship_status": "stranger"
+    }
   }
 }

@@ -2,10 +2,10 @@
     "players": {
         "877390433519562842": {
             "realm": "Immortal Realm",
-            "stage": "Half-Immortal [Middle]",
-            "exp": 16500,
-            "qi": 923595,
-            "spirit_stones": 580022,
+            "stage": "Profound Immortal [Entry]",
+            "exp": 911250000,
+            "qi": 923900,
+            "spirit_stones": 80287,
             "equipment": {
                 "immortal_dao_sword": 2500,
                 "immortal_phoenix_armor": 2300,
@@ -146,8 +146,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 178799,
-            "total_power": 4703487,
+            "base_power": 178970,
+            "total_power": 4479977,
             "pvp_wins": 4,
             "pvp_losses": 2,
             "last_pvp": "0",
@@ -165,6 +165,17 @@
                     "cost": 7500,
                     "bonus": {
                         "attack": 0.12
+                    }
+                },
+                {
+                    "name": "Divine Dragon",
+                    "emoji": "🐉",
+                    "power": 600,
+                    "cost": 500000,
+                    "bonus": {
+                        "attack": 0.6,
+                        "qi": 0.4,
+                        "power": 0.5
                     }
                 }
             ],
@@ -191,31 +202,31 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T14:37:08.792361",
-            "breakthroughs": 31,
+            "last_updated": "2026-01-16T03:08:59.702633",
+            "breakthroughs": 36,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 8343,
+                    "progress": 9,
                     "completed": true,
                     "claimed": false
                 },
                 "pvp_battle": {
-                    "progress": 3,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 2,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 6,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 4,
+                    "progress": 5,
                     "completed": true,
                     "claimed": false
                 },
@@ -448,8 +459,8 @@
             "breakthroughs": 29,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 3055,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -458,18 +469,18 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 7,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 3,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 4,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -522,9 +533,9 @@
         "1090452614212231201": {
             "realm": "Mortal Realm",
             "stage": "Ascended [Peak]",
-            "exp": 274890235,
-            "qi": 905805,
-            "spirit_stones": 520500,
+            "exp": 435691544,
+            "qi": 1011186,
+            "spirit_stones": 598631,
             "equipment": {
                 "dragon_fang": 160,
                 "dragon_horn_helm": 130,
@@ -825,15 +836,15 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 125246,
-            "total_power": 2201824,
+            "base_power": 133314,
+            "total_power": 2343660,
             "pvp_wins": 2,
             "pvp_losses": 3,
             "last_pvp": "0",
             "last_dungeon": "0",
             "last_technique_find": "1768475462.535071",
             "last_daily_quest": "0",
-            "dungeons_completed": 40,
+            "dungeons_completed": 41,
             "techniques_learned": 18,
             "daily_streak": 0,
             "spirit_beasts": [
@@ -878,7 +889,7 @@
             "inventory": {
                 "spirit_herb": 2,
                 "spirit_water": 2,
-                "spirit_crystal": 0,
+                "spirit_crystal": 3,
                 "dragon_scale": 9,
                 "phoenix_feather": 3,
                 "dragon_heart": 3,
@@ -896,11 +907,11 @@
             "gender": "female",
             "display_name": "deranaatma",
             "created_at": "2025-09-08T00:39:28.711397",
-            "last_updated": "2026-01-15T15:01:49.406570",
+            "last_updated": "2026-01-16T03:15:05.743862",
             "breakthroughs": 29,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 5318,
+                    "progress": 454,
                     "completed": true,
                     "claimed": false
                 },
@@ -910,18 +921,18 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 6,
-                    "completed": true,
+                    "progress": 1,
+                    "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 7,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 3,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -987,7 +998,8 @@
                 "Void Titan",
                 "Eternal Dragon",
                 "Infinity Sage",
-                "Infinity Dragon"
+                "Infinity Dragon",
+                "Cosmic Sovereign"
             ],
             "last_boss_challenge": {
                 "Ancient Dragon": 1768475348.3983324,
@@ -996,7 +1008,8 @@
                 "Void Titan": 1768475766.9040244,
                 "Eternal Dragon": 1768475788.441793,
                 "Infinity Sage": 1768475817.9930696,
-                "Infinity Dragon": 1768475852.71298
+                "Infinity Dragon": 1768475852.71298,
+                "Cosmic Sovereign": 1768533102.119955
             },
             "faction": "Orthodox Alliance"
         },
@@ -1052,8 +1065,8 @@
             "breakthroughs": 25,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 2532,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -1062,7 +1075,7 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 1,
+                    "progress": 0,
                     "completed": false,
                     "claimed": false
                 },
@@ -1072,8 +1085,8 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 1,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -1127,21 +1140,21 @@
             "faction": "Demonic Cult"
         }
     },
-    "last_backup": 1768489010,
+    "last_backup": 1768533128,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 6,
-        "total_breakthroughs": 114,
-        "total_dungeons": 76,
+        "total_breakthroughs": 119,
+        "total_dungeons": 77,
         "total_techniques_learned": 32,
-        "total_spirit_beasts": 6,
+        "total_spirit_beasts": 7,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T15:01:49.406589",
-        "bosses_defeated": 33
+        "last_update": "2026-01-16T03:15:05.743883",
+        "bosses_defeated": 34
     },
     "guilds": {},
     "market_items": [],
     "server_events": {},
-    "daily_quests_reset": "2026-01-15T03:22:06.410599",
+    "daily_quests_reset": "2026-01-16T02:58:56.634849",
     "world_bosses": {}
 }

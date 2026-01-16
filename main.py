@@ -6684,8 +6684,9 @@ async def talk_npc(ctx, *, npc_name=None):
     
     # Find NPC by name
     npc_id = None
+    npc_name_lower = npc_name.lower().strip()
     for id, npc in NPCS.items():
-        if npc['name'].lower() == npc_name.lower():
+        if npc['name'].lower().strip() == npc_name_lower or id.lower() == npc_name_lower.replace(" ", "_"):
             npc_id = id
             break
     
@@ -6755,8 +6756,9 @@ async def gift_npc(ctx, npc_name=None, *, item=None):
     
     # Find NPC
     npc_id = None
+    npc_name_lower = npc_name.lower().strip()
     for id, npc in NPCS.items():
-        if npc['name'].lower() == npc_name.lower():
+        if npc['name'].lower().strip() == npc_name_lower or id.lower() == npc_name_lower.replace(" ", "_"):
             npc_id = id
             break
     
@@ -6858,8 +6860,9 @@ async def npc_info(ctx, *, npc_name=None):
     
     # Find NPC
     npc_id = None
+    npc_name_lower = npc_name.lower().strip()
     for id, npc in NPCS.items():
-        if npc['name'].lower() == npc_name.lower():
+        if npc['name'].lower().strip() == npc_name_lower or id.lower() == npc_name_lower.replace(" ", "_"):
             npc_id = id
             break
     
@@ -6930,8 +6933,9 @@ async def set_combat_assistant(ctx, *, npc_name=None):
     
     # Find NPC by name
     npc_id = None
+    npc_name_lower = npc_name.lower().strip()
     for id, npc in NPCS.items():
-        if npc['name'].lower() == npc_name.lower():
+        if npc['name'].lower().strip() == npc_name_lower or id.lower() == npc_name_lower.replace(" ", "_"):
             npc_id = id
             break
     
