@@ -195,28 +195,28 @@
             "breakthroughs": 31,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 8343,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
-                    "progress": 3,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 2,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 6,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 4,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -448,8 +448,8 @@
             "breakthroughs": 29,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 3055,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -458,18 +458,18 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 7,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 3,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 4,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -522,9 +522,9 @@
         "1090452614212231201": {
             "realm": "Mortal Realm",
             "stage": "Ascended [Peak]",
-            "exp": 265937771,
-            "qi": 885065,
-            "spirit_stones": 513799,
+            "exp": 278784235,
+            "qi": 916880,
+            "spirit_stones": 524040,
             "equipment": {
                 "dragon_fang": 160,
                 "dragon_horn_helm": 130,
@@ -825,15 +825,15 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 118569,
-            "total_power": 2084443,
+            "base_power": 128787,
+            "total_power": 2264075,
             "pvp_wins": 2,
             "pvp_losses": 3,
             "last_pvp": "0",
             "last_dungeon": "0",
             "last_technique_find": "1768475462.535071",
             "last_daily_quest": "0",
-            "dungeons_completed": 39,
+            "dungeons_completed": 40,
             "techniques_learned": 18,
             "daily_streak": 0,
             "spirit_beasts": [
@@ -896,12 +896,12 @@
             "gender": "female",
             "display_name": "deranaatma",
             "created_at": "2025-09-08T00:39:28.711397",
-            "last_updated": "2026-01-15T11:19:24.663639",
+            "last_updated": "2026-01-15T15:07:53.080255",
             "breakthroughs": 29,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 4656,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -910,18 +910,18 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 5,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "learn_technique": {
-                    "progress": 7,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 3,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -1052,8 +1052,8 @@
             "breakthroughs": 25,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 2532,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "pvp_battle": {
@@ -1062,7 +1062,7 @@
                     "claimed": false
                 },
                 "complete_dungeon": {
-                    "progress": 1,
+                    "progress": 0,
                     "completed": false,
                     "claimed": false
                 },
@@ -1072,8 +1072,8 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 1,
-                    "completed": true,
+                    "progress": 0,
+                    "completed": false,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -1127,21 +1127,21 @@
             "faction": "Demonic Cult"
         }
     },
-    "last_backup": 1768487806,
+    "last_backup": 1768532336,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 6,
         "total_breakthroughs": 114,
-        "total_dungeons": 75,
+        "total_dungeons": 76,
         "total_techniques_learned": 32,
         "total_spirit_beasts": 6,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-15T14:41:15.452784",
+        "last_update": "2026-01-16T02:58:56.635862",
         "bosses_defeated": 33
     },
     "guilds": {},
     "market_items": [],
     "server_events": {},
-    "daily_quests_reset": "2026-01-15T03:22:06.410599",
+    "daily_quests_reset": "2026-01-16T02:58:56.634849",
     "world_bosses": {}
 }
