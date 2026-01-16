@@ -6757,25 +6757,40 @@ async def talk_npc(ctx, *, npc_name=None):
         save_npc_data()
 
 @bot.command(name="gift")
-async def gift_npc(ctx, npc_name=None, *, item=None):
+async def gift_npc(ctx, *, npc_and_item=None):
     """Give a gift to an NPC to increase affection"""
     if not NPC_SYSTEM_LOADED:
         return await ctx.send("❌ NPC system is not available!")
     
-    if not npc_name or not item:
-        return await ctx.send("❌ Usage: `!gift <npc_name> <item>`\nExample: `!gift Chen Wei spirit_sword`")
+    if not npc_and_item:
+        return await ctx.send("❌ Usage: `!gift <npc_name> <item>`\nExample: `!gift Chen Wei spirit_sword` or `!gift ning er spirit_sword`")
     
-    # Find NPC
+    # Split the input into parts
+    # We try to find a valid NPC name from the start of the string
+    parts = npc_and_item.split()
     npc_id = None
-    npc_name_input = npc_name.lower().strip()
-    for id, npc in NPCS.items():
-        # Match by name or ID (ma_tian, chen_wei, etc)
-        if npc['name'].lower().strip() == npc_name_input or id.lower() == npc_name_input.replace(" ", "_"):
-            npc_id = id
+    item = None
+    npc_name_found = ""
+
+    # Try matching long names first (e.g., "Ma Tian", "Ning Er")
+    # We iterate through the words and check if the combination matches an NPC
+    for i in range(len(parts), 0, -1):
+        potential_name = " ".join(parts[:i]).lower().strip()
+        for id, npc in NPCS.items():
+            if npc['name'].lower().strip() == potential_name or id.lower() == potential_name.replace(" ", "_"):
+                npc_id = id
+                npc_name_found = potential_name
+                # The rest of the parts is the item
+                item = " ".join(parts[i:]).strip()
+                break
+        if npc_id:
             break
-    
+
     if not npc_id:
-        return await ctx.send(f"❌ NPC '{npc_name}' not found!")
+        return await ctx.send(f"❌ NPC not found in '{npc_and_item}'! Please specify a valid NPC name followed by the item.")
+    
+    if not item:
+        return await ctx.send(f"❌ Please specify an item to gift to {NPCS[npc_id]['name']}!")
     
     player_id = str(ctx.author.id)
     player = get_player(player_id)

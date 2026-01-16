@@ -3,9 +3,9 @@
         "877390433519562842": {
             "realm": "Immortal Realm",
             "stage": "Profound Immortal [Middle]",
-            "exp": 1452304687,
-            "qi": 923974,
-            "spirit_stones": 80402,
+            "exp": 1491354687,
+            "qi": 928478,
+            "spirit_stones": 84534,
             "equipment": {
                 "immortal_dao_sword": 2500,
                 "immortal_phoenix_armor": 2300,
@@ -146,8 +146,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 179018,
-            "total_power": 4481178,
+            "base_power": 180423,
+            "total_power": 4516348,
             "pvp_wins": 4,
             "pvp_losses": 2,
             "last_pvp": "0",
@@ -202,11 +202,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-16T03:17:17.541551",
+            "last_updated": "2026-01-16T03:23:16.637789",
             "breakthroughs": 37,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 12,
+                    "progress": 154,
                     "completed": true,
                     "claimed": false
                 },
@@ -1140,7 +1140,7 @@
             "faction": "Demonic Cult"
         }
     },
-    "last_backup": 1768533429,
+    "last_backup": 1768533729,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 6,
@@ -1149,7 +1149,7 @@
         "total_techniques_learned": 32,
         "total_spirit_beasts": 7,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-16T03:18:59.499592",
+        "last_update": "2026-01-16T03:23:16.637805",
         "bosses_defeated": 34
     },
     "guilds": {},
