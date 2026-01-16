@@ -6841,9 +6841,8 @@ async def npc_info(ctx, *, npc_name=None):
     embed = discord.Embed(
         title=f"{npc_data['emoji']} {npc_data['name']}",
         description=npc_data['backstory'],
-        color=0x9932cc
-    )
-    
+        color=0x9932cc)
+     
     # Basic Info
     embed.add_field(name="🏮 Cultivation", value=f"Level {npc_data['cultivation_level']}\n{npc_data['realm']}", inline=True)
     embed.add_field(name="⚡ Specialty", value=npc_data['specialty'], inline=True)
