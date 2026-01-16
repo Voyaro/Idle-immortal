@@ -170,9 +170,9 @@ REALMS = {
             "Immortal King [Entry]", "Immortal King [Middle]", "Immortal King [Peak]",
             "Immortal Emperor [Entry]", "Immortal Emperor [Middle]", "Immortal Emperor [Peak]"
         ],
-        "exp_multiplier": 10.0,
-        "power_multiplier": 5.0,
-        "spirit_stone_gain": 5,
+        "exp_multiplier": 500.0,
+        "power_multiplier": 25.0,
+        "spirit_stone_gain": 50,
         "color": 0x00FF00,
         "discovery_chance": 0.5
     },
@@ -194,9 +194,9 @@ REALMS = {
             "Celestial Overlord [Entry]", "Celestial Overlord [Middle]", "Celestial Overlord [Peak]",
             "Universe Creator [Entry]", "Universe Creator [Middle]", "Universe Creator [Peak]"
         ],
-        "exp_multiplier": 100.0,
-        "power_multiplier": 25.0,
-        "spirit_stone_gain": 25,
+        "exp_multiplier": 5000.0,
+        "power_multiplier": 100.0,
+        "spirit_stone_gain": 250,
         "color": 0xFFD700,
         "discovery_chance": 0.7
     }
@@ -4766,11 +4766,14 @@ async def spirit_beasts(ctx):
 # Command: tame (BARU - TAMBAHKAN DI SINI)
 # ===============================
 @bot.command()
-async def tame(ctx, beast_name: str):
+async def tame(ctx, *, beast_name: str = None):
     """Jinakkan spirit beast dengan Spirit Stones"""
     p = get_player(ctx.author.id)
     if not p:
         return await ctx.send("❌ Anda belum terdaftar! Gunakan `!register` untuk memulai.")
+
+    if not beast_name:
+        return await ctx.send("❌ Sebutkan nama spirit beast yang ingin dijinakkan! Contoh: `!tame Azure Dragon`")
 
     # Cari beast berdasarkan nama
     found_beast = None
