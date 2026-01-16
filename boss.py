@@ -331,7 +331,8 @@ async def challenge_boss(ctx, boss_name):
         "boss_name": boss_data["name"],
         "boss_data": boss_data,
         "boss_health": boss_data["health"],
-        "player_health": 1000,
+        "player_health": 1000 + (p.get("total_power", 0) // 100), # Boost player health based on power
+        "max_player_health": 1000 + (p.get("total_power", 0) // 100),
         "phase": 1,
         "round": 0,
         "start_time": current_time,
@@ -373,7 +374,7 @@ def create_boss_battle_embed(battle_id, ctx):
     
     embed.add_field(
         name=f"🧘 {ctx.author.name}",
-        value=f"{create_health_bar(player_hp_percent)} {battle_data['player_health']}/1000 HP",
+        value=f"{create_health_bar(player_hp_percent)} {battle_data['player_health']}/{battle_data['max_player_health']} HP",
         inline=False
     )
     

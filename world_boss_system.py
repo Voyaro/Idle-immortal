@@ -434,7 +434,8 @@ async def challenge_world_boss(ctx, boss_name: str):
         "party_id": party_id,
         "party_members": WORLD_BOSS_PARTIES[party_id]["members"].copy(),
         "boss_health": boss_data["health"],
-        "player_health": {member_id: 1000 for member_id in WORLD_BOSS_PARTIES[party_id]["members"]},
+        "player_health": {member_id: 1000 + (get_player(member_id).get("total_power", 0) // 100) for member_id in WORLD_BOSS_PARTIES[party_id]["members"]},
+        "max_player_health": {member_id: 1000 + (get_player(member_id).get("total_power", 0) // 100) for member_id in WORLD_BOSS_PARTIES[party_id]["members"]},
         "round": 0,
         "start_time": current_time,
         "damage_dealt": {member_id: 0 for member_id in WORLD_BOSS_PARTIES[party_id]["members"]}
@@ -559,7 +560,7 @@ def create_world_boss_embed(battle_data, ctx):
         try:
             player = get_player(player_id)
             user = ctx.bot.get_user(player_id)
-            hp_percent = (battle_data["player_health"][player_id] / 1000) * 100
+            hp_percent = (battle_data["player_health"][player_id] / battle_data["max_player_health"][player_id]) * 100
             status = "❤️" if battle_data["player_health"][player_id] > 0 else "💀"
             players_text += f"{status} {user.name} - {create_health_bar(hp_percent)} {battle_data['damage_dealt'][player_id]:,} damage\n"
         except:

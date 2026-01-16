@@ -6807,15 +6807,28 @@ async def gift_npc(ctx, *, npc_and_item=None):
     update_player(player_id, player)
     
     # Check if item is in inventory (dungeon/boss items)
-    inventory = player.get("inventory", [])
+    inventory = player.get("inventory", {})
     has_item = False
     item_obj = None
     
-    for i, inv_item in enumerate(inventory):
-        if inv_item.get("name", "").lower() == item.lower() or inv_item.get("id", "").lower() == item.lower():
+    # Handle inventory as dict or list
+    if isinstance(inventory, dict):
+        if inventory.get(item.lower(), 0) > 0:
             has_item = True
-            item_obj = inventory.pop(i)
-            break
+            inventory[item.lower()] -= 1
+            item_obj = item.lower()
+    elif isinstance(inventory, list):
+        for i, inv_item in enumerate(inventory):
+            if isinstance(inv_item, dict):
+                if inv_item.get("name", "").lower() == item.lower() or inv_item.get("id", "").lower() == item.lower():
+                    has_item = True
+                    item_obj = inventory.pop(i)
+                    break
+            elif isinstance(inv_item, str):
+                if inv_item.lower() == item.lower():
+                    has_item = True
+                    item_obj = inventory.pop(i)
+                    break
             
     if has_item:
         player["inventory"] = inventory

@@ -5,7 +5,7 @@
             "stage": "Profound Immortal [Middle]",
             "exp": 1491354687,
             "qi": 928478,
-            "spirit_stones": 84534,
+            "spirit_stones": 84134,
             "equipment": {
                 "immortal_dao_sword": 2500,
                 "immortal_phoenix_armor": 2300,
@@ -202,7 +202,7 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-16T03:23:16.637789",
+            "last_updated": "2026-01-16T03:26:02.352700",
             "breakthroughs": 37,
             "daily_quests": {
                 "cultivate_5": {
@@ -298,7 +298,7 @@
             "stage": "Ascended [Peak]",
             "exp": 282202348,
             "qi": 823732,
-            "spirit_stones": 531479,
+            "spirit_stones": 131479,
             "equipment": {
                 "dragon_pearl": 120,
                 "dragon_horn_helm": 130,
@@ -427,9 +427,20 @@
                     "bonus": {
                         "all": 0.05
                     }
+                },
+                {
+                    "name": "Immortal Phoenix",
+                    "emoji": "🔥",
+                    "power": 550,
+                    "cost": 400000,
+                    "bonus": {
+                        "exp": 0.5,
+                        "qi": 0.5,
+                        "regeneration": 0.4
+                    }
                 }
             ],
-            "current_beast": "Phoenix",
+            "current_beast": "Immortal Phoenix",
             "inventory": {
                 "spirit_herb": 3,
                 "spirit_water": 1,
@@ -455,7 +466,7 @@
             "gender": "male",
             "display_name": "hanakokun7689",
             "created_at": "2025-09-07T17:21:02.317072",
-            "last_updated": "2026-01-15T14:40:48.278038",
+            "last_updated": "2026-01-16T03:27:30.217836",
             "breakthroughs": 29,
             "daily_quests": {
                 "cultivate_5": {
@@ -1140,16 +1151,16 @@
             "faction": "Demonic Cult"
         }
     },
-    "last_backup": 1768533729,
+    "last_backup": 1768534036,
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 6,
         "total_breakthroughs": 120,
         "total_dungeons": 77,
         "total_techniques_learned": 32,
-        "total_spirit_beasts": 7,
+        "total_spirit_beasts": 8,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-16T03:23:16.637805",
+        "last_update": "2026-01-16T03:27:47.082904",
         "bosses_defeated": 34
     },
     "guilds": {},
