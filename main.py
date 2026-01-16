@@ -170,7 +170,7 @@ REALMS = {
             "Immortal King [Entry]", "Immortal King [Middle]", "Immortal King [Peak]",
             "Immortal Emperor [Entry]", "Immortal Emperor [Middle]", "Immortal Emperor [Peak]"
         ],
-        "exp_multiplier": 500.0,
+        "exp_multiplier": 50000.0,
         "power_multiplier": 25.0,
         "spirit_stone_gain": 50,
         "color": 0x00FF00,
@@ -194,7 +194,7 @@ REALMS = {
             "Celestial Overlord [Entry]", "Celestial Overlord [Middle]", "Celestial Overlord [Peak]",
             "Universe Creator [Entry]", "Universe Creator [Middle]", "Universe Creator [Peak]"
         ],
-        "exp_multiplier": 5000.0,
+        "exp_multiplier": 500000.0,
         "power_multiplier": 100.0,
         "spirit_stone_gain": 250,
         "color": 0xFFD700,
@@ -2686,6 +2686,15 @@ async def tutorial(ctx):
               "• **Immortal Lord**: The first person to reach the Immortal realm.\n"
               "• **God of Creation**: The first person to reach the God realm.\n"
               "• **Rich Merchant**: Own at least 1,000,000 Spirit Stones.",
+        inline=False
+    )
+    embed.add_field(
+        name="🛠️ Legendary Crafting",
+        value="Collect materials from **Bosses** and **World Bosses** to craft Legendary Gear!\n"
+              "• **Dragon Scale/Heart**: From Ancient Dragon\n"
+              "• **Void Shard/Titan Core**: From Void Titan\n"
+              "• **Heavenly Set Pieces**: From World Boss Heavenly Dragon\n"
+              "Use `!craft <item_name>` when you have the required materials.",
         inline=False
     )
     embed.set_footer(text="Gunakan !help untuk melihat semua command yang tersedia")
@@ -6768,12 +6777,31 @@ async def gift_npc(ctx, npc_name=None, *, item=None):
     player["spirit_stones"] -= gift_cost
     update_player(player_id, player)
     
+    # Check if item is in inventory (dungeon/boss items)
+    inventory = player.get("inventory", [])
+    has_item = False
+    item_obj = None
+    
+    for i, inv_item in enumerate(inventory):
+        if inv_item.get("name", "").lower() == item.lower() or inv_item.get("id", "").lower() == item.lower():
+            has_item = True
+            item_obj = inventory.pop(i)
+            break
+            
+    if has_item:
+        player["inventory"] = inventory
+        update_player(player_id, player)
+        # Bonus affection for real items
+        affection_bonus = 5
+    else:
+        affection_bonus = 0
+
     # Get NPC data and calculate affection change
     npc_data = get_npc_data(player_id, npc_id)
     
     # Calculate affection change based on gift type
     from npc_system import calculate_affection_change
-    affection_change = calculate_affection_change(npc_data, "gift", item.lower())
+    affection_change = calculate_affection_change(npc_data, "gift", item.lower()) + affection_bonus
     result = update_npc_affection(player_id, npc_id, affection_change)
     old_affection, new_affection = result[0], result[1]
     exclusive_message = result[2] if len(result) > 2 else ""

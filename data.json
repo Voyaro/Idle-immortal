@@ -2,10 +2,10 @@
     "players": {
         "877390433519562842": {
             "realm": "Immortal Realm",
-            "stage": "Half-Immortal [Middle]",
-            "exp": 16500,
-            "qi": 923595,
-            "spirit_stones": 580022,
+            "stage": "Half-Immortal [Peak]",
+            "exp": 1350000,
+            "qi": 923668,
+            "spirit_stones": 80043,
             "equipment": {
                 "immortal_dao_sword": 2500,
                 "immortal_phoenix_armor": 2300,
@@ -146,8 +146,8 @@
             "sect": null,
             "guild": null,
             "guild_role": null,
-            "base_power": 178799,
-            "total_power": 4703487,
+            "base_power": 178834,
+            "total_power": 4476572,
             "pvp_wins": 4,
             "pvp_losses": 2,
             "last_pvp": "0",
@@ -165,6 +165,17 @@
                     "cost": 7500,
                     "bonus": {
                         "attack": 0.12
+                    }
+                },
+                {
+                    "name": "Divine Dragon",
+                    "emoji": "🐉",
+                    "power": 600,
+                    "cost": 500000,
+                    "bonus": {
+                        "attack": 0.6,
+                        "qi": 0.4,
+                        "power": 0.5
                     }
                 }
             ],
@@ -191,11 +202,11 @@
             "gender": "male",
             "display_name": "catto6969",
             "created_at": "2025-09-07T17:15:01.535222",
-            "last_updated": "2026-01-15T14:37:08.792361",
-            "breakthroughs": 31,
+            "last_updated": "2026-01-16T03:01:45.471108",
+            "breakthroughs": 32,
             "daily_quests": {
                 "cultivate_5": {
-                    "progress": 0,
+                    "progress": 2,
                     "completed": false,
                     "claimed": false
                 },
@@ -215,8 +226,8 @@
                     "claimed": false
                 },
                 "breakthrough": {
-                    "progress": 0,
-                    "completed": false,
+                    "progress": 1,
+                    "completed": true,
                     "claimed": false
                 },
                 "find_treasure": {
@@ -1131,12 +1142,12 @@
     "total_players": 4,
     "server_stats": {
         "total_pvp_battles": 6,
-        "total_breakthroughs": 114,
+        "total_breakthroughs": 115,
         "total_dungeons": 76,
         "total_techniques_learned": 32,
-        "total_spirit_beasts": 6,
+        "total_spirit_beasts": 7,
         "total_pills_crafted": 1,
-        "last_update": "2026-01-16T02:58:56.635862",
+        "last_update": "2026-01-16T03:02:29.026039",
         "bosses_defeated": 33
     },
     "guilds": {},
